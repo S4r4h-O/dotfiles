@@ -1,8 +1,5 @@
 #!/bin/bash
 
-VOLUME_NOTIF_ID=9991
-MIC_NOTIF_ID=9992
-
 get_volume() {
   volume=$(pamixer --get-volume)
   [[ "$volume" -eq "0" ]] && echo "Muted" || echo "$volume %"
@@ -25,9 +22,16 @@ notify_user() {
   icon=$(get_icon)
   volume=$(pamixer --get-volume)
   if [[ "$(get_volume)" == "Muted" ]]; then
-    dunstify -r $VOLUME_NOTIF_ID -a "volume-control" -u low "$icon Volume" "Muted"
+    dunstify -h string:x-dunst-stack-tag:audio_notif \
+      -a "volume-control" \
+      -u low \
+      "$icon Volume" "Muted"
   else
-    dunstify -r $VOLUME_NOTIF_ID -a "volume-control" -h int:value:"$volume" -u low "$icon Volume" "$(get_volume)"
+    dunstify -h string:x-dunst-stack-tag:audio_notif \
+      -h int:value:"$volume" \
+      -a "volume-control" \
+      -u low \
+      "$icon Volume" "$(get_volume)"
   fi
 }
 
@@ -49,34 +53,39 @@ dec_volume() {
 
 toggle_mute() {
   if [ "$(pamixer --get-mute)" == "false" ]; then
-    pamixer -m && dunstify -r $VOLUME_NOTIF_ID -a "volume-control" -u low "🔇 Volume" "Muted"
+    pamixer -m && dunstify -h string:x-dunst-stack-tag:audio_notif -a "volume-control" -u low "󰝟 Volume" "Muted"
   else
-    pamixer -u && dunstify -r $VOLUME_NOTIF_ID -a "volume-control" -u low "$(get_icon) Volume" "Unmuted"
+    pamixer -u && dunstify -h string:x-dunst-stack-tag:audio_notif -a "volume-control" -u low "$(get_icon) Volume" "Unmuted"
   fi
 }
 
 toggle_mic() {
   if [ "$(pamixer --default-source --get-mute)" == "false" ]; then
-    pamixer --default-source -m && dunstify -r $MIC_NOTIF_ID -a "mic-control" -u low "󰍭 Microphone" "OFF"
+    pamixer --default-source -m && dunstify -h string:x-dunst-stack-tag:mic_notif -a "mic-control" -u low "󰍭 Microphone" "OFF"
   else
-    pamixer --default-source -u && dunstify -r $MIC_NOTIF_ID -a "mic-control" -u low "󰍬 Microphone" "ON"
+    pamixer --default-source -u && dunstify -h string:x-dunst-stack-tag:mic_notif -a "mic-control" -u low "󰍬 Microphone" "ON"
   fi
 }
 
 get_mic_icon() {
-  current=$(pamixer --default-source --get-volume)
-  [[ "$current" -eq "0" ]] && echo "󰍭" || echo "󰍬"
+  mute_status=$(pamixer --default-source --get-mute)
+  [[ "$mute_status" == "true" ]] && echo "󰍭" || echo "󰍬"
 }
 
 get_mic_volume() {
   volume=$(pamixer --default-source --get-volume)
-  [[ "$volume" -eq "0" ]] && echo "Muted" || echo "$volume %"
+  mute_status=$(pamixer --default-source --get-mute)
+  [[ "$mute_status" == "true" ]] && echo "Muted" || echo "$volume %"
 }
 
 notify_mic_user() {
   volume=$(pamixer --default-source --get-volume)
   icon=$(get_mic_icon)
-  dunstify -r $MIC_NOTIF_ID -a "mic-control" -h int:value:"$volume" -u low "$icon Microphone" "$(get_mic_volume)"
+  dunstify -h string:x-dunst-stack-tag:mic_notif \
+    -h int:value:"$volume" \
+    -a "mic-control" \
+    -u low \
+    "$icon Microphone" "$(get_mic_volume)"
 }
 
 inc_mic_volume() {
