@@ -1,0 +1,32 @@
+// Niri Layout Configuration - Minimal Styling
+// Reduced visual overhead while maintaining clarity
+
+layout {
+    // Border: minimal but visible
+    border {
+        on
+        width 1
+        active-color "#d070e5"
+        inactive-color "#702d7f"
+        urgent-color "#9b0000"
+    }
+    
+    // Minimal gaps between windows
+    gaps 4
+
+    // No struts (reserved space for bars)
+    struts {
+        left 0
+        right 0
+        top 0
+        bottom 0
+    }
+    
+    // Focus ring: minimal visual feedback
+    focus-ring {
+        on
+        width 1
+        // active-color "#d070e5"
+        // inactive-color "#702d7f"
+    }
+}

@@ -1,0 +1,12 @@
+{
+  "niri/workspaces#rw": {
+    "all-outputs": true,
+    "format": "{icon}",
+    "on-click": "activate",
+    "format-icons": {
+      "active": "",
+      "default": "",
+      "urgent": ""
+    }
+  }
+}

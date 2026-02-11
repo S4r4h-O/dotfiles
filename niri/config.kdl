@@ -1,0 +1,36 @@
+// Niri Configuration
+// Reference: https://github.com/YaLTeR/niri/wiki
+
+// =====================================================
+// Modular Configuration Includes
+// =====================================================
+
+include "config.d/outputs.kdl"
+include "config.d/workspaces.kdl"
+include "config.d/input.kdl"
+include "config.d/layout.kdl"
+include "config.d/animations.kdl"
+include "config.d/keybinds.kdl"
+include "config.d/window-rules.kdl"
+include "config.d/startup.kdl"
+
+// =====================================================
+// Overview and UI Settings
+// =====================================================
+
+prefer-no-csd
+
+// Screenshots
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+// Qt
+environment {
+    QT_QPA_PLATFORM "wayland"
+    QT_QPA_PLATFORMTHEME "qt6ct"
+    QT_QPA_PLATFORMTHEME "qt5ct"
+    DISPLAY ":0"
+}
+
+cursor {
+  xcursor-size 42
+}

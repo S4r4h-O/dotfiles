@@ -1,0 +1,74 @@
+{
+  "layer": "top",
+  "position": "top",
+  "exclusive": true,
+  "passthrough": false,
+  "fixed-center": true,
+  "ipc": true,
+  "stylesheet": "~/.config/.config/waybar/style.css",
+
+  "include": [
+    "~/.config/.config/waybar/Modules",
+    "~/.config/.config/waybar/ModulesWorkspaces",
+    "~/.config/.config/waybar/ModulesGroups"
+  ],
+
+  "modules-left": ["niri/workspaces#rw", "tray"],
+  "modules-center": ["clock#forest", "idle_inhibitor"],
+  "modules-right": [
+    "cpu#forest",
+    "memory#forest",
+    "temperature#forest",
+    "disk#forest",
+    "backlight",
+    "battery#forest",
+    "group/audio",
+    "custom/power_vertical"
+  ],
+
+  "temperature#forest": {
+    "interval": 10,
+    "tooltip": true,
+    "hwmon-path": [
+      "/sys/class/hwmon/hwmon2/temp1_input",
+      "/sys/class/hwmon/hwmon3/temp1_input",
+      "/sys/class/hwmon/hwmon4/temp1_input"
+    ],
+    "critical-threshold": 82,
+    "format": "Temp {icon} {temperatureC}°C",
+    "format-icons": ["󰈸"],
+    "on-click-right": "alacritty --title nvtop -e nvtop"
+  },
+
+  "custom/power_vertical": {
+    "format": "⏻",
+    "tooltip": false,
+    "on-click": "wlogout"
+  },
+
+  "clock#forest": {
+    "format": "{:%A %d.%m.%Y - %H:%M}",
+    "tooltip-format": "<tt>{calendar}</tt>"
+  },
+
+  "cpu#forest": {
+    "format": "Cpu 󰍛 {usage}%",
+    "on-click-right": "gnome-system-monitor"
+  },
+
+  "memory#forest": {
+    "format": "Ram 󰾆 {used:0.1f}G",
+    "on-click-right": "alacritty --title btop -e btop"
+  },
+
+  "battery#forest": {
+    "format": "Battery {icon} {capacity}%",
+    "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+  },
+
+  "disk#forest": {
+    "path": "/",
+    "format": "Disk 󰋊 {used}",
+    "on-click-right": "baobab"
+  }
+}

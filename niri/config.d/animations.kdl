@@ -1,0 +1,21 @@
+// Niri Animations Configuration - Minimal but Functional
+// Smooth transitions without excessive overhead
+
+animations {
+    // Workspace switching: fast spring animation
+    workspace-switch {
+        spring damping-ratio=1.0 stiffness=1000 epsilon=0.0001
+    }
+    
+    // Window open: minimal fade
+    window-open {
+        duration-ms 100
+        curve "ease-out-quad"
+    }
+    
+    // Window close: minimal fade
+    window-close {
+        duration-ms 100
+        curve "ease-out-quad"
+    }
+}

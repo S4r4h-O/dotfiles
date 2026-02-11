@@ -1,0 +1,216 @@
+* {
+active-background: #F5C2E7;
+active-foreground: #CDD6F4;
+normal-background: #1E1E2E;
+normal-foreground: #CDD6F4;
+urgent-background: #F38BA8;
+urgent-foreground: #1E1E2E;
+alternate-active-background: #CBA6F7;
+alternate-active-foreground: #CDD6F4;
+alternate-normal-background: #1E1E2E;
+alternate-normal-foreground: #CDD6F4;
+alternate-urgent-background: #1E1E2E;
+alternate-urgent-foreground: #F38BA8;
+selected-active-background: #F5C2E7;
+selected-active-foreground: #11111B;
+selected-normal-background: #F5C2E7;
+selected-normal-foreground: #11111B;
+selected-urgent-background: #F38BA8;
+selected-urgent-foreground: #11111B;
+background-color: #1E1E2E;
+background: rgba(30,30,46,0.2);
+foreground: #CDD6F4;
+border-color: #F5C2E7;
+color0: #45475A;
+color1: #181825;
+color2: #89B4FA;
+color3: #74C7EC;
+color4: #CBA6F7;
+color5: #F5C2E7;
+color6: #94E2D5;
+color7: #BAC2DE;
+color8: #585B70;
+color9: #11111B;
+color10: #89DCEB;
+color11: #B4BEFE;
+color12: #F5C2E7;
+color13: #F5E0DC;
+color14: #A6E3A1;
+color15: #CDD6F4;
+}
+
+configuration {
+  show-icons: true;
+  display-drun: "";
+  drun-display-format: "{icon} {name}";
+  disable-history: false;
+  click-to-exit: true;
+  location: 0;
+  hover-select: true;
+  me-select-entry: "MouseSecondary";
+  me-accept-entry: "MousePrimary";
+}
+
+/*****----- Global Properties -----*****/
+* {
+    bg-col: @background;
+    bga-col: #CBA6F7;
+    fg-col: @foreground;
+    fga-col: #F5C2E7;
+    bdr-col: #F5C2E7;
+    sel-col: #313244;
+    ugt-col: #F38BA8;
+    img-col: #F9E2AF;
+    off-col: #585B70;
+    on-col: #A6E3A1;
+    transparent-col: rgba(255, 255, 255, 0);
+}
+
+/* ---- Window ---- */
+window {
+    transparency: "real";
+    background-color: var(bg-col);
+    text-color: var(fg-col);
+    border: 2px;
+    border-color: var(bdr-col);
+    border-radius: 5px;
+    width: 50%;
+    anchor: center;
+    x-offset: 0;
+    y-offset: 0;
+}
+
+entry {
+    background-color: var(bg-col);
+    text-color: var(fg-col);
+    placeholder-color: var(fg-col);
+    expand: true;
+    horizontal-align: 0;
+    placeholder: "Search       ⁿᵒᵗᵉ: ᵖʳᵉˢˢ ᶜᵗʳˡ ᵗᵃᵇ ᵗᵒ ᶜʰᵃⁿᵍᵉ ᵐᵒᵈᵉˢ";
+    blink: true;
+    border: 2px;
+    border-color: var(bdr-col);
+    border-radius: 1px;
+    padding: 8px;
+}
+
+inputbar {
+    children: [entry];
+    background-color: var(bg-col);
+    text-color: var(fg-col);
+    expand: false;
+    border: 0px 0px 0px 0px;
+    border-radius: 0px;
+    border-color: var(bdr-col);
+    margin: 0px 0px 0px 0px;
+    padding: 0px;
+    position: center;
+}
+
+case-indicator {
+    background-color: var(bg-col);
+    text-color: var(fg-col);
+    spacing: 0;
+}
+
+listview {
+    background-color: var(bg-col);
+    columns: 1;
+    lines: 7;
+    spacing: 4px;
+    cycle: false;
+    dynamic: true;
+    layout: vertical;
+}
+
+/* ---- Scrollbar ---- */
+scrollbar {
+    border: 0px;
+    border-radius: 10px;
+    background-color: var(transparent-col);
+    handle-color: var(bdr-col);
+    handle-width: 2px;
+    padding: 0;
+}
+
+mainbox {
+    background-color: var(bg-col);
+    children: [inputbar, message, listview];
+    spacing: 15px;
+    padding: 15px;
+}
+
+element {
+    background-color: var(transparent-col);
+    text-color: var(fg-col);
+    orientation: horizontal;
+    border-radius: 2px;
+    padding: 12px;
+}
+
+element-icon {
+    background-color: var(transparent-col);
+    text-color: inherit;
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+    size: 24px;
+    border: 0px;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+    expand: true;
+    horizontal-align: 0;
+    vertical-align: 0.5;
+    margin: 2px 0px 2px 2px;
+}
+
+element normal.urgent,
+element alternate.urgent {
+    background-color: var(ugt-col);
+    text-color: var(fg-col);
+    border-radius: 2px;
+}
+
+element normal.active,
+element alternate.active {
+    background-color: var(bga-col);
+    text-color: var(fg-col);
+}
+
+element selected {
+    background-color: var(sel-col);
+    text-color: var(fg-col);
+    border: 0px;
+    border-radius: 2px;
+}
+
+element selected.urgent {
+    background-color: var(ugt-col);
+    text-color: var(fg-col);
+}
+
+element selected.active {
+    background-color: var(bga-col);
+    text-color: var(fg-col);
+}
+
+/*****----- Message -----*****/
+message {
+    background-color: var(transparent-col);
+    border: 0px;
+}
+
+error-message {
+    padding: 20px;
+}
+
+textbox {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(bdr-col);
+    text-color: var(sel-col);
+    vertical-align: 0.5;
+    horizontal-align: 0.5;
+}

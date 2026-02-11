@@ -1,0 +1,23 @@
+{
+  "clock#vertical": {
+    "format": "\n{:%H\n%M\n%S\n\n \n%d\n%m\n%y}",
+    "interval": 1,
+    "tooltip-format": "{calendar}"
+  },
+
+  "cpu#vertical": {
+    "format": "󰍛\n{usage}%",
+    "on-click-right": "gnome-system-monitor"
+  },
+
+  "memory#vertical": {
+    "format": "󰾆\n{percentage}%",
+    "on-click-right": "alacritty --title btop -e btop"
+  },
+
+  "pulseaudio#vertical": {
+    "format": "{icon}",
+    "format-icons": { "default": ["", "", "󰕾", ""] },
+    "on-click": "~/.config/niri/scripts/volume.sh --toggle"
+  }
+}

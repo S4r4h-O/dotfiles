@@ -1,0 +1,254 @@
+// Niri Keybindings Configuration
+
+binds {
+
+    Mod+Shift+Slash { show-hotkey-overlay; }
+
+    // =====================================================
+    // System Control
+    // =====================================================
+    
+    // Close focused window (SUPER+Q)
+    Super+Q { close-window; }
+    
+    // Exit niri with confirmation (CTRL+ALT+Delete)
+    Ctrl+Alt+Delete { quit; }
+    
+    // Lock screen (CTRL+ALT+L)
+    Ctrl+Alt+L { spawn "swaylock"; }
+
+    // Power off
+    Mod+Shift+P { power-off-monitors; }
+    
+    // Logout (CTRL+ALT+P)
+    Ctrl+Alt+P { spawn "wlogout"; }
+    
+    // =====================================================
+    // Column/Windows Focus Navigation
+    // =====================================================
+    
+    Super+Left  { focus-column-left; }
+    Super+Down  { focus-window-or-workspace-down; }
+    Super+Up    { focus-window-or-workspace-up; }
+    Super+Right { focus-column-right; }
+    Super+H     { focus-column-left; }
+    Super+J     { focus-window-or-workspace-down; }
+    Super+K     { focus-window-or-workspace-up; }
+    Super+L     { focus-column-right; }
+
+    Super+Home    { focus-column-first; }
+    Super+End     { focus-column-last; }
+
+    // Monitor focus
+    Super+Shift+Left  { focus-monitor-left; }
+    Super+Shift+Down  { focus-monitor-down; }
+    Super+Shift+Up    { focus-monitor-up; }
+    Super+Shift+Right { focus-monitor-right; }
+    Super+Shift+H     { focus-monitor-left; }
+    Super+Shift+J     { focus-monitor-down; }
+    Super+Shift+K     { focus-monitor-up; }
+    Super+Shift+L     { focus-monitor-right; }
+
+    // Mouse Navigation
+    Super+WheelScrollRight      { focus-column-right; }
+    Super+WheelScrollLeft       { focus-column-left; }
+    Super+Ctrl+WheelScrollRight { move-column-right; }
+    Super+Ctrl+WheelScrollLeft  { move-column-left; }
+
+    Super+Shift+WheelScrollDown      { focus-column-right; }
+    Super+Shift+WheelScrollUp        { focus-column-left; }
+    Super+Ctrl+Shift+WheelScrollDown { move-column-right; }
+    Super+Ctrl+Shift+WheelScrollUp   { move-column-left; }
+    
+    // =====================================================
+    // Window(s) Control
+    // =====================================================
+
+    // Set width/height
+    Super+Minus { set-column-width "-10%"; }
+    Super+Equal { set-column-width "+10%"; }
+    Super+Shift+Minus { set-window-height "-10%"; }
+    Super+Shift+Equal { set-window-height "+10%"; }
+
+    Mod+Shift+F { fullscreen-window; }
+    Mod+Ctrl+R { reset-window-height; }
+    Mod+Shift+R { switch-preset-window-height; }
+
+    // Floating/tiling
+    Super+V       { toggle-window-floating; }
+    Super+Shift+V { switch-focus-between-floating-and-tiling; }
+    Super+W { toggle-column-tabbed-display; }
+
+    // Opacity
+    Mod+Shift+O { toggle-window-rule-opacity; }
+
+    // =====================================================
+    // Layout Control
+    // =====================================================
+   
+    Super+Ctrl+Left  { move-column-left; }
+    Super+Ctrl+Down  { move-window-down; }
+    Super+Ctrl+Up    { move-window-up; }
+    Super+Ctrl+Right { move-column-right; }
+    Super+Ctrl+H     { move-column-left; }
+    Super+Ctrl+J     { move-window-down; }
+    Super+Ctrl+K     { move-window-up; }
+    Super+Ctrl+L     { move-column-right; }
+    Super+Ctrl+Home { move-column-to-first; }
+    Super+Ctrl+End  { move-column-to-last; }
+
+    // Move column to workspace
+    Super+Ctrl+Page_Down { move-column-to-workspace-down; }
+    Super+Ctrl+Page_Up   { move-column-to-workspace-up; }
+    Super+Ctrl+U         { move-column-to-workspace-down; }
+    Super+Ctrl+I         { move-column-to-workspace-up; }
+
+    Super+Ctrl+WheelScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
+    Super+Ctrl+WheelScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
+
+    // Move workspaces
+    Super+Shift+Page_Down { move-workspace-down; }
+    Super+Shift+Page_Up   { move-workspace-up; }
+    Super+Shift+U         { move-workspace-down; }
+    Super+Shift+I         { move-workspace-up; }
+
+    // Move to monitor
+    Super+Shift+Ctrl+Left  { move-column-to-monitor-left; }
+    Super+Shift+Ctrl+Down  { move-column-to-monitor-down; }
+    Super+Shift+Ctrl+Up    { move-column-to-monitor-up; }
+    Super+Shift+Ctrl+Right { move-column-to-monitor-right; }
+    Super+Shift+Ctrl+H     { move-column-to-monitor-left; }
+    Super+Shift+Ctrl+J     { move-column-to-monitor-down; }
+    Super+Shift+Ctrl+K     { move-column-to-monitor-up; }
+    Super+Shift+Ctrl+L     { move-column-to-monitor-right; }
+
+    Super+BracketLeft  { consume-or-expel-window-left; }
+    Super+BracketRight { consume-or-expel-window-right; }
+
+    // Cycle between workspaces
+    Super+Tab { focus-workspace-down; }
+    Super+Shift+Tab { focus-workspace-up; }
+    
+    // Focus next/previous window
+    Alt+Tab { focus-window-down; }
+
+    // =====================================================
+    // Workspace Control
+    // =====================================================
+
+    Super+Ctrl+1 { move-column-to-workspace 1; }
+    Super+Ctrl+2 { move-column-to-workspace 2; }
+    Super+Ctrl+3 { move-column-to-workspace 3; }
+    Super+Ctrl+4 { move-column-to-workspace 4; }
+    Super+Ctrl+5 { move-column-to-workspace 5; }
+    Super+Ctrl+6 { move-column-to-workspace 6; }
+    Super+Ctrl+7 { move-column-to-workspace 7; }
+    Super+Ctrl+8 { move-column-to-workspace 8; }
+    Super+Ctrl+9 { move-column-to-workspace 9; }
+    
+    // =====================================================
+    // Window State
+    // =====================================================
+    
+    // Maximize column (SUPER+F)
+    Super+F { maximize-column; }
+    
+    // Fullscreen window (SUPER+SHIFT+F)
+    Super+Shift+F { fullscreen-window; }
+    
+    // =====================================================
+    // Application Launcher
+    // =====================================================
+    
+    // Application launcher (SUPER+D)
+    Super+D { spawn "rofi" "-show" "drun" "-modi" "drun,filebrowser,run,window"; }
+    
+    // Terminal (SUPER+Return)
+    Super+Return { spawn "alacritty"; }
+    
+    // File manager (SUPER+E)
+    Mod+E { spawn "thunar"; }
+
+    // Browser
+    Mod+B { spawn "xdg-open" "https://"; }
+
+    // =====================================================
+    // Screenshot
+    // =====================================================
+    
+    // Interactive screenshot (Print)
+    Super+Shift+S { screenshot; }
+    
+    // Screenshot current window (ALT+Print)
+    Alt+Super+Shift+S { screenshot-window; }
+    
+    // Non Interactive Screenshot
+    Ctrl+Super+Shift+S { screenshot-screen; }
+
+    // =====================================================
+    // Volume, Brightness and Media Control (Media Keys)
+    // =====================================================
+    
+    // Volume control
+    XF86AudioRaiseVolume { spawn "~/.config/niri/scripts/volume.sh" "--inc"; }
+    XF86AudioLowerVolume { spawn "~/.config/niri/scripts/volume.sh" "--dec"; }
+    XF86AudioMute { spawn "~/.config/niri/scripts/volume.sh" "--toggle"; }
+    XF86AudioMicMute { spawn "~/.config/niri/scripts/volume.sh" "--toggle-mic"; }
+    
+    // Brightness control
+    XF86MonBrightnessUp { spawn "~/.config/niri/scripts/brightness.sh" "--inc"; }
+    XF86MonBrightnessDown { spawn "~/.config/niri/scripts/brightness.sh" "--dec"; }
+
+    XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
+    XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
+    XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
+    
+    // Sleep
+    XF86Sleep { spawn "systemctl" "suspend"; }
+    
+    // =====================================================
+    // Workspace Navigation
+    // =====================================================
+    
+    // Switch workspace numerically (1-9, 0 for 10)
+    Super+1 { focus-workspace 1; }
+    Super+2 { focus-workspace 2; }
+    Super+3 { focus-workspace 3; }
+    Super+4 { focus-workspace 4; }
+    Super+5 { focus-workspace 5; }
+    Super+6 { focus-workspace 6; }
+    Super+7 { focus-workspace 7; }
+    Super+8 { focus-workspace 8; }
+    Super+9 { focus-workspace 9; }
+    Super+0 { focus-workspace 10; }
+
+    // Mouse Navigation
+    Super+WheelScrollDown      cooldown-ms=150 { focus-workspace-down; }
+    Super+WheelScrollUp        cooldown-ms=150 { focus-workspace-up; }
+
+    // Cycle workspaces
+    Super+Comma cooldown-ms=150 { focus-workspace-down; }
+    Super+Period cooldown-ms=150 { focus-workspace-up; }
+    
+    // =====================================================
+    // Clipboard
+    // =====================================================
+    
+    // Clipboard manager (SUPER+ALT+V)
+    // Super+Alt+V { spawn-sh "cliphist list | rofi -dmenu | cliphist decode | wl-copy"; }
+    Super+Alt+V { spawn-sh "~/.config/niri/scripts/clip_manager.sh"; }
+    
+    // =====================================================
+    // Utilities
+    // =====================================================
+    
+    // Waybar reload (SUPER+CTRL+ALT+B)
+    Super+Ctrl+Alt+B { spawn "pkill" "-SIGUSR1" "waybar"; }
+
+    // Overview
+    Super+O repeat=false { toggle-overview; }
+
+    // Emoji selection
+    Super+Ctrl+E { spawn "rofimoji" "--action" "copy"; }
+}

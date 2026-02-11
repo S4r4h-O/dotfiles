@@ -1,0 +1,27 @@
+// Niri Output Configuration
+// Default configuration will turn on all connected displays in preferred mode
+// Uncomment and edit below to customize specific displays
+
+// Example laptop display (eDP-1)
+output "eDP-1" {
+    mode "1920x1080@120"
+    scale 1.0
+    position x=0 y=0
+}
+
+// Example external monitor (HDMI-A-1)
+// output "HDMI-A-1" {
+//     mode "1920x1080@60"
+//     position x=1920 y=0
+// }
+
+// Example high refresh rate monitor
+// output "DP-1" {
+//     mode "2560x1440@165"
+//     position x=0 y=1080
+// }
+
+// Turn off a monitor
+// output "HDMI-A-1" {
+//     off
+// }

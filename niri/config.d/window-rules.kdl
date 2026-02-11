@@ -1,0 +1,87 @@
+// Niri Window Rules Configuration
+// Categorized by application type
+
+// =====================================================
+// Browser Windows
+// =====================================================
+
+window-rule {
+    match app-id="firefox"
+}
+
+window-rule {
+    match app-id="JetBrains Toolbox"
+    open-floating true
+}
+
+// =====================================================
+// Terminal and Development
+// =====================================================
+
+window-rule {
+    match app-id="Alacritty"
+    default-column-width { proportion 0.5; }
+}
+
+window-rule {
+    match app-id="kitty"
+}
+
+// =====================================================
+// File Managers
+// =====================================================
+
+window-rule {
+    match app-id="Thunar"
+    open-floating true
+    default-window-height { fixed 600; }
+}
+
+// =====================================================
+// System Utilities and Dialogs
+// =====================================================
+
+window-rule {
+    match app-id="rofi"
+    open-floating true
+}
+
+window-rule {
+    match title=".*[Cc]hoose.*"
+    open-floating true
+}
+
+// =====================================================
+// Floating Windows by Default
+// =====================================================
+
+window-rule {
+    match app-id="pavucontrol"
+    open-floating true
+}
+
+window-rule {
+    match app-id="nm-applet"
+    open-floating true
+}
+
+window-rule {
+    match app-id="blueman-manager"
+    open-floating true
+}
+
+window-rule {
+    match is-urgent=true
+    open-floating true
+    default-window-height { fixed 400; }
+}
+
+// =====================================================
+// Decorations
+// =====================================================
+
+window-rule {
+    geometry-corner-radius 8 8 8 8
+    clip-to-geometry true
+    opacity 0.9
+}

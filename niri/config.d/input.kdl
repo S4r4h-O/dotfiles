@@ -1,0 +1,22 @@
+// Niri Input Configuration
+// Based on hyprland configuration with Brazilian keyboard layout
+
+input {
+    // Keyboard settings
+    keyboard {
+      xkb {
+        layout "br"
+      }
+      repeat-delay 300
+      repeat-rate 50
+    }
+    
+    // Mouse and pointing device settings
+    focus-follows-mouse
+    
+    // Touchpad settings
+    touchpad {
+        tap
+        natural-scroll
+    }
+}

@@ -1,0 +1,17 @@
+// Niri Workspace Configuration
+// Workspaces are created on-demand and can be named
+
+// Example named workspaces assigned to specific outputs
+// workspace "1" {
+//     open-on-output "eDP-1"
+// }
+
+// workspace "2" {
+//     open-on-output "eDP-1"
+// }
+
+// workspace "browser" {
+//     open-on-output "HDMI-A-1"
+// }
+
+// Default: workspaces are created on-demand with numeric names
