@@ -11,14 +11,15 @@ spawn-at-startup "lxsession" "-e" "GNOME"
 // Network management
 spawn-at-startup "nm-applet" "--indicator"
 
+// Systemd will take care of initializing these
 // Notifications daemon
-spawn-at-startup "dunst"
+// spawn-at-startup "dunst"
 
 // Status bar
-spawn-at-startup "waybar"
+// spawn-at-startup "waybar"
 
 // Wallpaper daemon (lightweight: swaybg instead of hyprpaper)
-spawn-at-startup "swaybg" "-i" "$HOME/Pictures/wallpapers/default.jpg" "-m" "fill"
+// spawn-at-startup "swaybg" "-i" "$HOME/Pictures/wallpapers/default.jpg" "-m" "fill"
 
 // Bluetooth management
 spawn-at-startup "blueman-applet"
