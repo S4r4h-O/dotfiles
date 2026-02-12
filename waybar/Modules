@@ -1,18 +1,17 @@
 {
-  // check /sys/class/hwmon/ to list your hardware
+ // check /sys/class/hwmon to list your devices 
   "temperature": {
-    "interval": 10,
-    "tooltip": true,
-    "hwmon-path": [
-      "/sys/class/hwmon/hwmon2/temp1_input",
-      "/sys/class/hwmon/hwmon3/temp1_input",
-      "/sys/class/hwmon/hwmon4/temp1_input"
-    ],
-    "critical-threshold": 82,
-    "format": "{temperatureC}°C {icon}",
-    "format-icons": ["󰈸"]
-  },
-
+  "interval": 10,
+  "tooltip": true,
+  "hwmon-path": [
+    "/sys/class/hwmon/hwmon2/temp1_input",
+    "/sys/class/hwmon/hwmon3/temp1_input",
+    "/sys/class/hwmon/hwmon4/temp1_input"
+  ],
+  "critical-threshold": 82,
+  "format": "{temperatureC}°C {icon}",
+  "format-icons": ["󰈸"]
+},
   "backlight": {
     "interval": 2,
     "format": "{icon}",
@@ -22,19 +21,17 @@
     "on-scroll-down": "$HOME/.config/niri/scripts/brightness.sh --dec",
     "smooth-scrolling-threshold": 1
   },
-
   "backlight#2": {
     "device": "intel_backlight",
     "format": "{icon} {percent}%",
     "format-icons": ["", ""]
   },
-
   "battery": {
     "full-at": 100,
     "design-capacity": false,
     "states": { "good": 95, "warning": 30, "critical": 15 },
     "format": "{icon} {capacity}%",
-    "format-charging": " {capacity}%",
+    "format-charging": "󰂄 {capacity}%", 
     "format-plugged": "󱘖 {capacity}%",
     "format-full": "{icon} Full",
     "format-alt": "{icon} {time}",
@@ -43,7 +40,6 @@
     "tooltip": true,
     "tooltip-format": "{timeTo} {power}w",
   },
-
   "bluetooth": {
     "format": " ",
     "format-disabled": "󰂳",
@@ -54,25 +50,12 @@
     "tooltip": true,
     "on-click": "blueman-manager"
   },
-
   "clock": {
     "interval": 1,
     "format": " {:%H:%M:%S}",
     "format-alt": " {:%H:%M   %Y, %d %B, %A}",
-    "tooltip-format": "<tt><small>{calendar}</small></tt>",
-    "calendar": {
-      "mode": "year",
-      "mode-mon-col": 3,
-      "weeks-pos": "right",
-      "on-scroll": 1,
-      "format": {
-        "months": "<span color='#ffead3'><b>{}</b></span>",
-        "days": "<span color='#ecc6d9'><b>{}</b></span>",
-        "weeks": "<span color='#99ffdd'><b>W{:%V}</b></span>",
-        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-        "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
-      }
-    }
+    "tooltip": false,
+    "on-click-right": "gsimplecal"
   },
   "cpu": {
     "interval": 1,
@@ -81,14 +64,12 @@
     "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
     "on-click-right": "gnome-system-monitor"
   },
-
   "disk": {
     "interval": 30,
     "path": "/",
     "format": "{percentage_used}% 󰋊",
     "tooltip-format": "{used} used out of {total} on {path} ({percentage_used}%)"
   },
-
   "memory": {
     "interval": 10,
     "format": "{used:0.1f}G 󰾆",
@@ -97,7 +78,6 @@
     "tooltip-format": "{used:0.1f}GB/{total:0.1f}G",
     "on-click-right": "alacritty --title btop -e btop"
   },
-
   "pulseaudio": {
     "format": "{icon} {volume}%",
     "format-bluetooth": "{icon} 󰂰 {volume}%",
@@ -112,13 +92,12 @@
       "default": ["", "", "󰕾", ""]
     },
     "scroll-step": 5,
-    "on-click": "$HOME/.config/niri/scripts/volume.sh --toggle",
+    "on-click": "$HOME/.config/hypr/scripts/Volume.sh --toggle",
     "on-click-right": "pavucontrol -t 3",
     "on-scroll-up": "$HOME/.config/niri/scripts/volume.sh --inc",
     "on-scroll-down": "$HOME/.config/niri/scripts/volume.sh --dec",
     "smooth-scrolling-threshold": 1
   },
-
   "pulseaudio#microphone": {
     "format": "{format_source}",
     "format-source": " {volume}%",
@@ -128,7 +107,6 @@
     "on-scroll-up": "$HOME/.config/niri/scripts/volume.sh --mic-inc",
     "on-scroll-down": "$HOME/.config/niri/scripts/volume.sh --mic-dec"
   },
-
   "network": {
     "format": "{ifname}",
     "format-wifi": "{icon}",
@@ -137,13 +115,11 @@
     "tooltip-format": "{ipaddr}  {bandwidthUpBits}  {bandwidthDownBits}",
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
   },
-
   "tray": {
     "icon-size": 20,
     "spacing": 4,
     "show-passive-items": true
   },
-
   "idle_inhibitor": {
     "format": "{icon}",
     "format-icons": { "activated": " ", "deactivated": " " }
