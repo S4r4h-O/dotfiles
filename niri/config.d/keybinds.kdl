@@ -238,13 +238,22 @@ binds {
     // Clipboard manager (SUPER+ALT+V)
     // Super+Alt+V { spawn-sh "cliphist list | rofi -dmenu | cliphist decode | wl-copy"; }
     Super+Alt+V { spawn-sh "~/.config/niri/scripts/clip_manager.sh"; }
+
+    // =====================================================
+    // Notifications
+    // =====================================================
+
+    Super+N { spawn "~/.config/niri/scripts/notifications.sh" "--show"; }
     
     // =====================================================
     // Utilities
     // =====================================================
     
-    // Waybar reload (SUPER+CTRL+ALT+B)
+    // Toggle waybar visibility (SUPER+CTRL+ALT+B)
     Super+Ctrl+Alt+B { spawn "pkill" "-SIGUSR1" "waybar"; }
+
+    // Reload waybar
+    Super+Ctrl+B { spawn "sh" "-c" "pkill waybar; waybar"; }
 
     // Overview
     Super+O repeat=false { toggle-overview; }
@@ -252,3 +261,4 @@ binds {
     // Emoji selection
     Super+Ctrl+E { spawn "rofimoji" "--action" "copy"; }
 }
+
