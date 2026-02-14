@@ -11,10 +11,12 @@
 
 /* --- Main Window --- */
 window#waybar {
-  background: @base;
+  background: transparent;
   transition-property: background-color;
   transition-duration: 0.5s;
   min-height: 30px;
+  margin: 5px 10px;
+  border-radius: 20px;
 }
 
 window#waybar.hidden {
