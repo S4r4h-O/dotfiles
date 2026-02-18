@@ -164,7 +164,9 @@ binds {
     Super+D { spawn "rofi" "-show" "drun" "-modi" "drun,filebrowser,run,window"; }
     
     // Terminal (SUPER+Return)
-    Super+Return { spawn "alacritty"; }
+    Super+Return { spawn "foot"; }
+
+    Super+Shift+Return { spawn "foot" "--app-id" "dropdown"; }
     
     // File manager (SUPER+E)
     Mod+E { spawn "thunar"; }
@@ -177,13 +179,16 @@ binds {
     // =====================================================
     
     // Interactive screenshot (Print)
-    Super+Shift+S { screenshot; }
+    // Super+Shift+S { screenshot; }
+    Print { screenshot; }
     
     // Screenshot current window (ALT+Print)
-    Alt+Super+Shift+S { screenshot-window; }
+    // Alt+Super+Shift+S { screenshot-window; }
+    Alt+Print { screenshot-window; }
     
     // Non Interactive Screenshot
-    Ctrl+Super+Shift+S { screenshot-screen; }
+    // Ctrl+Super+Shift+S { screenshot-screen; }
+    Ctrl+Print { screenshot-screen; }
 
     // =====================================================
     // Volume, Brightness and Media Control (Media Keys)
