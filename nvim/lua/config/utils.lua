@@ -44,3 +44,5 @@ M.duplicate_lines = function(direction, gap)
     vim.cmd("normal! V" .. (num_lines - 1 == 0 and "" or (num_lines - 1) .. "k"))
   end
 end
+
+return M
