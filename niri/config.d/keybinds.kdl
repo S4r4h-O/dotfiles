@@ -124,10 +124,6 @@ binds {
 
     Super+BracketLeft  { consume-or-expel-window-left; }
     Super+BracketRight { consume-or-expel-window-right; }
-
-    // Cycle between workspaces
-    Super+Tab { focus-workspace-down; }
-    Super+Shift+Tab { focus-workspace-up; }
     
     // Focus next/previous window
     Alt+Tab { focus-window-down; }
@@ -235,6 +231,9 @@ binds {
     // Cycle workspaces
     Super+Comma cooldown-ms=150 { focus-workspace-down; }
     Super+Period cooldown-ms=150 { focus-workspace-up; }
+
+    // Cycle with wraparound
+    Super+Tab { spawn "~/.config/niri/scripts/cycle_workspaces.sh"; }
     
     // =====================================================
     // Clipboard
