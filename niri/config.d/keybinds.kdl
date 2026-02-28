@@ -259,6 +259,9 @@ binds {
     // Reload waybar
     Super+Ctrl+B { spawn "sh" "-c" "pkill waybar; waybar"; }
 
+    // Toggle theme (dark - light)
+    Super+Ctrl+T { spawn "rofi" "-show" "script" "-modi" "script:~/.config/rofi/scripts/toggle_theme.sh"; }
+
     // Overview
     Super+O repeat=false { toggle-overview; }
 
