@@ -15,7 +15,7 @@ binds {
     Ctrl+Alt+Delete { quit; }
     
     // Lock screen (CTRL+ALT+L)
-    Ctrl+Alt+L { spawn "swaylock"; }
+    Ctrl+Alt+L { spawn "hyprlock"; }
 
     // Power off
     Mod+Shift+P { power-off-monitors; }
@@ -175,16 +175,16 @@ binds {
     // =====================================================
     
     // Interactive screenshot (Print)
-    // Super+Shift+S { screenshot; }
-    Print { screenshot; }
+    Super+Shift+S { screenshot; }
+    // Print { screenshot; }
     
     // Screenshot current window (ALT+Print)
-    // Alt+Super+Shift+S { screenshot-window; }
-    Alt+Print { screenshot-window; }
+    Alt+Super+Shift+S { screenshot-window; }
+    // Alt+Print { screenshot-window; }
     
     // Non Interactive Screenshot
-    // Ctrl+Super+Shift+S { screenshot-screen; }
-    Ctrl+Print { screenshot-screen; }
+    Ctrl+Super+Shift+S { screenshot-screen; }
+    // Ctrl+Print { screenshot-screen; }
 
     // =====================================================
     // Volume, Brightness and Media Control (Media Keys)
