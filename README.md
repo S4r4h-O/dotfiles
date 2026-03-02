@@ -5,3 +5,4 @@ My daily drive configs. Check [arch-niri](https://github.com/S4r4h-O/arch-niri) 
 ## TODOS
 
 - [ ] script to open window in floating mode
+- [ ] script to change fonts
