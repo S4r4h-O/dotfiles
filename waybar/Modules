@@ -92,8 +92,8 @@
       "default": ["", "", "󰕾", ""]
     },
     "scroll-step": 5,
-    "on-click": "$HOME/.config/hypr/scripts/Volume.sh --toggle",
-    "on-click-right": "pavucontrol -t 3",
+    "on-click": "pavucontrol -t 3",
+    "on-click-right": "$HOME/.config/niri/scripts/volume.sh --toggle",
     "on-scroll-up": "$HOME/.config/niri/scripts/volume.sh --inc",
     "on-scroll-down": "$HOME/.config/niri/scripts/volume.sh --dec",
     "smooth-scrolling-threshold": 1
@@ -125,3 +125,4 @@
     "format-icons": { "activated": " ", "deactivated": " " }
   }
 }
+
