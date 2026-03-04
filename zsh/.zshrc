@@ -1,36 +1,38 @@
-export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+# ── PATH ─────────────────────────────────────────────────────
+export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
 
-# Completion styles
-zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' menu select=2
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle ':completion:*' verbose true
+# ── Environment ──────────────────────────────────────────────
+export EDITOR="nvim"
 
-# Shell options
+# ── History ──────────────────────────────────────────────────
 HISTFILE="$ZDOTDIR/.histfile"
 HISTSIZE=400
 SAVEHIST=400
+
+# ── Options ──────────────────────────────────────────────────
 setopt autocd extendedglob nomatch
+
+# ── Keybindings ──────────────────────────────────────────────
 bindkey -v
-
-# User configuration
-export EDITOR="nvim"
-
-source "$ZDOTDIR/aliases.zsh"
-
 bindkey -M viins "^[[H" beginning-of-line
 bindkey -M viins "^[[F" end-of-line
 bindkey -M vicmd "^[[H" beginning-of-line
 bindkey -M vicmd "^[[F" end-of-line
 
-eval "$(starship init zsh)"
+# ── Completion styles ─────────────────────────────────────────
+# compinit here is superseded by zicompinit in the zinit block below
+zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' menu select=2
+zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+zstyle ':completion:*' verbose true
+zstyle :compinstall filename '$ZDOTDIR/.zshrc'
+autoload -Uz compinit
+compinit
 
-eval "$(zoxide init zsh)"
-
-function gi() { curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/$@ ;}
-
-## Zinit
+# ── Zinit bootstrap ───────────────────────────────────────────
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
     command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
@@ -42,7 +44,22 @@ source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-## Plugins
+# ── Functions ─────────────────────────────────────────────────
+# Fragile, needs more verifications
+function _command() {
+  local cmd=$1
+  (( $+commands[$cmd] )) || return 1
+  echo "$commands[$cmd]"
+}
+
+function _distro() {
+  [[ -f /etc/os-release ]] || return 1
+  awk -F= '$1=="ID"{gsub(/"/, "", $2); print $2}' /etc/os-release
+}
+
+function gi() { curl -sLw "\n" "https://www.toptal.com/developers/gitignore/api/$@" ;}
+
+# ── Plugins ───────────────────────────────────────────────────
 zinit wait lucid light-mode for \
   atinit"zicompinit; zicdreplay" \
     zdharma-continuum/fast-syntax-highlighting \
@@ -50,3 +67,37 @@ zinit wait lucid light-mode for \
     zsh-users/zsh-autosuggestions \
   blockf atpull"zinit creinstall -q ." \
     zsh-users/zsh-completions
+
+# ── Snippets ──────────────────────────────────────────────────
+zi snippet OMZP::extract
+zi snippet OMZP::common-aliases
+zi snippet OMZP::copyfile
+zi snippet OMZP::copypath
+zi snippet OMZP::git-commit
+zi snippet OMZP::systemd
+# zi snippet OMZP::profiles
+# Development
+# zi snippet OMZP::uv
+# zi snippet OMZP::python
+# zi snippet OMZP::podman
+# zi snippet OMZP::node
+# zi snippet OMZP::bun
+# zi snippet OMZP::nestjs
+
+case "$(_distro)" in
+  arch) zi snippet OMZP::archlinux
+  ;;
+  fedora) zi snippet OMZP::dnf
+  ;;
+  ubuntu|debian) zi snippet OMZP::ubuntu
+  ;;
+esac
+
+# ── Tool initialization ───────────────────────────────────────
+eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
+
+# ── Source ────────────────────────────────────────────────────
+source "$ZDOTDIR/aliases.zsh"
+
+# ── Generated completions ─────────────────────────────────────
