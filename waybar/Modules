@@ -1,11 +1,9 @@
 {
- // check /sys/class/hwmon to list your devices 
+ // check /sys/class/hwmon to list your devices. My cpu is hwmon4
   "temperature": {
   "interval": 10,
   "tooltip": true,
   "hwmon-path": [
-    "/sys/class/hwmon/hwmon2/temp1_input",
-    "/sys/class/hwmon/hwmon3/temp1_input",
     "/sys/class/hwmon/hwmon4/temp1_input"
   ],
   "critical-threshold": 82,
