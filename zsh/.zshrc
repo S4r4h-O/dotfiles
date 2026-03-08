@@ -1,10 +1,18 @@
 # ── PATH ─────────────────────────────────────────────────────
-export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+typeset -U path
+
+path=(
+  "$HOME/bin"
+  "$HOME/.local/bin"
+  "$HOME/.bun/bin"
+  "$HOME/Applications"
+  "$HOME/.spicetify"
+  $path
+)
 
 # ── Environment ──────────────────────────────────────────────
 export EDITOR="nvim"
+export LIBVIRT_DEFAULT_URI=qemu:///system
 
 # ── History ──────────────────────────────────────────────────
 HISTFILE="$ZDOTDIR/.histfile"
@@ -69,19 +77,23 @@ zinit wait lucid light-mode for \
     zsh-users/zsh-completions
 
 # ── Snippets ──────────────────────────────────────────────────
+zi snippet OMZP::aliases
+zi snippet OMZP::alias-finder
 zi snippet OMZP::extract
 zi snippet OMZP::common-aliases
 zi snippet OMZP::copyfile
 zi snippet OMZP::copypath
 zi snippet OMZP::git-commit
 zi snippet OMZP::systemd
+zi snippet OMZP::command-not-found
+zi snippet OMZP::universalarchive
 # zi snippet OMZP::profiles
 # Development
-# zi snippet OMZP::uv
-# zi snippet OMZP::python
+zi snippet OMZP::uv
+zi snippet OMZP::python
 # zi snippet OMZP::podman
 # zi snippet OMZP::node
-# zi snippet OMZP::bun
+zi snippet OMZP::bun
 # zi snippet OMZP::nestjs
 
 case "$(_distro)" in
@@ -99,5 +111,7 @@ eval "$(zoxide init zsh)"
 
 # ── Source ────────────────────────────────────────────────────
 source "$ZDOTDIR/aliases.zsh"
+source /home/sarah/.config/broot/launcher/bash/br
 
 # ── Generated completions ─────────────────────────────────────
+[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
