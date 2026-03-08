@@ -1,6 +1,7 @@
 # User
 alias re="exec zsh"
-alias zshconfig="$EDITOR ~/.zshrc"
+alias zshconfig="$EDITOR $ZDOTDIR/.zshrc"
+alias zalsedit="$EDITOR $ZDOTDIR/aliases.zsh"
 
 # lsd aliases
 alias ls='lsd'
