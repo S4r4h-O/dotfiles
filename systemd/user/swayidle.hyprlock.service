@@ -3,13 +3,12 @@ PartOf=graphical-session.target
 After=graphical-session.target
 Requisite=graphical-session.target
 
-[Install]
-WantedBy=graphical-session.target
-
 [Service]
 ExecStart=/usr/bin/swayidle -w \
-    lock 'hyprlock --no-fork' \
+    lock 'hyprlock' \
     timeout 600 'loginctl lock-session' \
     timeout 601 'niri msg action power-off-monitors' \
-    before-sleep 'loginctl lock-session && sleep 1'
+    before-sleep 'hyprlock'
 
+[Install]
+WantedBy=graphical-session.target
