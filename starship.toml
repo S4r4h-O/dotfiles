@@ -1,0 +1,129 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+palette = "catppuccin_macchiato"
+
+format = """
+[░▒▓](red)\
+$os\
+$username\
+[](fg:red bg:blue)\
+$directory\
+[](fg:blue bg:surface0)\
+$git_branch\
+$git_status\
+[](fg:surface0 bg:surface1)\
+$nodejs\
+$rust\
+$golang\
+$php\
+[](fg:surface1 bg:base)\
+$time\
+[ ](fg:base)\
+\n$character"""
+
+[os]
+disabled = false
+style = "bg:red fg:crust"
+
+[username]
+show_always = true
+style_user = "bg:red fg:crust"
+style_root = "bg:red fg:crust"
+format = '[ $user ]($style)'
+
+[os.symbols]
+Windows = ""
+Ubuntu = "󰕈"
+SUSE = ""
+Raspbian = "󰐿"
+Mint = "󰣭"
+Macos = "󰀵"
+Manjaro = ""
+Linux = "󰌽"
+Gentoo = "󰣨"
+Fedora = "󰣛"
+Alpine = ""
+Amazon = ""
+Android = ""
+AOSC = ""
+Arch = "󰣇"
+Artix = "󰣇"
+CentOS = ""
+Debian = "󰣚"
+Redhat = "󱄛"
+RedHatEnterprise = "󱄛"
+
+[directory]
+style = "fg:crust bg:blue"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+Documents = "󰈙 "
+Downloads = " "
+Music = " "
+Pictures = " "
+
+[git_branch]
+symbol = ""
+style = "bg:surface0"
+format = '[[ $symbol $branch ](fg:lavender bg:surface0)]($style)'
+
+[git_status]
+style = "bg:surface0"
+format = '[[($all_status$ahead_behind )](fg:lavender bg:surface0)]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:surface1"
+format = '[[ $symbol ($version) ](fg:green bg:surface1)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:surface1"
+format = '[[ $symbol ($version) ](fg:peach bg:surface1)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:surface1"
+format = '[[ $symbol ($version) ](fg:sky bg:surface1)]($style)'
+
+[php]
+symbol = ""
+style = "bg:surface1"
+format = '[[ $symbol ($version) ](fg:mauve bg:surface1)]($style)'
+
+[time]
+disabled = false
+time_format = "%R"
+style = "bg:base"
+format = '[[  $time ](fg:text bg:base)]($style)'
+
+[palettes.catppuccin_macchiato]
+rosewater = "#f4dbd6"
+flamingo = "#f0c6c6"
+pink = "#f5bde6"
+mauve = "#c6a0f6"
+red = "#ed8796"
+maroon = "#ee99a0"
+peach = "#f5a97f"
+yellow = "#eed49f"
+green = "#a6da95"
+teal = "#8bd5ca"
+sky = "#91d7e3"
+sapphire = "#7dc4e4"
+blue = "#8aadf4"
+lavender = "#b7bdf8"
+text = "#cad3f5"
+subtext1 = "#b8c0e0"
+subtext0 = "#a5adcb"
+overlay2 = "#939ab7"
+overlay1 = "#8087a2"
+overlay0 = "#6e738d"
+surface2 = "#5b6078"
+surface1 = "#494d64"
+surface0 = "#363a4f"
+base = "#24273a"
+mantle = "#1e2030"
+crust = "#181926"
