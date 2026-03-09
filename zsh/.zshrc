@@ -23,11 +23,11 @@ SAVEHIST=400
 setopt autocd extendedglob nomatch
 
 # ── Keybindings ──────────────────────────────────────────────
-bindkey -v
-bindkey -M viins "^[[H" beginning-of-line
-bindkey -M viins "^[[F" end-of-line
-bindkey -M vicmd "^[[H" beginning-of-line
-bindkey -M vicmd "^[[F" end-of-line
+# bindkey -v
+# bindkey -M viins "^[[H" beginning-of-line
+# bindkey -M viins "^[[F" end-of-line
+# bindkey -M vicmd "^[[H" beginning-of-line
+# bindkey -M vicmd "^[[F" end-of-line
 
 # ── Completion styles ─────────────────────────────────────────
 # compinit here is superseded by zicompinit in the zinit block below
@@ -76,6 +76,9 @@ zinit wait lucid light-mode for \
   blockf atpull"zinit creinstall -q ." \
     zsh-users/zsh-completions
 
+zinit ice depth=1
+zinit light jeffreytse/zsh-vi-mode
+
 # ── Snippets ──────────────────────────────────────────────────
 zi snippet OMZP::aliases
 zi snippet OMZP::alias-finder
@@ -93,7 +96,7 @@ zi snippet OMZP::uv
 zi snippet OMZP::python
 # zi snippet OMZP::podman
 # zi snippet OMZP::node
-zi snippet OMZP::bun
+# zi snippet OMZP::bun
 # zi snippet OMZP::nestjs
 
 case "$(_distro)" in
@@ -111,7 +114,4 @@ eval "$(zoxide init zsh)"
 
 # ── Source ────────────────────────────────────────────────────
 source "$ZDOTDIR/aliases.zsh"
-source /home/sarah/.config/broot/launcher/bash/br
-
-# ── Generated completions ─────────────────────────────────────
-[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
+source "$HOME/.config/broot/launcher/bash/br"
