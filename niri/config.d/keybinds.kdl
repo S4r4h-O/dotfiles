@@ -262,6 +262,9 @@ binds {
     // Toggle theme (dark - light)
     Super+Ctrl+T { spawn "rofi" "-show" "script" "-modi" "script:~/.config/rofi/scripts/toggle_theme.sh"; }
 
+    // Change wallpaper
+    Super+Shift+W { spawn "~/.config/niri/scripts/wallpaper.sh" }
+
     // Overview
     Super+O repeat=false { toggle-overview; }
 
