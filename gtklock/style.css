@@ -46,7 +46,70 @@ window {
   background-color: #363a4f;
   color: #cad3f5;
   border: 1px solid #494d64;
-  border-radius: 20px;
+  border-radius: 17px;
+  padding: 6px 14px;
+  caret-color: #c6a0f6;
+}
+
+#input-field:focus {
+  border-color: #c6a0f6;
+  box-shadow: none;
+}
+
+#error-label {
+  color: #ed8796;
+  font-size: 12px;
+}
+
+#clock-label {
+  font-family: "JetBrainsMonoNL Nerd Font Mono", monospace;
+  font-size: 80px;
+  font-weight: 300;
+}
+
+#date-label {
+  font-family: "JetBrainsMonoNL Nerd Font Mono", monospace;
+  font-size: 18px;
+}
+
+window {
+  background-color: #24273a;
+}
+
+#h-line {
+  background-color: #c6a0f6;
+  min-height: 1px;
+  margin: 0;
+  padding: 0;
+}
+
+#clock-label {
+  color: #cad3f5;
+  font-family: monospace;
+  font-size: 80px;
+  font-weight: 300;
+}
+
+#date-label {
+  color: #a5adcb;
+  font-family: monospace;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+#info-box {
+  background-color: transparent;
+}
+
+#input-label {
+  color: #a5adcb;
+}
+
+#input-field {
+  background-color: #363a4f;
+  color: #cad3f5;
+  border: 1px solid #494d64;
+  border-radius: 17px;
   padding: 6px 14px;
   caret-color: #c6a0f6;
 }
@@ -65,7 +128,8 @@ window {
   background-color: #c6a0f6;
   color: #24273a;
   border: none;
-  border-radius: 8px;
+  border-radius: 17px;
+  padding: 6px 14px;
 }
 
 #unlock-button:hover {
