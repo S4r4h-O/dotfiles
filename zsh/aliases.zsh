@@ -2,6 +2,7 @@
 alias re="exec zsh"
 alias zshconfig="$EDITOR $ZDOTDIR/.zshrc"
 alias zalsedit="$EDITOR $ZDOTDIR/aliases.zsh"
+alias defaultapps="$EDITOR $HOME/.config/mimeapps.list"
 
 # lsd aliases
 alias ls='lsd'
