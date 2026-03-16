@@ -7,7 +7,7 @@ path=(
   "$HOME/.bun/bin"
   "$HOME/.cargo/bin"
   "$HOME/Applications"
-  "$HOME/.spicetify"
+  "$HOME/.config/spicetify"
   $path
 )
 
@@ -23,6 +23,7 @@ export EDITOR="nvim"
 
 # ── Tools (XDG compliance) ─────────────────────────────────────
 export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
+export SPICETIFY_CONFIG="$XDG_CONFIG_HOME/spicetify"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
