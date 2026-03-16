@@ -97,6 +97,7 @@ zinit ice depth=1
 zinit light jeffreytse/zsh-vi-mode
 
 # ── Snippets ──────────────────────────────────────────────────
+zi snippet OMZL::clipboard.zsh
 zi snippet OMZP::aliases
 zi snippet OMZP::alias-finder
 zi snippet OMZP::extract
