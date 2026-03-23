@@ -1,0 +1,38 @@
+<templateSet group="Java">
+  <template name="pcm" value="public class Main {&#10;  $ENDS$&#10;}" description="Create public class main" toReformat="false" toShortenFQNames="true">
+    <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_DECLARATION" value="true" />
+    </context>
+  </template>
+  <template name="pcmm" value="public class Main {&#10;  &#10;  public static void main(String[] args) {&#10;    $ENDS$&#10;  }&#10;}" description="Create public class Main with main method" toReformat="false" toShortenFQNames="true">
+    <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_DECLARATION" value="true" />
+    </context>
+  </template>
+  <template name="tryc" value="try {&#10;    $SELECTION$&#10;} catch ($EXCEPTION_TYPE$ $EXCEPTION_VAR$) {&#10;    $HANDLER$&#10;}" description="Crete a try-catch statement" toReformat="false" toShortenFQNames="true">
+    <variable name="EXCEPTION_TYPE" expression="completeSmart()" defaultValue="" alwaysStopAt="true" />
+    <variable name="EXCEPTION_VAR" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="HANDLER" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="trycf" value="try {&#10;    $SELECTION$&#10;} catch ($EXCEPTION_TYPE$ $EXCEPTION_VAR$) {&#10;    $HANDLER$&#10;} finally {&#10;    $FINALLY$&#10;}" description="Create a try-catch-finally statement" toReformat="false" toShortenFQNames="true">
+    <variable name="EXCEPTION_TYPE" expression="completeSmart()" defaultValue="" alwaysStopAt="true" />
+    <variable name="EXCEPTION_VAR" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="HANDLER" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="FINALLY" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="dow" value="do {&#10;    $BODY$&#10;} while ($CONDITION$);&#10;$END$" description="Create do-while loop" toReformat="false" toShortenFQNames="true">
+    <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="CONDITION" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+</templateSet>

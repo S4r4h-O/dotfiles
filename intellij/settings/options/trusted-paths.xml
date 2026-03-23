@@ -1,0 +1,37 @@
+<application>
+  <component name="Trusted.Paths">
+    <option name="TRUSTED_PROJECT_PATHS">
+      <map>
+        <entry key="$USER_HOME$/Dev/arch-niri" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/2026-03-20" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/BinarySearch" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/ClassesChallenge" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/ClassesPart1" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/ConstructorChallenge" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/DigitSumChallenge" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/EnhancedSwitchChallenge" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/ForLoop" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/ForLoopChanllenge" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/MinMaxChallenge" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/ModuloOnze" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/ReadingUserInput" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/ReadingUserInputChallenge" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/RecordProject" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/SecondsAndMinutesChallenge" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/Sum3And5" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/Switch" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/SwitchChallenge" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/Testing" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/WhileLoop" value="true" />
+        <entry key="$USER_HOME$/IdeaProjects/WhileLoopChallenge" value="true" />
+      </map>
+    </option>
+  </component>
+  <component name="Trusted.Paths.Settings">
+    <option name="TRUSTED_PATHS">
+      <list>
+        <option value="$USER_HOME$/Dev" />
+      </list>
+    </option>
+  </component>
+</application>

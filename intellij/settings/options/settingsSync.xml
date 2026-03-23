@@ -1,0 +1,23 @@
+<application>
+  <component name="SettingsSyncSettings">
+    <option name="disabledSubcategories">
+      <map>
+        <entry key="PLUGINS">
+          <value>
+            <list>
+              <option value="com.intellij.javaee" />
+              <option value="com.intellij.spring" />
+              <option value="com.intellij.velocity" />
+              <option value="com.jetbrains.restClient" />
+              <option value="org.jetbrains.plugins.go" />
+              <option value="org.jetbrains.plugins.remote-run" />
+              <option value="org.jetbrains.plugins.vue" />
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="migrationFromOldStorageChecked" value="true" />
+    <option name="syncEnabled" value="true" />
+  </component>
+</application>

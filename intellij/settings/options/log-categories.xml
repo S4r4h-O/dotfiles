@@ -1,0 +1,10 @@
+<application>
+  <component name="Logs.Categories"><![CDATA[{
+  "categories": [
+    {
+      "category": "com.intellij.credentialStore",
+      "level": "DEBUG"
+    }
+  ]
+}]]></component>
+</application>

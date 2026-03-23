@@ -1,0 +1,21 @@
+Subversion
+org.yelog.ideavim.flash
+com.github.catppuccin.jetbrains
+com.intellij.kubernetes
+com.jetbrains.kmm
+google-java-format
+Key Promoter X
+AceJump
+IdeaVIM
+com.magidc.ideavim.dial
+org.jetbrains.IdeaVim-EasyMotion
+com.github.dankinsoid.multicursor
+eu.theblob42.idea.whichkey
+Docker
+com.intellij.nativeDebug
+com.github.catppuccin.jetbrains_icons
+org.jetbrains.android
+com.android.tools.design
+androidx.compose.plugins.idea
+com.github.copilot
+PerforceDirectPlugin

@@ -1,0 +1,58 @@
+<application>
+  <component name="ProjectManager">
+    <defaultProject>
+      <component name="FormatOnSaveOptions">
+        <option name="myRunOnSave" value="true" />
+      </component>
+      <component name="GoogleJavaFormatSettings">
+        <option name="enabled" value="true" />
+      </component>
+      <component name="InspectionProjectProfileManager">
+        <profile version="1.0">
+          <option name="myName" value="Project Default" />
+        </profile>
+        <version value="1.0" />
+      </component>
+      <component name="OptimizeOnSaveOptions">
+        <option name="myRunOnSave" value="true" />
+      </component>
+      <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "code.cleanup.on.save": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "rearrange.code.on.save": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
+  }
+}]]></component>
+      <component name="WindowStateProjectService">
+        <state x="0" y="0" width="1910" height="1032" key="SettingsEditor" timestamp="1773538958764">
+          <screen x="0" y="0" width="1920" height="1080" />
+        </state>
+        <state x="0" y="0" width="1125" height="1032" key="SettingsEditor.ideScale=125" timestamp="1774221727412">
+          <screen x="0" y="0" width="1920" height="1080" />
+        </state>
+        <state x="0" y="0" width="1125" height="1032" key="SettingsEditor.ideScale=125/0.0.1920.1080" timestamp="1774221727412" />
+        <state x="0" y="0" width="1910" height="1032" key="SettingsEditor/0.0.1920.1080" timestamp="1773538958764" />
+        <state x="0" y="0" width="800" height="631" key="new project wizard" timestamp="1772472061423">
+          <screen x="0" y="0" width="1920" height="1080" />
+        </state>
+        <state x="0" y="0" width="800" height="631" key="new project wizard/0.0.1920.1080" timestamp="1772472061423" />
+      </component>
+      <component name="masterDetails">
+        <states>
+          <state key="ScopeChooserConfigurable.UI">
+            <settings>
+              <splitter-proportions>
+                <option name="proportions">
+                  <list>
+                    <option value="0.2" />
+                  </list>
+                </option>
+              </splitter-proportions>
+            </settings>
+          </state>
+        </states>
+      </component>
+    </defaultProject>
+  </component>
+</application>
