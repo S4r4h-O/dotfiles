@@ -5,8 +5,10 @@ output_file="$HOME/.config/niri/config.d/outputs.kdl"
 
 notify_user() {
   local scaling=$1
+  local bar
+  bar=$(awk "BEGIN {print $scaling * 50}")
   dunstify -h string:x-dunst-stack-tag:scaling-factor \
-    -h int:value:"$scaling" \
+    -h int:value:"$bar" \
     -a "scaling-factor" \
     -u low \
     "Screen" "Scaling factor: ${scaling}"
