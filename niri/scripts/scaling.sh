@@ -49,10 +49,10 @@ _set_interface_scaling() {
 
 case "$@" in
 --inc)
-  _set_text_scaling "+$_step"
+  _set_interface_scaling "+$_step"
   ;;
 --dec)
-  _set_text_scaling "-$_step"
+  _set_interface_scaling "-$_step"
   ;;
 *)
   echo "Invalid option"
