@@ -6,4 +6,6 @@ vim.g.autoformat = true
 
 vim.g.lsp_inlay_hints_enabled = false
 
-vim.g.lazyvim_python_lsp = "ty"
+vim.g.lazyvim_python_lsp = "pyrefly"
+
+vim.filetype.add({ extension = { zsh = "zsh" } })
