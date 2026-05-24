@@ -5,15 +5,16 @@
 // Example laptop display (eDP-1)
 output "eDP-1" {
     mode "1920x1080@120"
-    scale 1.0
+    scale 1.00
     position x=0 y=0
 }
 
 // Example external monitor (HDMI-A-1)
-// output "HDMI-A-1" {
-//     mode "1920x1080@60"
-//     position x=1920 y=0
-// }
+output "HDMI-A-1" {
+    mode "1920x1080@60"
+    position x=1920 y=0
+    scale 1.00
+}
 
 // Example high refresh rate monitor
 // output "DP-1" {
