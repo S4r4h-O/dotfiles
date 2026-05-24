@@ -6,8 +6,9 @@ spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPL
 spawn-at-startup "systemctl" "--user" "import-environment" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
 
 // System authentication and policy
-spawn-at-startup "lxsession" "-e" "GNOME"
-// spawn-at-startup "gnome-keyring-daemon" "--start" "--components=secrets"
+// spawn-at-startup "lxsession" "-e" "GNOME"
+spawn-at-startup "gnome-keyring-daemon" "--start" "--components=secrets"
+spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 
 // Network management
 spawn-at-startup "nm-applet" "--indicator"
