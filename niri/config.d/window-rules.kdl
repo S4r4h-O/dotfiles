@@ -31,11 +31,11 @@ window-rule {
 // File Managers
 // =====================================================
 
-window-rule {
-    match app-id="Thunar"
-    open-floating true
-    default-window-height { fixed 600; }
-}
+// window-rule {
+//     match app-id="thunar"
+//     open-floating true
+//     default-window-height { fixed 600; }
+// }
 
 // =====================================================
 // System Utilities and Dialogs
@@ -57,6 +57,17 @@ window-rule {
 
 window-rule {
     match app-id="pavucontrol"
+    open-floating true
+    default-floating-position x=1400 y=5
+}
+
+window-rule {
+    match app-id="qalculate-gtk"
+    open-floating true
+}
+
+window-rule {
+    match app-id="qalculate-qt"
     open-floating true
 }
 
