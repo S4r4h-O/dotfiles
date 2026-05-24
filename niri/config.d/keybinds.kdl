@@ -15,7 +15,7 @@ binds {
     Ctrl+Alt+Delete { quit; }
     
     // Lock screen (CTRL+ALT+L)
-    Ctrl+Alt+L { spawn "hyprlock"; }
+    Ctrl+Alt+L { spawn "gtklock"; }
 
     // Power off
     Mod+Shift+P { power-off-monitors; }
@@ -23,6 +23,18 @@ binds {
     // Logout (CTRL+ALT+P)
     Ctrl+Alt+P { spawn "wlogout"; }
     
+    // =====================================================
+    // Interface
+    // =====================================================
+
+    // Alter scaling factor
+    Super+Alt+I { spawn "~/.config/niri/scripts/scaling.sh" "--inc"; }
+
+    Super+Mod5+I { spawn "~/.config/niri/scripts/scaling.sh" "--dec"; }
+
+    // Toggle theme (dark - light)
+    Super+Ctrl+T { spawn "rofi" "-show" "script" "-modi" "script:~/.config/rofi/scripts/toggle_theme.sh"; }
+
     // =====================================================
     // Column/Windows Focus Navigation
     // =====================================================
@@ -257,13 +269,10 @@ binds {
     Super+Ctrl+Alt+B { spawn "pkill" "-SIGUSR1" "waybar"; }
 
     // Reload waybar
-    Super+Ctrl+B { spawn "sh" "-c" "pkill waybar; waybar"; }
-
-    // Toggle theme (dark - light)
-    Super+Ctrl+T { spawn "rofi" "-show" "script" "-modi" "script:~/.config/rofi/scripts/toggle_theme.sh"; }
+    Super+Ctrl+B { spawn "sh" "-c" "pkill waybar; waybar &"; }
 
     // Change wallpaper
-    Super+Shift+W { spawn "~/.config/niri/scripts/wallpaper.sh" }
+    Super+Shift+W { spawn "~/.config/niri/scripts/wallpapers.sh"; }
 
     // Overview
     Super+O repeat=false { toggle-overview; }
@@ -271,4 +280,3 @@ binds {
     // Emoji selection
     Super+Ctrl+E { spawn "rofimoji" "--action" "copy"; }
 }
-
