@@ -19,7 +19,7 @@
       <option name="JAVA_STATEMENT" value="true" />
     </context>
   </template>
-  <template name="trycf" value="try {&#10;    $SELECTION$&#10;} catch ($EXCEPTION_TYPE$ $EXCEPTION_VAR$) {&#10;    $HANDLER$&#10;} finally {&#10;    $FINALLY$&#10;}" description="Create a try-catch-finally statement" toReformat="false" toShortenFQNames="true">
+  <template name="trycf" value="try {&#10;  $SELECTION$&#10;} catch ($EXCEPTION_TYPE$ $EXCEPTION_VAR$) {&#10;  $HANDLER$&#10;} finally {&#10;  $FINALLY$&#10;}" description="Create a try-catch-finally statement" toReformat="false" toShortenFQNames="true">
     <variable name="EXCEPTION_TYPE" expression="completeSmart()" defaultValue="" alwaysStopAt="true" />
     <variable name="EXCEPTION_VAR" expression="" defaultValue="" alwaysStopAt="true" />
     <variable name="HANDLER" expression="" defaultValue="" alwaysStopAt="true" />
@@ -31,6 +31,33 @@
   <template name="dow" value="do {&#10;    $BODY$&#10;} while ($CONDITION$);&#10;$END$" description="Create do-while loop" toReformat="false" toShortenFQNames="true">
     <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
     <variable name="CONDITION" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="soup" value="System.out.print(&quot;$ENDS$&quot;);" description="Prints a string without a line break to System.out" toReformat="false" toShortenFQNames="true">
+    <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="pco" value="public class $CLASS$ {$END$}" description="Create public class (object)" toReformat="false" toShortenFQNames="true">
+    <variable name="CLASS" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_DECLARATION" value="true" />
+    </context>
+  </template>
+  <template name="souf" value="System.out.printf(&quot;$STR$&quot;, $ENDS$);" description="Prints a formatted string to System.out" toReformat="true" toShortenFQNames="true">
+    <variable name="STR" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
+    <context />
+  </template>
+  <template name="trycr" value="try ($RES$) {&#10;  $ENDS$&#10;} catch ($EXCEPTION_TYPE$ $EXCEPTION_VAR$) {&#10;  $HANDLER$&#10;}" description="Create try-with-resources statement" toReformat="false" toShortenFQNames="true">
+    <variable name="RES" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="EXCEPTION_TYPE" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="EXCEPTION_VAR" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="HANDLER" expression="" defaultValue="" alwaysStopAt="true" />
     <context>
       <option name="JAVA_STATEMENT" value="true" />
     </context>
