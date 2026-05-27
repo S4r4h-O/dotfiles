@@ -1,3 +1,12 @@
 <application>
-  <component name="ToStringTemplates" defaultTemplateName="String concat (+) and super.toString()" />
+  <component name="ToStringTemplates" defaultTemplateName="JsonBuilder(StringJoiner)">
+    <option name="templates">
+      <list>
+        <TemplateResource>
+          <option name="fileName" value="JsonBuilder(StringJoiner)" />
+          <option name="template" value="public java.lang.String toJSON() {&#10;return new java.util.StringJoiner(&quot;, &quot;, &quot;{&quot;, &quot;}&quot;)&#10;#foreach ($member in $members)&#10;#if(!$member.modifierStatic)&#10;.add(&quot;\&quot;$member.name\&quot;:##&#10;#if ($member.primitiveArray || $member.objectArray)&#10;&quot; + java.util.Arrays.toString($member.name)##&#10;#elseif ($member.string)&#10;\&quot;&quot; + $member.accessor + &quot;\&quot;&quot;##   &#10;#else&#10;&quot; + $member.accessor ##&#10;#end&#10;)&#10;#end&#10;#end&#10;.toString();&#10;}" />
+        </TemplateResource>
+      </list>
+    </option>
+  </component>
 </application>
