@@ -11,24 +11,22 @@
       <option name="JAVA_DECLARATION" value="true" />
     </context>
   </template>
-  <template name="tryc" value="try {&#10;  $SELECTION$&#10;} catch ($EXCEPTION_TYPE$ $EXCEPTION_VAR$) {&#10;  $HANDLER$&#10;}" description="Crete a try-catch statement" toReformat="false" toShortenFQNames="true">
+  <template name="tryc" value="try {&#10;  $EXPRESSION$;&#10;} catch ($EXCEPTION_TYPE$ e) {&#10;  System.out.println(&quot;ERROR: &quot; + e.getMessage());&#10;}" description="Crete a try-catch statement" toReformat="true" toShortenFQNames="true">
+    <variable name="EXPRESSION" expression="" defaultValue="" alwaysStopAt="true" />
     <variable name="EXCEPTION_TYPE" expression="completeSmart()" defaultValue="" alwaysStopAt="true" />
-    <variable name="EXCEPTION_VAR" expression="" defaultValue="" alwaysStopAt="true" />
-    <variable name="HANDLER" expression="" defaultValue="" alwaysStopAt="true" />
     <context>
       <option name="JAVA_STATEMENT" value="true" />
     </context>
   </template>
-  <template name="trycf" value="try {&#10;  $SELECTION$&#10;} catch ($EXCEPTION_TYPE$ $EXCEPTION_VAR$) {&#10;  $HANDLER$&#10;} finally {&#10;  $FINALLY$&#10;}" description="Create a try-catch-finally statement" toReformat="false" toShortenFQNames="true">
+  <template name="trycf" value="try {&#10;  $EXPRESSION$;&#10;} catch ($EXCEPTION_TYPE$ e) {&#10;  System.out.println(&quot;ERROR: &quot; + e.getMessage());&#10;} finally {&#10;  $FINALLY$;&#10;}" description="Create a try-catch-finally statement" toReformat="false" toShortenFQNames="true">
+    <variable name="EXPRESSION" expression="" defaultValue="" alwaysStopAt="true" />
     <variable name="EXCEPTION_TYPE" expression="completeSmart()" defaultValue="" alwaysStopAt="true" />
-    <variable name="EXCEPTION_VAR" expression="" defaultValue="" alwaysStopAt="true" />
-    <variable name="HANDLER" expression="" defaultValue="" alwaysStopAt="true" />
     <variable name="FINALLY" expression="" defaultValue="" alwaysStopAt="true" />
     <context>
       <option name="JAVA_STATEMENT" value="true" />
     </context>
   </template>
-  <template name="dow" value="do {&#10;    $BODY$&#10;} while ($CONDITION$);&#10;$END$" description="Create do-while loop" toReformat="false" toShortenFQNames="true">
+  <template name="dow" value="do {&#10;  $BODY$;&#10;} while ($CONDITION$);" description="Create do-while loop" toReformat="false" toShortenFQNames="true">
     <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
     <variable name="CONDITION" expression="" defaultValue="" alwaysStopAt="true" />
     <context>
@@ -54,12 +52,10 @@
     <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
     <context />
   </template>
-  <template name="trycr" value="try ($RES$) {&#10;  $ENDS$&#10;} catch ($EXCEPTION_TYPE$ $EXCEPTION_VAR$) {&#10;  $HANDLER$&#10;}" description="Create try-with-resources statement" toReformat="false" toShortenFQNames="true">
+  <template name="trycr" value="try ($RES$) {&#10;  $ENDS$;&#10;} catch ($EXCEPTION_TYPE$ e) {&#10;  System.out.println(&quot;ERROR: &quot; + e.getMessage());&#10;}" description="Create try-with-resources statement" toReformat="false" toShortenFQNames="true">
     <variable name="RES" expression="" defaultValue="" alwaysStopAt="true" />
     <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
     <variable name="EXCEPTION_TYPE" expression="" defaultValue="" alwaysStopAt="true" />
-    <variable name="EXCEPTION_VAR" expression="" defaultValue="" alwaysStopAt="true" />
-    <variable name="HANDLER" expression="" defaultValue="" alwaysStopAt="true" />
     <context>
       <option name="JAVA_STATEMENT" value="true" />
     </context>
@@ -72,7 +68,7 @@
       <option name="JAVA_NORMAL_CLASS_DECLARATION_WITH_INSTANCE_MAIN" value="true" />
     </context>
   </template>
-  <template name="forr" value="for (int $INDEX$ = $ARRAY$.length - 1; $INDEX$ &gt;= 0; $INDEX$--) {&#10;  $END$&#10;}" description="Create reverse index for loop" toReformat="false" toShortenFQNames="true">
+  <template name="forr" value="for (int $INDEX$ = $ARRAY$.length - 1; $INDEX$ &gt;= 0; $INDEX$--) {&#10;  $END$;&#10;}" description="Create reverse index for loop" toReformat="false" toShortenFQNames="true">
     <variable name="INDEX" expression="" defaultValue="" alwaysStopAt="true" />
     <variable name="ARRAY" expression="" defaultValue="" alwaysStopAt="true" />
     <context>
@@ -96,6 +92,129 @@
     <variable name="COMPONENTS" expression="" defaultValue="" alwaysStopAt="true" />
     <context>
       <option name="JAVA_DECLARATION" value="true" />
+      <option name="JAVA_NORMAL_CLASS_DECLARATION_WITHOUT_INSTANCE_MAIN" value="true" />
+      <option name="JAVA_NORMAL_CLASS_DECLARATION_WITH_INSTANCE_MAIN" value="true" />
+    </context>
+  </template>
+  <template name="cat" value="catch ($EXCEPTION$ e) {&#10;  System.out.println(e.getMessage());&#10;}" description="Create catch statement" toReformat="false" toShortenFQNames="true">
+    <variable name="EXCEPTION" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="foreach" value="for ($i$ : $data$) {&#10;  $cursor$;&#10;}" description="Create a for each loop" toReformat="true" toShortenFQNames="true">
+    <variable name="i" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="data" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="cursor" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="fori" value="for(int $INDEX$ = 0; $INDEX$ &lt; $LIMIT$; $INDEX$++) {&#10;  $END$;&#10;}" description="Create iteration loop" toReformat="true" toShortenFQNames="true">
+    <variable name="INDEX" expression="suggestIndexName()" defaultValue="" alwaysStopAt="true" />
+    <variable name="LIMIT" expression="" defaultValue="" alwaysStopAt="true" />
+    <context />
+  </template>
+  <template name="toar" value="$COLLECTION$.toArray($COMPONENT_TYPE$[]::new);$END$" description="Stores elements of java.util.Collection into array" toReformat="true" toShortenFQNames="true">
+    <variable name="COLLECTION" expression="variableOfType(&quot;java.util.Collection&quot;)" defaultValue="collection" alwaysStopAt="true" />
+    <variable name="COMPONENT_TYPE" expression="" defaultValue="" alwaysStopAt="true" />
+    <context />
+  </template>
+  <template name="map" value="Map&lt;$TYPE1$, $TYPE2$&gt; $VAR$ = $ENDS$;" description="Create a Map object" toReformat="false" toShortenFQNames="true">
+    <variable name="TYPE1" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="TYPE2" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VAR" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="COMPLETION" value="false" />
+      <option name="JAVA_CODE" value="true" />
+      <option name="JAVA_COMMENT" value="false" />
+      <option name="JAVA_CONSUMER" value="false" />
+      <option name="JAVA_DECLARATION" value="false" />
+      <option name="JAVA_ELSE_PLACE" value="false" />
+      <option name="JAVA_IMPLICIT_CLASS_DECLARATION" value="false" />
+      <option name="JAVA_LANG_IO_STATEMENT" value="false" />
+      <option name="JAVA_NORMAL_CLASS_DECLARATION_WITHOUT_INSTANCE_MAIN" value="false" />
+      <option name="JAVA_NORMAL_CLASS_DECLARATION_WITH_INSTANCE_MAIN" value="false" />
+      <option name="JAVA_STATEMENT_WITH_STRUCTURED_CONCURRENCY_CONSTRUCTORS" value="false" />
+      <option name="JAVA_STATEMENT_WITH_STRUCTURED_CONCURRENCY_STATIC_FACTORY_METHODS" value="false" />
+      <option name="JAVA_STRING" value="false" />
+    </context>
+  </template>
+  <template name="scin" value="Scanner scanner = new Scanner(System.in);" description="Create a Scanner with System.in as argument" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="whl" value="while ($CONDITION$) {&#10;  $BODY$;$ENDS$&#10;}" description="Create while loop" toReformat="false" toShortenFQNames="true">
+    <variable name="CONDITION" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_EXPRESSION" value="true" />
+    </context>
+  </template>
+  <template name="st" value="String " description="String" toReformat="false" toShortenFQNames="false">
+    <context>
+      <option name="JAVA_DECLARATION" value="true" />
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="intv" value="int $VAR$ = $VALUE$;$ENDS$" description="Create int variable" toReformat="false" toShortenFQNames="true">
+    <variable name="VAR" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="stv" value="String $VAR$ = $VALUE$;$ENDS$" description="Create String variable" toReformat="false" toShortenFQNames="true">
+    <variable name="VAR" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="douv" value="double $VAR$ = $VAL$;$ENDS$" description="Create double variable" toReformat="false" toShortenFQNames="true">
+    <variable name="VAR" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VAL" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="lngv" value="long $VAR$ = $VAL$;$ENDS$" description="Create long variable" toReformat="false" toShortenFQNames="true">
+    <variable name="VAR" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VAL" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="cvar" value="$TYPE$ $VAR$ = $VAL$;$ENDS$" description="Create typed variable" toReformat="false" toShortenFQNames="true">
+    <variable name="TYPE" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VAR" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VAL" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="prvf" value="private $TYPE$ $VAR$;$ENDS$" description="Create private field in class" toReformat="false" toShortenFQNames="true">
+    <variable name="TYPE" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VAR" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_NORMAL_CLASS_DECLARATION_WITHOUT_INSTANCE_MAIN" value="true" />
+      <option name="JAVA_NORMAL_CLASS_DECLARATION_WITH_INSTANCE_MAIN" value="true" />
+    </context>
+  </template>
+  <template name="pbf" value="public $TYPE$ $VAR$;$ENDS$" description="Create public field in class" toReformat="false" toShortenFQNames="true">
+    <variable name="TYPE" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VAR" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ENDS" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
       <option name="JAVA_NORMAL_CLASS_DECLARATION_WITHOUT_INSTANCE_MAIN" value="true" />
       <option name="JAVA_NORMAL_CLASS_DECLARATION_WITH_INSTANCE_MAIN" value="true" />
     </context>
