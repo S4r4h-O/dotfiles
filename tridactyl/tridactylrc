@@ -1,0 +1,2 @@
+unbind ;Y
+bind yi hint -cF img i => tri.excmds.yankimage(tri.urlutils.getAbsoluteURL(i.src))
