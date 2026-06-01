@@ -1,2 +1,52 @@
+" === tabs ===
+unbind d
+bind x tabclose
+unbind X
+bind X undo
+unbind b
+unbind B
+unbind T
+bind b fillcmdline taball
+bind B fillcmdline tabopen
+bind T current_url tabopen
+bind yt tabduplicate
+bind ^ tabprev
+unbind O
+bind O fillcmdline tabopen
+
+" === scroll ===
+unbind u
+unbind <C-f>
+unbind <C-b>
+bind d scrollpage 0.5
+bind u scrollpage -0.5
+bind <C-f> scrollpage 1
+bind <C-b> scrollpage -1
+bind zH scrollto 0 x
+bind zL scrollto 100 x
+
+" === hints ===
+unbind <A-f>
+bind <A-f> hint -qb
+unbind yf
+bind yf hint -y
 unbind ;Y
 bind yi hint -cF img i => tri.excmds.yankimage(tri.urlutils.getAbsoluteURL(i.src))
+
+" === url bar ===
+unbind ge
+unbind gE
+bind ge fillcmdline open
+bind gE fillcmdline tabopen
+
+" === visual / find ===
+bind v mode visual
+bind <f8> mode visual
+bind yv mode visual
+" unbind <C-f> passes Ctrl+F to browser native find bar
+unbind <C-f>
+
+" === misc ===
+unbind gs
+bind gs viewsource
+bind ? help
