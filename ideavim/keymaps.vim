@@ -9,12 +9,17 @@ nnoremap <C-u> <C-u>zz
 nnoremap <leader>h :nohlsearch<CR>
 xnoremap < <gv
 xnoremap > >gv
+nnoremap gl $
+vnoremap gl $
 
 " Window navigation
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
+
+" Terminal
+nmap <leader>tt <Action>(ActivateTerminalToolWindow)
 
 " Buffer/tab navigation (LazyVim parity: H/L)
 nmap H <Action>(PreviousTab)
@@ -54,8 +59,8 @@ xmap <C-d> <Action>(EditorDuplicate)
 " Flash
 nmap s <Action>(flash.search)
 xmap s <Action>(flash.search)
-nmap S <Action>(flash.search)
-xmap S <Action>(flash.search)
+" nmap S <Action>(flash.search)
+" xmap S <Action>(flash.search)
 omap r <Action>(flash.remote)
 
 " EasyMotion
@@ -67,7 +72,7 @@ map <leader>J <Plug>(easymotion-bd-jk)
 nmap gsa ys
 nmap gsd ds
 nmap gsr cs
-vmap gsa S
+" vmap gsa S
 
 " VimMulticursor (dankinsoid)
 map q <Plug>(multicursor-ms/)
@@ -75,6 +80,12 @@ map z <Plug>(multicursor-mcc)
 map Z <Plug>(multicursor-mci)
 map <leader>w <Plug>(multicursor-msw)
 map <leader>b <Plug>(multicursor-msb)
+
+" Native multicursor
+" nmap <leader>mj <Action>(EditorCloneCaretBelow)
+" nmap <leader>mk <Action>(EditorCloneCaretAbove)
+" xmap <leader>ms <Action>(EditorAddCaretPerSelectedLine)
+" nmap <leader>mm <Action>(EditorAddOrRemoveCaret)
 
 " LSP / Navigation (LazyVim parity)
 nmap gd <Action>(GotoDeclaration)
@@ -128,12 +139,12 @@ nmap <leader>bo <Action>(CloseAllEditorsButActive)
 nmap <leader>bp <Action>(PinActiveTabToggle)
 
 " Leader: windows (<leader>w)
-nmap <leader>ww <Action>(NextSplitter)
-nmap <leader>wd <Action>(Unsplit)
-nmap <leader>wD <Action>(UnsplitAll)
-nmap <leader>wm <Action>(MoveEditorToOppositeTabGroup)
-nmap <leader>|  <Action>(SplitVertically)
-nmap <leader>-  <Action>(SplitHorizontally)
+nmap <leader>ww    <Action>(NextSplitter)
+nmap <leader>wd    <Action>(Unsplit)
+nmap <leader>wD    <Action>(UnsplitAll)
+nmap <leader>wm    <Action>(MoveEditorToOppositeTabGroup)
+nmap <leader><bar> <Action>(SplitVertically)
+nmap <leader>-     <Action>(SplitHorizontally)
 
 " Leader: code + refactor (<leader>c)
 nmap <leader>ca <Action>(ShowIntentionActions)
@@ -151,6 +162,7 @@ nmap <leader>ch <Action>(ReformatCode)
 nmap <leader>cg <Action>(Generate)
 nmap <leader>co <Action>(OverrideMethods)
 nmap <leader>cO <Action>(ImplementMethods)
+nmap <leader>cP <Action>(QuickActionPopup)
 nmap <leader>cR <Action>(Refactorings.QuickListPopupAction)
 xmap <leader>cR <Action>(Refactorings.QuickListPopupAction)
 nmap <leader>cx <Action>(ExtractMethod)
