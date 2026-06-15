@@ -31,8 +31,32 @@ TOTAL_WS=$(
   ' <<<"$WS"
 )
 
-if [ $((CURRENT_WS % $TOTAL_WS)) -gt 0 ]; then
-  niri msg action focus-workspace $((CURRENT_WS + 1))
-else
-  niri msg action focus-workspace 1
-fi
+_forward() {
+
+  if [ $((CURRENT_WS % $TOTAL_WS)) -gt 0 ]; then
+    niri msg action focus-workspace $((CURRENT_WS + 1))
+  else
+    niri msg action focus-workspace 1
+  fi
+}
+
+_backward() {
+  if [ "$((CURRENT_WS))" -eq 1 ]; then
+    niri msg action focus-workspace "$TOTAL_WS"
+  else
+    niri msg action focus-workspace $((CURRENT_WS - 1))
+  fi
+}
+
+case "$@" in
+--forward)
+  _forward
+  ;;
+--backward)
+  _backward
+  ;;
+*)
+  echo "Invalid"
+  exit 1
+  ;;
+esac
