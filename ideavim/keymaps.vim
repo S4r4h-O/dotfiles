@@ -6,7 +6,7 @@ xnoremap k gk
 nnoremap n nzzzv
 nnoremap N Nzzzv
 nnoremap <C-u> <C-u>zz
-nnoremap <leader>h :nohlsearch<CR>
+nnoremap <Esc> :nohlsearch<CR>
 xnoremap < <gv
 xnoremap > >gv
 nnoremap gl $
@@ -75,17 +75,27 @@ nmap gsr cs
 " vmap gsa S
 
 " VimMulticursor (dankinsoid)
-map q <Plug>(multicursor-ms/)
-map z <Plug>(multicursor-mcc)
-map Z <Plug>(multicursor-mci)
-map <leader>w <Plug>(multicursor-msw)
-map <leader>b <Plug>(multicursor-msb)
-
-" Native multicursor
-" nmap <leader>mj <Action>(EditorCloneCaretBelow)
-" nmap <leader>mk <Action>(EditorCloneCaretAbove)
-" xmap <leader>ms <Action>(EditorAddCaretPerSelectedLine)
-" nmap <leader>mm <Action>(EditorAddOrRemoveCaret)
+" mc/ + search: Add cursors at all occurrences of search regex.
+" mcfx, mcFx: Add cursors at all occurrences of character x.
+" mcw, mcW, mcb, mcB: Add cursors at words start.
+" mce, mcE: Add cursors at words end.
+" mcaw: Around word
+" mca + bracket: Around bracket, like mca(/mcab, mca{/mcaB, mca", etc
+" mci + bracket: Inside bracket, like mci(/mcib, mci{/mciB, mci", etc
+" mcaa/mcia: any bracket
+" Cursor Management
+" mcc: Add or remove a cursor highlight at the current position (preview mode)
+" mcr: Convert cursor highlights to active editing cursors
+" mcd: Remove all cursors and highlights
+" mcia: Place cursors inside any brackets or quotes ((), [], {}, "", '', ``)
+" mcaa: Place cursors around any brackets or quotes
+" mcaw: Add cursors at word boundaries (at the start and end of current word)
+" add cursor
+map mm <Plug>(multicursor-mcc)
+" enter editing mode
+map mi <Plug>(multicursor-mcr)
+" remove all cursors
+map md <Plug>(multicursor-mcd)
 
 " LSP / Navigation (LazyVim parity)
 nmap gd <Action>(GotoDeclaration)
@@ -246,4 +256,4 @@ nmap <leader>uz <Action>(ToggleZenMode)
 nmap <leader>ui <Action>(ToggleInlayHintsGloballyAction)
 
 " Reload
-nmap <leader>sv <Action>(IdeaVim.ReloadVimRc.reload)
+nmap <leader>sv <Action>(IdeaVim.ReloadVimRc)
