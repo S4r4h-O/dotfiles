@@ -73,3 +73,8 @@ end, { desc = "Toggle auto format (global)" })
 vim.keymap.set("n", "<leader>ci", function()
   require("lazyvim.util").format.toggle(true)
 end, { desc = "Toggle auto format (buffer)" })
+
+-- ============================================================================
+-- OTHERS
+-- ============================================================================
+vim.keymap.set("n", "gl", "$", { noremap = true })
