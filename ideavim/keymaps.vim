@@ -51,6 +51,7 @@ inoremap <A-d>d <Esc>"_ddi
 nnoremap <A-d>w "_diw
 xnoremap <A-d>w "_d
 nnoremap <A-l>  "_dG
+nnoremap ciw "_ciw
 
 " Duplicate lines
 nmap <C-d> <Action>(EditorDuplicate)
@@ -257,3 +258,4 @@ nmap <leader>ui <Action>(ToggleInlayHintsGloballyAction)
 
 " Reload
 nmap <leader>sv <Action>(IdeaVim.ReloadVimRc)
+
