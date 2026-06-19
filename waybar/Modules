@@ -1,15 +1,15 @@
 {
- // check /sys/class/hwmon to list your devices. My cpu is hwmon4
+  // check /sys/class/hwmon to list your devices
   "temperature": {
-  "interval": 10,
-  "tooltip": true,
-  "hwmon-path": [
-    "/sys/class/hwmon/hwmon4/temp1_input"
-  ],
-  "critical-threshold": 82,
-  "format": "{temperatureC}°C {icon}",
-  "format-icons": ["󰈸"]
-},
+    "interval": 10,
+    "tooltip": true,
+    "hwmon-path": ["/sys/class/hwmon/hwmon4/temp1_input"],
+    "critical-threshold": 82,
+    "format": "Temp {icon} {temperatureC}°C",
+    "format-icons": ["󰈸"],
+    "on-click-right": "alacritty --title nvtop -e nvtop"
+  },
+
   "backlight": {
     "interval": 2,
     "format": "{icon}",
@@ -19,25 +19,28 @@
     "on-scroll-down": "$HOME/.config/niri/scripts/brightness.sh --dec",
     "smooth-scrolling-threshold": 1
   },
+
   "backlight#2": {
     "device": "intel_backlight",
     "format": "{icon} {percent}%",
     "format-icons": ["", ""]
   },
+
   "battery": {
     "full-at": 100,
     "design-capacity": false,
     "states": { "good": 95, "warning": 30, "critical": 15 },
     "format": "{icon} {capacity}%",
-    "format-charging": "󰂄 {capacity}%", 
+    "format-charging": "󰂄 {capacity}%",
     "format-plugged": "󱘖 {capacity}%",
     "format-full": "{icon} Full",
     "format-alt": "{icon} {time}",
     "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
     "format-time": "{H}h {M}min",
     "tooltip": true,
-    "tooltip-format": "{timeTo} {power}w",
+    "tooltip-format": "{timeTo} {power}w"
   },
+
   "bluetooth": {
     "format": " ",
     "format-disabled": "󰂳",
@@ -48,34 +51,40 @@
     "tooltip": true,
     "on-click": "blueman-manager"
   },
+
   "clock": {
     "interval": 1,
-    "format": " {:%H:%M:%S}",
+    "format": "{:%A %d.%m.%Y - %H:%M}",
     "format-alt": " {:%H:%M   %Y, %d %B, %A}",
     "tooltip": false,
     "on-click-right": "gsimplecal"
   },
+
   "cpu": {
     "interval": 1,
-    "format": "{usage}% 󰍛",
+    "format": "Cpu 󰍛 {usage}%",
     "format-alt": "{icon0}{icon1}{icon2}{icon3} {usage:>2}% 󰍛",
     "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
-    "on-click-right": "gnome-system-monitor"
+    "on-click-right": "alacritty --title btop -e btop"
   },
+
   "disk": {
     "interval": 30,
     "path": "/",
-    "format": "{percentage_used}% 󰋊",
-    "tooltip-format": "{used} used out of {total} on {path} ({percentage_used}%)"
+    "format": "Disk 󰋊 {used}",
+    "tooltip-format": "{used} used out of {total} on {path} ({percentage_used}%)",
+    "on-click-right": "thunar"
   },
+
   "memory": {
     "interval": 10,
-    "format": "{used:0.1f}G 󰾆",
+    "format": "Ram 󰾆 {used:0.1f}G",
     "format-alt": "{percentage}% 󰾆",
     "tooltip": true,
     "tooltip-format": "{used:0.1f}GB/{total:0.1f}G",
-    "on-click-right": "alacritty --title btop -e btop"
+    "on-click-right": "alacritty -e btop"
   },
+
   "pulseaudio": {
     "format": "{icon} {volume}%",
     "format-bluetooth": "{icon} 󰂰 {volume}%",
@@ -96,6 +105,7 @@
     "on-scroll-down": "$HOME/.config/niri/scripts/volume.sh --dec",
     "smooth-scrolling-threshold": 1
   },
+
   "pulseaudio#microphone": {
     "format": "{format_source}",
     "format-source": " {volume}%",
@@ -105,22 +115,47 @@
     "on-scroll-up": "$HOME/.config/niri/scripts/volume.sh --mic-inc",
     "on-scroll-down": "$HOME/.config/niri/scripts/volume.sh --mic-dec"
   },
+
   "network": {
     "format": "{ifname}",
     "format-wifi": "{icon}",
     "format-ethernet": "󰌘",
     "format-disconnected": "󰌙",
     "tooltip-format": "{ipaddr}  {bandwidthUpBits}  {bandwidthDownBits}",
-    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"]
   },
+
   "tray": {
     "icon-size": 20,
     "spacing": 4,
     "show-passive-items": true
   },
+
   "idle_inhibitor": {
     "format": "{icon}",
     "format-icons": { "activated": " ", "deactivated": " " }
+  },
+
+  "mpris": {
+    "format": "{player_icon} {title} - {artist}",
+    "format-paused": "⏸ {title} - {artist}",
+    "format-stopped": "",
+    "player-icons": {
+      "default": "▶",
+      "spotify": "",
+      "firefox": "󰈹",
+      "chromium": "󰊯"
+    },
+    "interval": 2,
+    "max-length": 40,
+    "tooltip": true,
+    "tooltip-format": "{title} / {artist} / {album}"
+  },
+
+  "custom/power": {
+    "format": "⏻",
+    "tooltip": false,
+    "on-click": "wlogout"
   }
 }
 

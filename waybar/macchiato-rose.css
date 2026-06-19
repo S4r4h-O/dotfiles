@@ -1,0 +1,37 @@
+/*
+*
+* Catppuccin Macchiato Rose Dream
+*
+*/
+
+@define-color crust  #1b1524;
+@define-color mantle #221a2d;
+@define-color base   #2b2138;
+
+@define-color surface0 #392d4a;
+@define-color surface1 #4a3b5e;
+@define-color surface2 #5e4c74;
+
+@define-color overlay0 #76628d;
+@define-color overlay1 #8d77a7;
+@define-color overlay2 #a590bf;
+
+@define-color subtext0 #c3b2d9;
+@define-color subtext1 #d6c8e8;
+@define-color text     #f2e7fa;
+
+@define-color rosewater #ffe3f0;
+@define-color flamingo  #ffcbe3;
+@define-color pink      #ffaadf;
+@define-color mauve     #d7a8ff;
+@define-color red       #ff8fc7;
+@define-color maroon    #f5a8d1;
+@define-color peach     #ffbfd6;
+@define-color yellow    #f7d9e8;
+@define-color green     #cce6c9;
+@define-color teal      #d9d2ff;
+@define-color sky       #e2cfff;
+@define-color sapphire  #cdb5ff;
+@define-color blue      #b899ff;
+@define-color lavender  #ead7ff;
+
