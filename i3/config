@@ -1,0 +1,16 @@
+# https://i3wm.org/docs/userguide.html
+
+for_window [class="^.*"] border pixel 1
+
+set $mod Mod4
+# set $mod Mod1
+
+set $refresh_i3status killall -SIGUSR1 i3status
+
+floating_modifier $mod
+
+include ~/.config/i3/autostart.conf
+include ~/.config/i3/appearance.conf
+include ~/.config/i3/workspaces.conf
+include ~/.config/i3/keybinds.conf
+include ~/.config/i3/modes.conf
