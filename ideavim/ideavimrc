@@ -1,14 +1,3 @@
-" .ideavimrc: LazyVim parity
-" IdeaVim 2.30.0 / IntelliJ IDEA 2025.3.3 (Linux)
-"
-" REQUIRES (Marketplace: install before sourcing):
-"   Which-Key       https://plugins.jetbrains.com/plugin/15976-which-key
-"   IdeaVim-EasyMotion  https://plugins.jetbrains.com/plugin/13360-ideavim-easymotion
-"   AceJump         https://plugins.jetbrains.com/plugin/7086-acejump
-"   Vim Dial        https://plugins.jetbrains.com/plugin/28237-vim-dial
-"   VimMulticursor  https://plugins.jetbrains.com/plugin/19162-VimMulticursor
-"   org.yelog.ideavim.flash: s/S jump labels activate automatically.
-
 set multicursor
 
 source ~/.config/ideavim/plugins.vim
