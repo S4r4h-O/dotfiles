@@ -1,10 +1,6 @@
 // Niri Configuration
 // Reference: https://github.com/YaLTeR/niri/wiki
 
-// =====================================================
-// Modular Configuration Includes
-// =====================================================
-
 include "config.d/outputs.kdl"
 include "config.d/workspaces.kdl"
 include "config.d/input.kdl"
@@ -27,10 +23,11 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 environment {
     QT_QPA_PLATFORM "wayland"
     QT_QPA_PLATFORMTHEME "qt6ct"
-    QT_QPA_PLATFORMTHEME "qt5ct"
-    DISPLAY ":0"
+    // QT_QPA_PLATFORMTHEME "qt5ct"
+    // DISPLAY ":0"
 }
 
 cursor {
   xcursor-size 42
 }
+
