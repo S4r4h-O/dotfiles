@@ -1,27 +1,14 @@
-// Niri Startup Applications and Services
-// Minimal but functional set - optimized for battery efficiency
-
 // D-Bus and environment initialization
-spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
-spawn-at-startup "systemctl" "--user" "import-environment" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
+// spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
+// spawn-at-startup "systemctl" "--user" "import-environment" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
+
+// If not using systemd
+spawn-at-startup "dbus-update-activation-environment" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" "XDG_SESSION_TYPE" "DISPLAY"
 
 // System authentication and policy
 // spawn-at-startup "lxsession" "-e" "GNOME"
 spawn-at-startup "gnome-keyring-daemon" "--start" "--components=secrets"
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
-
-// Network management
-spawn-at-startup "nm-applet" "--indicator"
-
-// Systemd will take care of initializing these
-// Notifications daemon
-// spawn-at-startup "dunst"
-
-// Status bar
-// spawn-at-startup "waybar"
-
-// Wallpaper daemon (lightweight: swaybg instead of hyprpaper)
-// spawn-at-startup "swaybg" "-i" "$HOME/Pictures/wallpapers/default.jpg" "-m" "fill"
 
 // Bluetooth management
 spawn-at-startup "blueman-applet"
@@ -29,3 +16,28 @@ spawn-at-startup "blueman-applet"
 // Clipboard management
 spawn-at-startup "wl-paste" "--type" "text" "--watch" "cliphist" "store"
 spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
+
+// Notifications daemon
+// spawn-at-startup "dunst"
+// Status bar
+
+spawn-at-startup "waybar"
+
+// If not using systemd, uncomment:
+// Network management
+spawn-at-startup "nm-applet" "--indicator"
+
+spawn-at-startup "swayidle" "-w" \
+"lock gtklock -d" \
+"timeout 600 loginctl lock-session" \
+"timeout 601 niri msg action power-off-monitors" \
+"before-sleep gtklock -d"
+
+// spawn-at-startup "swayidle" "-w" \
+// "lock hyprlock" \
+// "timeout 600 loginctl lock-session" \
+// "timeout 601 niri msg action power-off-monitors" \
+// "before-sleep hyprlock"
+
+// Wallpaper daemon (lightweight: swaybg instead of hyprpaper)
+spawn-at-startup "sh" "-lc" "exec swaybg -m fill -i \"$HOME/.config/wallpapers/current\""
