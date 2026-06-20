@@ -21,3 +21,12 @@ copyp() {
   # "Default value" parameter expansion
   wl-copy "$(realpath "${1:-.}")"
 }
+
+copyf() {
+  for file in "$@"; do
+    if ! wl-copy <"$file" 2>&1; then
+      printf "Error: could not copy file %s\n" "$file" >&2
+      return 1
+    fi
+  done
+}
