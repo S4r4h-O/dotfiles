@@ -27,17 +27,8 @@ spawn-at-startup "waybar"
 // Network management
 spawn-at-startup "nm-applet" "--indicator"
 
-spawn-at-startup "swayidle" "-w" \
-"lock gtklock -d" \
-"timeout 600 loginctl lock-session" \
-"timeout 601 niri msg action power-off-monitors" \
-"before-sleep gtklock -d"
+// Idle
+spawn-at-startup "sh" "-lc" "swayidle -w lock 'gtklock -d' timeout 600 'loginctl lock-session' timeout 601 'niri msg action power-off-monitors' before-sleep 'gtklock -d'"
 
-// spawn-at-startup "swayidle" "-w" \
-// "lock hyprlock" \
-// "timeout 600 loginctl lock-session" \
-// "timeout 601 niri msg action power-off-monitors" \
-// "before-sleep hyprlock"
-
-// Wallpaper daemon (lightweight: swaybg instead of hyprpaper)
+// Wallpaper
 spawn-at-startup "sh" "-lc" "exec swaybg -m fill -i \"$HOME/.config/wallpapers/current\""
