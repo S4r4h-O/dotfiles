@@ -32,5 +32,5 @@ path=(
   "$HOME/.local/opt/jdk"
   "$HOME/.local/share/go/bin"
   "$HOME/.local/share/JetBrains/Toolbox/apps"
-  "$path"
+  $path
 )
