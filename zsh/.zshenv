@@ -27,12 +27,10 @@ typeset -U path
 
 path=(
   "$HOME/bin"
-  "$HOME/.bun/bin"
   "$HOME/.local/bin"
-  "$HOME/.cargo/bin"
   "$HOME/Applications"
   "$HOME/.local/opt/jdk"
   "$HOME/.local/share/go/bin"
   "$HOME/.local/share/JetBrains/Toolbox/apps"
-  $path
+  "$path"
 )
