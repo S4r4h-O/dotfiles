@@ -6,11 +6,10 @@
   "passthrough": false,
   "fixed-center": true,
   "ipc": true,
-  "stylesheet": "/home/sarah/.config/waybar/style-2.css",
   "include": [
-    "/home/sarah/.config/waybar/Modules",
-    "/home/sarah/.config/waybar/ModulesWorkspaces",
-    "/home/sarah/.config/waybar/ModulesGroups"
+    "$HOME/.config/waybar/Modules",
+    "$HOME/.config/waybar/ModulesWorkspaces",
+    "$HOME/.config/waybar/ModulesGroups"
   ],
   "modules-left": [
     "mpris",
@@ -23,8 +22,8 @@
   ],
   "modules-right": [
     "group/motherboard",
-    "group/laptop",
     "group/audio",
+    "group/laptop",
     "custom/power"
   ]
 }
