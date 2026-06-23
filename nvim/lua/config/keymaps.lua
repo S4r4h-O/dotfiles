@@ -78,3 +78,9 @@ end, { desc = "Toggle auto format (buffer)" })
 -- OTHERS
 -- ============================================================================
 vim.keymap.set("n", "gl", "$", { noremap = true })
+vim.keymap.set("n", "<A-l>", function()
+  vim.cmd("normal! xp")
+end)
+vim.keymap.set("n", "<A-h>", function()
+  vim.cmd("normal! xhP")
+end)
