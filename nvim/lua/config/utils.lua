@@ -39,4 +39,27 @@ M.duplicate_with_gap = function(direction)
   end
 end
 
+M.toggle = function()
+  local word = vim.fn.expand("<cword>")
+  if word == "true" then
+    vim.cmd("normal! ciwfalse")
+  elseif word == "false" then
+    vim.cmd("normal! ciwtrue")
+  else
+    return
+  end
+end
+
+M.close_buffer = function()
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  vim.cmd("bnext")
+
+  if vim.api.nvim_get_current_buf() == bufnr then
+    vim.cmd("enew")
+  end
+
+  vim.api.nvim_buf_delete(bufnr, {})
+end
+
 return M
