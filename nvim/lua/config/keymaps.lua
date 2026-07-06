@@ -14,8 +14,15 @@ vim.keymap.set("n", "<A-d>w", '"_diw', { desc = "Delete current word in normal m
 vim.keymap.set("v", "<A-d>w", '"_d"', { desc = "Delete selected word in visual mode" })
 vim.keymap.set("i", "<A-d>w", '"<Esc>_diw', { desc = "Delete current word in insert mode" })
 
+-- Replace word
+vim.keymap.set("n", "ciw", '"_ciw', { desc = "Replace current word in normal mode" })
+
 -- Delete all lines
-vim.keymap.set("n", "<A-l>", '"_dG', { noremap = true, desc = "Delete all lines without affecting clipboard" })
+vim.keymap.set("n", "<A-d>a", '"_dG', { noremap = true, desc = "Delete all lines without affecting clipboard" })
+vim.keymap.set("n", "<A-d>l", '"_dd', { noremap = true, desc = "Delete current without affecting clipboard" })
+
+vim.keymap.set({ "n", "v" }, "s", '"_s')
+vim.keymap.set({ "n", "v" }, "S", '"_S')
 
 -- ============================================================================
 -- COPY/PASTE OPERATIONS
@@ -27,28 +34,21 @@ vim.keymap.set("i", "<C-y>", '<Esc>"+yyi', { noremap = true, desc = "Copy entire
 -- ============================================================================
 -- DUPLICATE LINES
 -- ============================================================================
-vim.keymap.set({ "n", "v" }, "<C-d><Down>", function()
-  utils.duplicate_lines("down", false)
-end, { desc = "Duplicate line/selection below (no gap)" })
-
-vim.keymap.set({ "n", "v" }, "<C-d><Right>", function()
-  utils.duplicate_lines("down", true)
+vim.keymap.set({ "n", "v" }, "<C-d>j", function()
+  utils.duplicate_with_gap("down")
 end, { desc = "Duplicate line/selection below (with gap)" })
 
-vim.keymap.set({ "n", "v" }, "<C-d><Up>", function()
-  utils.duplicate_lines("up", false)
-end, { desc = "Duplicate line/selection above (no gap)" })
-
-vim.keymap.set({ "n", "v" }, "<C-d><Left>", function()
-  utils.duplicate_lines("up", true)
+vim.keymap.set({ "n", "v" }, "<C-d>k", function()
+  utils.duplicate_with_gap("up")
 end, { desc = "Duplicate line/selection above (with gap)" })
 
 -- ============================================================================
 -- FILE OPERATIONS
 -- ============================================================================
-
 -- Select all
-vim.keymap.set("n", "<A-a>", "ggVG", { desc = "Select all" })
+vim.keymap.set("n", "<A-a>", function()
+  vim.cmd("normal! ggVG")
+end, { desc = "Select all" })
 
 -- Save file
 vim.keymap.set({ "i", "x", "n", "s" }, "<C-s>", function()
@@ -60,27 +60,96 @@ vim.keymap.set({ "i", "x", "n", "s" }, "<C-s>", function()
   end
 end, { desc = "Save file" })
 
--- ============================================================================
--- FORMATTING (Conform.nvim)
--- ============================================================================
+-- Remap VIM 0 to first non-blank character
+vim.keymap.set({ "n", "x", "o" }, "0", "^")
 
--- Toggle auto format globally
-vim.keymap.set("n", "<leader>ch", function()
-  require("lazyvim.util").format.toggle()
-end, { desc = "Toggle auto format (global)" })
+-- Move lines with Alt-j/k
+vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", { silent = true })
+vim.keymap.set("n", "<A-k>", ":m .-2<CR>==", { silent = true })
 
--- Toggle auto format per buffer
-vim.keymap.set("n", "<leader>ci", function()
-  require("lazyvim.util").format.toggle(true)
-end, { desc = "Toggle auto format (buffer)" })
+vim.keymap.set("x", "<A-j>", ":m '>+1<CR>gv=gv", { silent = true })
+vim.keymap.set("x", "<A-k>", ":m '<-2<CR>gv=gv", { silent = true })
+
+-- Move characters with Alt-h/l
+vim.keymap.set("n", "<A-h>", function()
+  if vim.fn.col(".") > 1 then
+    vim.cmd.normal({ "xhP", bang = true })
+  end
+end)
+
+vim.keymap.set("n", "<A-l>", function()
+  local col = vim.fn.col(".")
+  local line = vim.fn.getline(".")
+  if col < #line then
+    vim.cmd.normal({ "xp", bang = true })
+  end
+end)
+
+vim.keymap.set({ "n", "i" }, "<leader>ft", "<cmd>FormatToggle<cr>", { desc = "Toggle Format ON/OFF" })
+
+-- ============================================================================
+-- NAVIGATION
+-- ============================================================================
+-- Windows/panels
+vim.keymap.set("n", "<C-h>", "<C-w>h")
+vim.keymap.set("n", "<C-j>", "<C-w>j")
+vim.keymap.set("n", "<C-k>", "<C-w>k")
+vim.keymap.set("n", "<C-l>", "<C-w>l")
+vim.keymap.set("n", "<leader>sv", "<C-w>v")
+vim.keymap.set("n", "<leader>sh", "<C-w>s")
+vim.keymap.set("n", "<leader>se", "<C-w>=")
+vim.keymap.set("n", "<leader>sx", "<cmd>close<CR>")
+
+vim.keymap.set("n", "<leader>qq", function()
+  vim.cmd.qa()
+end, { desc = "Close everything and quit" })
+
+vim.keymap.set("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>")
+vim.keymap.set("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>")
+
+vim.keymap.set("n", "<leader>bp", "<cmd>BufferLineTogglePin<CR>")
+vim.keymap.set("n", "<leader>bo", "<cmd>BufferLineCloseOthers<CR>")
+
+vim.keymap.set("n", "bd", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  vim.cmd("bnext")
+
+  if vim.api.nvim_get_current_buf() == bufnr then
+    vim.cmd("enew")
+  end
+
+  vim.api.nvim_buf_delete(bufnr, {})
+end, { desc = "Delete Buffer" })
+
+vim.keymap.set("n", "<C-x>", "<C-w>c", { noremap = true, desc = "Close current window" })
 
 -- ============================================================================
 -- OTHERS
 -- ============================================================================
 vim.keymap.set("n", "gl", "$", { noremap = true })
+
 vim.keymap.set("n", "<A-l>", function()
   vim.cmd("normal! xp")
 end)
-vim.keymap.set("n", "<A-h>", function()
-  vim.cmd("normal! xhP")
+
+vim.keymap.set("v", "<A-l>", function()
+  vim.cmd("normal! xp")
 end)
+
+vim.keymap.set("n", "<Esc>", function()
+  if vim.v.hlsearch == 1 then
+    vim.cmd("nohlsearch")
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+  end
+end, { silent = true, desc = "Clear search highlight" })
+
+vim.keymap.set("n", "<leader>sg", function()
+  local pattern = vim.fn.input("Grep something: ")
+  if pattern == "" then
+    return
+  end
+  vim.cmd("silent grep! " .. pattern)
+  vim.cmd("copen")
+end, { desc = "Dynamic grep" })
