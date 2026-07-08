@@ -1,0 +1,401 @@
+"""""""""""""""""""""
+" XDG
+"""""""""""""""""""""
+" This doesn't work. Yet :p
+
+if empty("$XDG_CACHE_HOME")
+  let $XDG_CACHE_HOME="$HOME/.cache"
+endif
+
+if empty("$XDG_CONFIG_HOME")
+  let $XDG_CONFIG_HOME="$HOME/.config"
+endif
+
+if empty("$XDG_DATA_HOME")
+  let $XDG_DATA_HOME="$HOME/.local/share"
+endif
+
+set directory=$XDG_CACHE_HOME/vim/swap,~/,/tmp
+set backupdir=$XDG_CACHE_HOME/vim/backup,~/,/tmp
+set undodir=$XDG_CACHE_HOME/vim/undo,~/,/tmp
+
+call mkdir(expand('$XDG_CACHE_HOME') . '/vim', 'p')
+let &viminfo = substitute(&viminfo, ',\?n[^,]*', '', '')
+let &viminfo = "'100,n" . expand('$XDG_CACHE_HOME') . "/vim/viminfo"
+
+set runtimepath+=$XDG_CONFIG_HOME/vim,$XDG_CONFIG_HOME/vim/after,$VIM,$VIMRUNTIME
+let $MYVIMRC="$XDG_CONFIG_HOME/vim/.vimrc"
+
+"""""""""""""""""""""
+" General
+"""""""""""""""""""""
+
+let mapleader = " "
+
+let g:netrw_home = $XDG_DATA_HOME."/vim"
+call mkdir($XDG_DATA_HOME."/vim/spell", 'p')
+
+"let g:netrw_browse_split = 0  " default
+"let g:netrw_browse_split = 1  " horizontal split
+"let g:netrw_browse_split = 2  " vertical split
+let g:netrw_browse_split = 3  " new tab
+"let g:netrw_browse_split = 4  " use previous windows
+
+"execute 'source' fnameescape($XDG_CONFIG_HOME . '/vim/keymaps.vim')
+
+colorscheme sorbet
+
+set history=500
+
+" Filetype plugins
+filetype plugin on
+filetype indent on
+
+set autoread
+au FocusGained,BufEnter * silent! checktime
+
+"""""""""""""""""""""
+" KEYMAPS
+"""""""""""""""""""""
+
+" Fast saving
+nnoremap <C-s> :w!<cr>
+
+" Save with root privileges
+command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
+
+" netrw
+let g:netrw_liststyle = 3 " Opens in tree mode
+nnoremap <leader>e :silent! <C-u>30Vex<CR>
+augroup netrw_navigation
+  autocmd!
+  autocmd FileType netrw nnoremap <buffer> <C-h> <C-w>h
+  autocmd FileType netrw nnoremap <buffer> <C-l> <C-w>l
+augroup END
+
+"""""""""""""""""""""
+" Moving around and navigation
+"""""""""""""""""""""
+
+" Disable highlight when <leader><cr> is pressed
+map <silent> <leader><cr> :noh<cr>
+
+" Smart way to move between windows
+nnoremap <C-j> <C-W>j
+nnoremap <C-k> <C-W>k
+nnoremap <C-h> <C-W>h
+nnoremap <C-l> <C-W>l
+
+" Split windows
+nnoremap <leader>w- <C-w>s
+nnoremap <leader>w\| <C-w>v
+
+" Close the current buffer
+nnoremap bd :Bclose<cr>:tabclose<cr>gT
+
+" Close all the buffers
+nnoremap <leader>ba :bufdo bd<cr>
+
+nnoremap <S-l> :bnext<cr>
+nnoremap <S-h> :bprevious<cr>
+
+" Useful nnoremappings for managing tabs
+nnoremap  <leader>tn  :tabnew<cr>
+nnoremap  <leader>to  :tabonly<cr>
+nnoremap  <leader>tc  :tabclose<cr>
+nnoremap  <leader>tm  :tabmove
+nnoremap  <leader>t[  :tabnext<cr>
+nnoremap  <leader>t]  :tabprevious<cr>
+
+" Switch to a tab using leader + its number
+for i in range(1, 9)
+  execute 'nnoremap <leader>' . i . ' :' . i . 'tabnext<CR>'
+endfor
+
+" Opens a new tab with the current buffer's path
+" Super useful when editing files in the same directory
+nnoremap <leader>te :tabedit <C-r>=escape(expand("%:p:h"), " ")<cr>/
+
+" Switch CWD to the directory of the open buffer
+nnoremap <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+nnoremap  <C-Right>  <C-w>>
+nnoremap  <C-Left>   <C-w><
+nnoremap  <C-Up>     <C-w>+
+nnoremap  <C-Down>   <C-w>-
+
+" Close window
+nnoremap <C-x> <C-w>c
+
+" Quit
+nnoremap <leader>q :qa!<cr>
+
+""""""""""""""""""""""""""""""
+" Visual mode related
+""""""""""""""""""""""""""""""
+
+" Visual mode pressing * or # searches for the current selection
+" Super useful! From an idea by Michael Naumann
+vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+
+""""""""""""""""""""""""""""""
+" Editing
+""""""""""""""""""""""""""""""
+
+" Remap VIM 0 to first non-blank character
+map 0 ^
+
+" Move a line of text using ALT+[jk] or Command+[jk] on mac
+nnoremap  <M-j>  mz:m+<cr>`z
+nnoremap  <M-k>  mz:m-2<cr>`z
+vmap      <M-j>  :m'>+<cr>`<my`>mzgv`yo`z
+vmap      <M-k>  :m'<-2<cr>`>my`<mzgv`yo`z
+
+if has("mac") || has("macunix")
+  nmap <D-j> <M-j>
+  nmap <D-k> <M-k>
+  vmap <D-j> <M-j>
+  vmap <D-k> <M-k>
+endif
+
+" Delete trailing white space on save, useful for some filetypes ;)
+fun! CleanExtraSpaces()
+    let save_cursor = getpos(".")
+    let old_query = getreg('/')
+    silent! %s/\s\+$//e
+    call setpos('.', save_cursor)
+    call setreg('/', old_query)
+endfun
+
+if has("autocmd")
+    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Spell checking
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Pressing ,ss will toggle and untoggle spell checking
+map <leader>ss :setlocal spell!<cr>
+
+" Shortcuts using <leader>
+map <leader>sn ]s
+map <leader>sp [s
+map <leader>sa zg
+map <leader>s? z=
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Misc
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Remove the Windows ^M - when the encodings gets messed up
+noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+" Quickly open a buffer for scribble
+map <leader>b :e /tmp/buffer<cr>
+
+" Quickly open a markdown buffer for scribble
+map <leader>x :e /tmp/buffer.md<cr>
+
+" Toggle paste mode on and off
+map <leader>pp :setlocal paste!<cr>
+
+"""""""""""""""""""""
+" User interface
+"""""""""""""""""""""
+set so=7
+
+set wildmenu
+
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
+if has("win16") || has("win32")
+    set wildignore+=.git\*,.hg\*,.svn\*
+else
+    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+endif
+
+" Always show current position
+set ruler
+
+" Height of the command bar
+set cmdheight=1
+
+" A buffer becomes hidden when it is abandoned
+set hid
+
+" Configure backspace so it acts as it should act
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
+
+" Ignore case when searching
+set ignorecase
+
+" When searching try to be smart about cases
+set smartcase
+
+" Highlight search results
+set hlsearch
+
+" Makes search act like search in modern browsers
+set incsearch
+
+" Don't redraw while executing macros (good performance config)
+set lazyredraw
+
+" For regular expressions turn magic on
+set magic
+
+" Show matching brackets when text indicator is over them
+set showmatch
+
+" How many tenths of a second to blink when matching brackets
+set mat=2
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+" Add a bit extra margin to the left
+set foldcolumn=1
+
+set number
+set relativenumber
+
+set fillchars+=eob:\ 
+
+"""""""""""""""""""""
+" Colors and fonts
+"""""""""""""""""""""
+
+" Enable syntax highlighting
+syntax enable
+
+" Set regular expression engine automatically
+set regexpengine=0
+
+" Enable 256 colors palette in Gnome Terminal
+if $COLORTERM == 'gnome-terminal'
+    set t_Co=256
+endif
+
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
+
+" Use Unix as the standard file type
+set ffs=unix,dos,mac
+
+"""""""""""""""""""""
+" Files
+"""""""""""""""""""""
+
+" Turn backup off, since most stuff is in SVN, git etc. anyway...
+set nobackup
+set nowb
+set noswapfile
+
+"""""""""""""""""""""
+" Text, tab, and indent related
+"""""""""""""""""""""
+
+" Use spaces instead of tabs
+set expandtab
+
+" Be smart when using tabs ;)
+set smarttab
+
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+
+" Linebreak on 500 characters
+set lbr
+set tw=500
+
+set ai "Auto indent
+set si "Smart indent
+set wrap "Wrap lines
+
+set clipboard=unnamedplus
+
+""""""""""""""""""""""""""""""
+" Moving around, navigation and buffers
+""""""""""""""""""""""""""""""
+
+" Specify the behavior when switching between buffers
+try
+  set switchbuf=useopen,usetab,newtab
+  set stal=2
+catch
+endtry
+
+" Return to last edit position when opening files (You want this!)
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+""""""""""""""""""""""""""""""
+" Status line
+""""""""""""""""""""""""""""""
+" Always show the status line
+set laststatus=2
+
+" Format the status line
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Helper functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Returns true if paste mode is enabled
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
+
+" Don't close window, when deleting a buffer
+command! Bclose call <SID>BufcloseCloseIt()
+function! <SID>BufcloseCloseIt()
+    let l:currentBufNum = bufnr("%")
+    let l:alternateBufNum = bufnr("#")
+
+    if buflisted(l:alternateBufNum)
+        buffer #
+    else
+        bnext
+    endif
+
+    if bufnr("%") == l:currentBufNum
+        new
+    endif
+
+    if buflisted(l:currentBufNum)
+        execute("bdelete! ".l:currentBufNum)
+    endif
+endfunction
+
+function! CmdLine(str)
+    call feedkeys(":" . a:str)
+endfunction
+
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", "\\/.*'$^~[]")
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'gv'
+        call CmdLine("Ack '" . l:pattern . "' " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
+
