@@ -41,6 +41,7 @@ call mkdir($XDG_DATA_HOME."/vim/spell", 'p')
 let g:netrw_browse_split = 3  " new tab
 "let g:netrw_browse_split = 4  " use previous windows
 
+" I wanna move the keymaps to a separate file, in the future...
 "execute 'source' fnameescape($XDG_CONFIG_HOME . '/vim/keymaps.vim')
 
 colorscheme sorbet
@@ -54,9 +55,21 @@ filetype indent on
 set autoread
 au FocusGained,BufEnter * silent! checktime
 
+" Grep
+if executable('rg')
+  let &grepprg = 'rg --vimgrep -i'
+  let &grepformat = '%f:%l:%c:%m'
+else
+  let &grepprg = 'grep -rni'
+  let &grepformat = '%f:%l:%m'
+endif
+
 """""""""""""""""""""
 " KEYMAPS
 """""""""""""""""""""
+
+" Resource config
+nnoremap <leader>rs :source ~/.vimrc<cr>
 
 " Fast saving
 nnoremap <C-s> :w!<cr>
@@ -72,6 +85,11 @@ augroup netrw_navigation
   autocmd FileType netrw nnoremap <buffer> <C-h> <C-w>h
   autocmd FileType netrw nnoremap <buffer> <C-l> <C-w>l
 augroup END
+
+nnoremap <leader>ff :find **
+nnoremap <leader>sg :call DynamicGrep()<CR>
+nnoremap <leader>sf :call FzfFiles()<CR>
+nnoremap <leader>so :call FzfGrep()<CR>
 
 """""""""""""""""""""
 " Moving around and navigation
@@ -130,6 +148,9 @@ nnoremap <C-x> <C-w>c
 " Quit
 nnoremap <leader>q :qa!<cr>
 
+" Terminal
+nnoremap <leader>tt :botright 10split <Bar> terminal ++curwin<cr>
+
 """"""""""""""""""""""""""""""
 " Visual mode related
 """"""""""""""""""""""""""""""
@@ -171,6 +192,12 @@ endfun
 if has("autocmd")
     autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
 endif
+
+" Copy entire file
+nnoremap <C-y> :silent! %y+<cr>
+
+" Delete entire file
+nnoremap <C-d>a :silent! %delete _<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Spell checking
@@ -315,9 +342,9 @@ set tabstop=4
 set lbr
 set tw=500
 
-set ai "Auto indent
-set si "Smart indent
-set wrap "Wrap lines
+set  ai    "Auto indent
+set  si    "Smart indent
+set  wrap  "Wrap lines
 
 set clipboard=unnamedplus
 
@@ -398,4 +425,57 @@ function! VisualSelection(direction, extra_filter) range
     let @" = l:saved_reg
 endfunction
 
+" The following functions require some refinement
+function! DynamicGrep()
+  let pattern = input("Grep something: ")
+  if empty(pattern)
+    return
+  endif
 
+  execute "silent grep! -rn " . shellescape(pattern) . " ."
+  cwindow
+endfunction
+
+function! FzfFiles()
+  if !executable('fzf')
+    echoerr "fzf is not installed"
+    return
+  endif
+
+  let file = system("find . -type f | fzf")
+
+  if empty(file)
+    return
+  endif
+
+  execute "edit " . fnameescape(trim(file))
+endfunction
+
+function! FzfGrep()
+  if !executable('fzf')
+    echoerr "fzf is not installed"
+    return
+  endif
+
+  let pattern = input("Grep something: ")
+  if empty(pattern)
+    return
+  endif
+
+  let cmd = &grepprg . " -- " . shellescape(pattern) . " | fzf"
+
+  let result = trim(system(cmd))
+
+  if empty(result)
+    return
+  endif
+
+  let parts = split(result, ':', 4)
+
+  if len(parts) < 4
+    return
+  endif
+
+  execute "edit +" . parts[1] . " " . fnameescape(parts[0])
+  call cursor(parts[1], parts[2])
+endfunction
