@@ -68,6 +68,20 @@ endif
 " KEYMAPS
 """""""""""""""""""""
 
+" Better up and down
+nnoremap <expr> j MoveDown()
+xnoremap <expr> j MoveDown()
+nnoremap <expr> <Down> MoveDown()
+xnoremap <expr> <Down> MoveDown()
+
+nnoremap <expr> k MoveUp()
+xnoremap <expr> k MoveUp()
+nnoremap <expr> <Up> MoveUp()
+xnoremap <expr> <Up> MoveUp()
+
+"
+nnoremap Q gqq
+
 " Resource config
 nnoremap <leader>rs :source ~/.vimrc<cr>
 
@@ -423,6 +437,14 @@ function! VisualSelection(direction, extra_filter) range
 
     let @/ = l:pattern
     let @" = l:saved_reg
+endfunction
+
+function! MoveDown()
+  return v:count == 0 ? 'gj' : 'j'
+endfunction
+
+function! MoveUp()
+  return v:count == 0 ? 'gk' : 'k'
 endfunction
 
 " The following functions require some refinement
