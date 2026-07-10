@@ -75,6 +75,7 @@ return {
       window = {
         mappings = {
           ["l"] = "open",
+          ["t"] = "open_tabnew",
           ["h"] = "close_node",
           ["<space>"] = "none",
           ["Y"] = {
