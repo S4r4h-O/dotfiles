@@ -30,6 +30,10 @@ map({ "n", "v" }, "S", '"_S')
 -- ============================================================================
 map("n", "<C-y>", "<cmd>silent! %y<CR>", { desc = "Copy entire file" })
 
+map("n", "<A-t>", function()
+  vim.cmd('normal! diw"_xea p')
+end, { desc = "" })
+
 -- ============================================================================
 -- DUPLICATE LINES
 -- ============================================================================
@@ -75,13 +79,13 @@ map("x", "<A-j>", ":m '>+1<CR>gv=gv", { silent = true })
 map("x", "<A-k>", ":m '<-2<CR>gv=gv", { silent = true })
 
 -- Move characters with Alt-h/l
-map("n", "<A-h>", function()
+map({ "n", "v" }, "<A-h>", function()
   if vim.fn.col(".") > 1 then
     vim.cmd.normal({ "xhP", bang = true })
   end
 end)
 
-map("n", "<A-l>", function()
+map({ "n", "v" }, "<A-l>", function()
   local col = vim.fn.col(".")
   local line = vim.fn.getline(".")
   if col < #line then
@@ -100,6 +104,7 @@ map("i", "<C-j>", "<C-o>o", { desc = "Insert lines below when in insert mode" })
 -- ============================================================================
 -- NAVIGATION
 -- ============================================================================
+
 -- Windows/panels
 map("n", "<C-h>", "<C-w>h")
 map("n", "<C-j>", "<C-w>j")
@@ -114,11 +119,16 @@ map("n", "<leader>qq", function()
   vim.cmd.qa()
 end, { desc = "Close everything and quit" })
 
+-- Bufferline
 -- map("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>")
 -- map("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>")
 --
 -- map("n", "<leader>bp", "<cmd>BufferLineTogglePin<CR>")
 -- map("n", "<leader>bo", "<cmd>BufferLineCloseOthers<CR>")
+
+map("n", "<leader>bd", function()
+  utils.close_all_bufs_but_cur()
+end, { desc = "Close all buffers but the current" })
 
 map("n", "bd", function()
   utils.close_buffer()
@@ -148,22 +158,36 @@ map({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr =
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 
--- Navigate while in insert mode
+-- Navigate while in insert mode - Some of these keybinding don't work
+-- in all terminal emulators
 map("i", "<C-n>", "<C-g>j", { desc = "Go to line below in insert mode" })
 map("i", "<C-p>", "<C-g>k", { desc = "Go to line above in insert mode" })
+
+map("i", "<C-h>", "<C-o>h", { desc = "Go to previous caracter while in insert mode" })
+map("i", "<C-l>", "<C-o>l", { desc = "Go to previous caracter while in insert mode" })
+
+map("i", "<C-,>", "<C-o>b", { desc = "Go to previous word in insert mode" })
+map("i", "<C-.>", "<C-o>w", { desc = "Go to next word in insert mode" })
+map("i", "<C-S->>", "<C-o>W", { desc = "Go to next WORD in insert mode" })
+map("i", "<C-S-<>", "<C-o>B", { desc = "Go to previous WORD in insert mode" })
+
+map("i", "<C-0>", "<C-o>^", { desc = "Go to beginning of line while in insert mode" })
+map("i", "<C-S-$>", "<C-o>$", { desc = "Go the the end of the line while in insert mode" })
+map("i", "<C-c>", '<C-o>"_cc', { desc = "Delete current line in insert mode" })
+
+-- ============================================================================
+-- Command-line
+-- ============================================================================
+
+map("n", "<leader>cw", function()
+  local word = vim.fn.expand("<cword>")
+  vim.fn.feedkeys(":%s/" .. word .. "/")
+end, { desc = "Start search and replace with word under cursor" })
 
 -- ============================================================================
 -- OTHERS
 -- ============================================================================
 map("n", "gl", "$", { noremap = true })
-
-map("n", "<A-l>", function()
-  vim.cmd("normal! xp")
-end)
-
-map("v", "<A-l>", function()
-  vim.cmd("normal! xp")
-end)
 
 map({ "i", "n", "s" }, "<esc>", function()
   vim.cmd("noh")
@@ -190,6 +214,7 @@ end, { desc = "Dynamic grep" })
 map("n", "<C-Space>", "?", { desc = "" })
 
 -- Native terminal call. C-_ is C-/
-vim.keymap.set("n", "<C-_>", function()
-  vim.cmd("botright 10split | terminal")
+vim.keymap.set("n", "<C-\\>", function()
+  vim.cmd("botright 10split")
+  vim.cmd("terminal")
 end, { desc = "Open the terminal" })
