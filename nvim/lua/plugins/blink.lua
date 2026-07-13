@@ -2,13 +2,13 @@ return {
   {
     "saghen/blink.cmp",
     version = "*",
-    event = { "InsertEnter", "CmdlineEnter" },
+    event = { "insertenter", "cmdlineenter" },
     dependencies = {
-      -- "rafamadriz/friendly-snippets",
+      "rafamadriz/friendly-snippets",
     },
     opts = {
       snippets = {
-        preset = "luasnip",
+        -- opts = {},
       },
 
       appearance = {
@@ -16,11 +16,13 @@ return {
       },
 
       completion = {
-        accept = {
-          auto_brackets = {
-            enabled = true,
+        list = {
+          selection = {
+            preselect = false,
+            auto_insert = false,
           },
         },
+
         documentation = {
           auto_show = true,
           auto_show_delay_ms = 200,
@@ -57,7 +59,9 @@ return {
 
       keymap = {
         preset = "enter",
-        ["<C-y>"] = { "select_and_accept" },
+        ["<c-y>"] = { "select_and_accept" },
+        ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
+        ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
       },
     },
   },
