@@ -1,7 +1,5 @@
 vim.g.autoformat = true
 
-vim.opt.shortmess:append("I")
-
 if vim.fn.executable("rg") == 1 then
   vim.opt.grepprg = "rg --vimgrep --no-hidden --no-heading"
 end
@@ -21,16 +19,55 @@ vim.opt.clipboard = "unnamedplus"
 
 vim.opt.laststatus = 2
 
+-- TODO: I think i should move the statusline config
+-- to somewhere else
 local last_key = ""
+
+_G.mode = function()
+  local modes = {
+    n = "󰞷 NORMAL",
+    i = "󰏫 INSERT",
+    v = "󰈈 VISUAL",
+    V = "󰈈 V-LINE",
+    [""] = "󰈈 V-BLOCK",
+    c = "󰘳 COMMAND",
+    R = "󰑙 REPLACE",
+    t = "󰆍 TERMINAL",
+  }
+
+  return modes[vim.fn.mode()] or vim.fn.mode()
+end
 
 _G.last_key = function()
   return last_key
 end
 
+_G.recording = function()
+  local reg = vim.fn.reg_recording()
+  if reg == "" then
+    return ""
+  end
+  return "󰑋 @" .. reg .. " | "
+end
+
 vim.on_key(function(key)
   last_key = vim.fn.keytrans(key)
-  vim.cmd("redrawstatus")
+  vim.schedule(function()
+    vim.cmd("redrawstatus")
+  end)
 end)
+
+vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
+  callback = function()
+    vim.cmd("redrawstatus")
+  end,
+})
+
+vim.api.nvim_create_autocmd("ModeChanged", {
+  callback = function()
+    vim.cmd("redrawstatus")
+  end,
+})
 
 vim.api.nvim_set_hl(0, "MyStatusLeft", {
   link = "StatusLine",
@@ -45,7 +82,9 @@ vim.opt.statusline = table.concat({
   " 󰉋 %{getcwd()} ",
   "%=",
   "%#MyStatusRight#",
-  "󰈙 %t %m%r | ",
+  "%{v:lua.mode()} | ",
+  "%{v:lua.recording()}",
+  "󰈙 %t %m%r| ",
   "%l:%c  ",
   "󰌌 %{v:lua.last_key()} ",
   "%*",
@@ -61,6 +100,7 @@ vim.api.nvim_create_user_command("ReloadConfig", function()
     "config.options",
     "config.keymaps",
     "config.autocmds",
+    "config.utils",
   }
 
   for _, module in ipairs(modules) do
@@ -114,7 +154,6 @@ opt.foldmethod = "indent"
 opt.foldtext = ""
 opt.formatoptions = "jcroqlnt" -- tcqj
 opt.grepformat = "%f:%l:%c:%m"
-opt.grepprg = "rg --vimgrep"
 opt.ignorecase = true -- Ignore case
 opt.inccommand = "nosplit" -- preview incremental substitute
 opt.jumpoptions = "view"
@@ -130,7 +169,7 @@ opt.ruler = false -- Disable the default ruler
 opt.scrolloff = 4 -- Lines of context
 opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
 opt.shiftround = true -- Round indent
-opt.shortmess:append({ W = true, I = true, c = true, C = true })
+opt.shortmess:append({ W = true, I = false, c = true, C = true })
 opt.showmode = false -- Dont show mode since we have a statusline
 opt.sidescrolloff = 8 -- Columns of context
 opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time
@@ -152,6 +191,7 @@ opt.virtualedit = "block" -- Allow cursor to move where there is no text in visu
 opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.winminwidth = 5 -- Minimum window width
 opt.wrap = false -- Disable line wrap
+opt.cmdheight = 0
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
