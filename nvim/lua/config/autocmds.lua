@@ -30,3 +30,39 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
   end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "qf",
+  callback = function(args)
+    local opts = { buffer = args.buf, silent = true, remap = true }
+
+    -- close quickfix
+    vim.keymap.set("n", "q", "<cmd>close<CR>", opts)
+    -- open file in a new buffer, closing quickfix
+    vim.keymap.set("n", "o", "<CR><cmd>cclose<CR>", opts)
+    -- TODO: close quickfix for the splits?
+    -- open file in horizontal split buffer
+    vim.keymap.set("n", "s", "<C-w><CR>", opts)
+    -- open file in vertical split buffer
+    vim.keymap.set("n", "v", "<C-w><C-v><CR>", opts)
+    -- open file in a new tab
+    vim.keymap.set("n", "t", function()
+      -- uncomment if you want to close the quickfix after
+      -- selecting a file
+      -- local qf_win = vim.api.nvim_get_current_win()
+
+      vim.cmd.tabnew()
+      vim.cmd.cc()
+
+      -- if vim.api.nvim_win_is_valid(qf_win) then
+      --   vim.api.nvim_win_call(qf_win, function()
+      --     vim.cmd.cclose()
+      --   end)
+      -- end
+    end, { buffer = args.buf })
+
+    vim.wo.cursorline = true
+    vim.wo.number = false
+    vim.wo.relativenumber = false
+  end,
+})
