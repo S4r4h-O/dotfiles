@@ -62,4 +62,19 @@ M.close_buffer = function()
   vim.api.nvim_buf_delete(bufnr, {})
 end
 
+M.close_all_bufs_but_cur = function()
+  local current = vim.api.nvim_get_current_buf()
+  local bufnrs = {}
+
+  for _, buf in ipairs(vim.fn.getbufinfo()) do
+    if buf.bufnr ~= current then
+      table.insert(bufnrs, buf.bufnr)
+    end
+  end
+
+  if #bufnrs > 0 then
+    vim.cmd.bwipeout(bufnrs)
+  end
+end
+
 return M
