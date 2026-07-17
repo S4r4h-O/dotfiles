@@ -19,15 +19,6 @@ return {
     },
   },
 
-  -- Improves comment syntax, lets Neovim handle multiple
-  -- types of comments for a single language, and relaxes rules
-  -- for uncommenting.
-  {
-    "folke/ts-comments.nvim",
-    event = "VeryLazy",
-    opts = {},
-  },
-
   -- Extends the a & i text objects, this adds the ability to select
   -- arguments, function calls, text within quotes and brackets, and to
   -- repeat those selections to select an outer text object.
@@ -67,20 +58,5 @@ return {
         })
       end
     end,
-  },
-
-  -- Configures LuaLS to support auto-completion and type checking
-  -- while editing your Neovim configuration.
-  {
-    "folke/lazydev.nvim",
-    ft = "lua",
-    cmd = "LazyDev",
-    opts = {
-      library = {
-        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-        { path = "lazy.nvim", words = { "LazyVim" } },
-        { path = "nvim-lspconfig", words = { "lspconfig.settings" } },
-      },
-    },
   },
 }
