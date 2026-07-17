@@ -39,19 +39,27 @@ end, { desc = "" })
 -- ============================================================================
 
 -- Next suggestion
-vim.keymap.set("i", "<Tab>", function()
+vim.keymap.set({ "i", "s" }, "<Tab>", function()
   if vim.fn.pumvisible() == 1 then
     return "<C-n>"
+  elseif vim.snippet.active({ direction = 1 }) then
+    vim.snippet.jump(1)
+    return ""
+  else
+    return "<Tab>"
   end
-  return "<Tab>"
 end, { expr = true })
 
 -- Previous suggestion
-vim.keymap.set("i", "<S-Tab>", function()
+vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
   if vim.fn.pumvisible() == 1 then
     return "<C-p>"
+  elseif vim.snippet.active({ direction = -1 }) then
+    vim.snippet.jump(-1)
+    return ""
+  else
+    return "<S-Tab>"
   end
-  return "<S-Tab>"
 end, { expr = true })
 
 vim.keymap.set("i", "<CR>", function()
@@ -59,7 +67,15 @@ vim.keymap.set("i", "<CR>", function()
 end, { expr = true })
 
 vim.keymap.set("i", "<Esc>", function()
-  return vim.fn.pumvisible() == 1 and "<C-e><Esc>" or "<Esc>"
+  if vim.fn.pumvisible() == 1 then
+    return "<C-e>"
+  end
+
+  if vim.snippet.active() then
+    vim.snippet.stop()
+  end
+
+  return "<Esc>"
 end, { expr = true })
 
 -- ============================================================================
@@ -248,3 +264,9 @@ vim.keymap.set("n", "<C-\\>", function()
   vim.cmd("botright 10split")
   vim.cmd("terminal")
 end, { desc = "Open the terminal" })
+
+map("t", "<Esc><Esc>", "<C-\\><C-n>")
+
+vim.keymap.set("n", "<leader>gg", function()
+  utils.lazygit()
+end, { desc = "Lazygit" })
