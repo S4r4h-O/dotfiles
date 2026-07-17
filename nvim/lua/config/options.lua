@@ -8,6 +8,12 @@ vim.g.lsp_inlay_hints_enabled = false
 
 vim.filetype.add({ extension = { zsh = "zsh" } })
 
+vim.opt.listchars = {
+  tab = "│ ",
+  leadtab = "│ ",
+  leadmultispace = "│ ",
+}
+
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.showcmd = true
@@ -101,6 +107,7 @@ vim.api.nvim_create_user_command("ReloadConfig", function()
     "config.keymaps",
     "config.autocmds",
     "config.utils",
+    "config.lsp",
   }
 
   for _, module in ipairs(modules) do
@@ -191,7 +198,7 @@ opt.virtualedit = "block" -- Allow cursor to move where there is no text in visu
 opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.winminwidth = 5 -- Minimum window width
 opt.wrap = false -- Disable line wrap
-opt.cmdheight = 0
+opt.cmdheight = 1
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
