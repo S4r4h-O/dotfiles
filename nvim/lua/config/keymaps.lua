@@ -35,6 +35,34 @@ map("n", "<A-t>", function()
 end, { desc = "" })
 
 -- ============================================================================
+-- LSP (native)
+-- ============================================================================
+
+-- Next suggestion
+vim.keymap.set("i", "<Tab>", function()
+  if vim.fn.pumvisible() == 1 then
+    return "<C-n>"
+  end
+  return "<Tab>"
+end, { expr = true })
+
+-- Previous suggestion
+vim.keymap.set("i", "<S-Tab>", function()
+  if vim.fn.pumvisible() == 1 then
+    return "<C-p>"
+  end
+  return "<S-Tab>"
+end, { expr = true })
+
+vim.keymap.set("i", "<CR>", function()
+  return vim.fn.pumvisible() == 1 and "<C-y>" or "<CR>"
+end, { expr = true })
+
+vim.keymap.set("i", "<Esc>", function()
+  return vim.fn.pumvisible() == 1 and "<C-e><Esc>" or "<Esc>"
+end, { expr = true })
+
+-- ============================================================================
 -- DUPLICATE LINES
 -- ============================================================================
 map({ "n", "v" }, "<C-d>j", function()
@@ -95,7 +123,8 @@ end)
 
 map({ "n", "i" }, "<leader>ft", "<cmd>FormatToggle<cr>", { desc = "Toggle Format ON/OFF" })
 
-map("n", "Q", "gqq", { desc = "" })
+-- map("n", "Q", "gqq", { desc = "" })
+map("n", "Q", ":.!fold<CR>", { desc = "" })
 
 -- Insert line above/down in INSERT mode
 map("i", "<C-k>", "<C-o>O", { desc = "Insert line above when in insert mode" })
@@ -165,6 +194,7 @@ map("i", "<C-p>", "<C-g>k", { desc = "Go to line above in insert mode" })
 
 map("i", "<C-h>", "<C-o>h", { desc = "Go to previous caracter while in insert mode" })
 map("i", "<C-l>", "<C-o>l", { desc = "Go to previous caracter while in insert mode" })
+map("i", "<C-S-L>", "<C-o>a", { desc = "Go to previous caracter while in insert mode" })
 
 map("i", "<C-,>", "<C-o>b", { desc = "Go to previous word in insert mode" })
 map("i", "<C-.>", "<C-o>w", { desc = "Go to next word in insert mode" })
