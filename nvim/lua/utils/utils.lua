@@ -79,6 +79,36 @@ M.lazygit = function()
   vim.cmd.startinsert()
 end
 
+M.file_exists = function(file)
+  local f = io.open(file, "r")
+  if f then
+    f:close()
+  end
+  return f ~= nil
+end
+
+M.lines_from = function(file)
+  if not M.file_exists(file) then
+    return {}
+  end
+  local lines = {}
+  for line in io.lines(file) do
+    lines[#lines + 1] = line
+  end
+  return lines
+end
+
+M.split_str = function(inputstr, separator)
+  if separator == nil then
+    separator = "%s"
+  end
+  local t = {}
+  for str in string.gmatch(inputstr, "([^" .. separator .. "]+)") do
+    table.insert(t, str)
+  end
+  return t
+end
+
 M.close_buffer = function()
   local bufnr = vim.api.nvim_get_current_buf()
 
