@@ -1,28 +1,28 @@
 return {
 
   -- search/replace in multiple files
-  {
-    "MagicDuck/grug-far.nvim",
-    opts = { headerMaxWidth = 80 },
-    cmd = { "GrugFar", "GrugFarWithin" },
-    keys = {
-      {
-        "<leader>sr",
-        function()
-          local grug = require("grug-far")
-          local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
-          grug.open({
-            transient = true,
-            prefills = {
-              filesFilter = ext and ext ~= "" and "*." .. ext or nil,
-            },
-          })
-        end,
-        mode = { "n", "x" },
-        desc = "Search and Replace",
-      },
-    },
-  },
+  -- {
+  --   "MagicDuck/grug-far.nvim",
+  --   opts = { headerMaxWidth = 80 },
+  --   cmd = { "GrugFar", "GrugFarWithin" },
+  --   keys = {
+  --     {
+  --       "<leader>sr",
+  --       function()
+  --         local grug = require("grug-far")
+  --         local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
+  --         grug.open({
+  --           transient = true,
+  --           prefills = {
+  --             filesFilter = ext and ext ~= "" and "*." .. ext or nil,
+  --           },
+  --         })
+  --       end,
+  --       mode = { "n", "x" },
+  --       desc = "Search and Replace",
+  --     },
+  --   },
+  -- },
   -- which-key helps you remember key bindings by showing a popup
   -- with the active keybindings of the command you started typing.
   {
@@ -49,7 +49,6 @@ return {
           { "[", group = "prev" },
           { "]", group = "next" },
           { "g", group = "goto" },
-          { "gs", group = "surround" },
           { "z", group = "fold" },
           {
             "<leader>b",
@@ -172,7 +171,11 @@ return {
       { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
       { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
       { "<leader>cs", "<cmd>Trouble symbols toggle<cr>", desc = "Symbols (Trouble)" },
-      { "<leader>cS", "<cmd>Trouble lsp toggle<cr>", desc = "LSP references/definitions/... (Trouble)" },
+      {
+        "<leader>cS",
+        "<cmd>Trouble lsp toggle<cr>",
+        desc = "LSP references/definitions/... (Trouble)",
+      },
       { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
       { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
       {
