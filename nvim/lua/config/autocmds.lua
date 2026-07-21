@@ -1,33 +1,33 @@
-local utils = require("config.utils")
+local C = {}
 
-vim.g.autoformat = true
+C.augroup = vim.api.nvim_create_augroup("UserConfig", { clear = true })
 
-vim.api.nvim_create_user_command("FormatToggle", function()
-  vim.g.autoformat = not vim.g.autoformat
-  vim.notify("Autoformat " .. (vim.g.autoformat and "ON" or "OFF"), vim.log.levels.INFO)
-end, {})
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-  group = vim.api.nvim_create_augroup("LspFormatting", { clear = true }),
-  callback = function(args)
-    if not vim.g.autoformat or vim.b.autoformat == false then
-      return
-    end
-    vim.lsp.buf.format({ bufnr = args.buf, timeout_ms = 3000 })
-  end,
-})
+-- vim.api.nvim_create_user_command("FormatToggle", function()
+--   vim.g.autoformat = not vim.g.autoformat
+--   vim.notify("Autoformat " .. (vim.g.autoformat and "ON" or "OFF"), vim.log.levels.INFO)
+-- end, {})
+--
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   group = vim.api.nvim_create_augroup("LspFormatting", { clear = true }),
+--   callback = function(args)
+--     if not vim.g.autoformat or vim.b.autoformat == false then
+--       return
+--     end
+--     vim.lsp.buf.format({ bufnr = args.buf, timeout_ms = 3000 })
+--   end,
+-- })
 
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     local opts = { buffer = args.buf }
 
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-    vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
+    -- I'm using fzf.lua for some of these
+    -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    -- vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+    -- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+    -- vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
+    vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
   end,
 })
 
@@ -66,3 +66,24 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.wo.relativenumber = false
   end,
 })
+
+-- highlight yanked text
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = C.augroup,
+  callback = function()
+    vim.hl.on_yank()
+  end,
+})
+
+-- wrap, linebreak and spellcheck on markdown and text files
+vim.api.nvim_create_autocmd("FileType", {
+  group = C.augroup,
+  pattern = { "markdown", "text", "gitcommit" },
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
+    vim.opt_local.spell = true
+  end,
+})
+
+return C
