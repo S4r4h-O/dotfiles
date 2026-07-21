@@ -1,5 +1,3 @@
-vim.g.autoformat = true
-
 if vim.fn.executable("rg") == 1 then
   vim.opt.grepprg = "rg --vimgrep --no-hidden --no-heading"
 end
@@ -106,8 +104,9 @@ vim.api.nvim_create_user_command("ReloadConfig", function()
     "config.options",
     "config.keymaps",
     "config.autocmds",
-    "config.utils",
-    "config.lsp",
+    "utils.utils",
+    "utils.formatters",
+    "utils.lsp",
   }
 
   for _, module in ipairs(modules) do
