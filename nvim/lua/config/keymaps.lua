@@ -1,4 +1,4 @@
-local utils = require("config.utils")
+local utils = require("utils.utils")
 local map = vim.keymap.set
 
 -- ============================================================================
@@ -19,7 +19,7 @@ map("i", "<A-d>w", '"<Esc>_diw', { desc = "Delete current word in insert mode" }
 map("n", "ciw", '"_ciw', { desc = "Replace current word in normal mode" })
 
 -- Delete all lines
-map("n", "<A-d>a", '"_dG', { noremap = true, desc = "Delete all lines without affecting clipboard" })
+map("n", "<A-d>a", ":%delete _", { noremap = true, desc = "Delete all lines without affecting clipboard" })
 map("n", "<A-d>l", '"_dd', { noremap = true, desc = "Delete current without affecting clipboard" })
 
 map({ "n", "v" }, "s", '"_s')
@@ -30,53 +30,53 @@ map({ "n", "v" }, "S", '"_S')
 -- ============================================================================
 map("n", "<C-y>", "<cmd>silent! %y<CR>", { desc = "Copy entire file" })
 
-map("n", "<A-t>", function()
-  vim.cmd('normal! diw"_xea p')
-end, { desc = "" })
+-- map("n", "<A-t>", function()
+--   vim.cmd('normal! diw"_xea p')
+-- end, { desc = "" })
 
 -- ============================================================================
 -- LSP (native)
 -- ============================================================================
 
 -- Next suggestion
-vim.keymap.set({ "i", "s" }, "<Tab>", function()
-  if vim.fn.pumvisible() == 1 then
-    return "<C-n>"
-  elseif vim.snippet.active({ direction = 1 }) then
-    vim.snippet.jump(1)
-    return ""
-  else
-    return "<Tab>"
-  end
-end, { expr = true })
-
+-- map({ "i", "s" }, "<Tab>", function()
+--   if vim.fn.pumvisible() == 1 then
+--     return "<Down>"
+--   elseif vim.snippet.active({ direction = 1 }) then
+--     vim.snippet.jump(1)
+--     return ""
+--   else
+--     return "<Tab>"
+--   end
+-- end, { expr = true })
+--
 -- Previous suggestion
-vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
-  if vim.fn.pumvisible() == 1 then
-    return "<C-p>"
-  elseif vim.snippet.active({ direction = -1 }) then
-    vim.snippet.jump(-1)
-    return ""
-  else
-    return "<S-Tab>"
-  end
-end, { expr = true })
-
-vim.keymap.set("i", "<CR>", function()
-  return vim.fn.pumvisible() == 1 and "<C-y>" or "<CR>"
-end, { expr = true })
-
-vim.keymap.set("i", "<Esc>", function()
-  if vim.fn.pumvisible() == 1 then
-    return "<C-e>"
-  end
-
-  if vim.snippet.active() then
-    vim.snippet.stop()
-  end
-
-  return "<Esc>"
-end, { expr = true })
+-- map({ "i", "s" }, "<S-Tab>", function()
+--   if vim.fn.pumvisible() == 1 then
+--     return "<Up>"
+--   elseif vim.snippet.active({ direction = -1 }) then
+--     vim.snippet.jump(-1)
+--     return ""
+--   else
+--     return "<S-Tab>"
+--   end
+-- end, { expr = true })
+--
+-- map("i", "<CR>", function()
+--   return vim.fn.pumvisible() == 1 and "<C-y>" or "<CR>"
+-- end, { expr = true })
+--
+-- map("i", "<Esc>", function()
+--   if vim.fn.pumvisible() == 1 then
+--     return "<C-e>"
+--   end
+--
+--   if vim.snippet.active() then
+--     vim.snippet.stop()
+--   end
+--
+--   return "<Esc>"
+-- end, { expr = true })
 
 -- ============================================================================
 -- DUPLICATE LINES
@@ -137,14 +137,15 @@ map({ "n", "v" }, "<A-l>", function()
   end
 end)
 
-map({ "n", "i" }, "<leader>ft", "<cmd>FormatToggle<cr>", { desc = "Toggle Format ON/OFF" })
-
 -- map("n", "Q", "gqq", { desc = "" })
 map("n", "Q", ":.!fold<CR>", { desc = "" })
 
 -- Insert line above/down in INSERT mode
 map("i", "<C-k>", "<C-o>O", { desc = "Insert line above when in insert mode" })
 map("i", "<C-j>", "<C-o>o", { desc = "Insert lines below when in insert mode" })
+
+-- Align
+map("v", "<leader>cc", ":!column -t -o' '<cr>", { desc = "Align columns" })
 
 -- ============================================================================
 -- NAVIGATION
@@ -205,8 +206,17 @@ map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = tru
 
 -- Navigate while in insert mode - Some of these keybinding don't work
 -- in all terminal emulators
-map("i", "<C-n>", "<C-g>j", { desc = "Go to line below in insert mode" })
-map("i", "<C-p>", "<C-g>k", { desc = "Go to line above in insert mode" })
+map("i", "<A-n>", "<C-g>j", { desc = "Go to line below in insert mode" })
+map("i", "<A-p>", "<C-g>k", { desc = "Go to line above in insert mode" })
+
+--TODO: these don't work when the completion menu is visible, and i dont know how to fix it
+map("i", "<C-n>", function()
+  return vim.api.nvim_replace_termcodes("<C-g>j", true, false, true)
+end, { expr = true, noremap = true, desc = "Go to line below in insert mode" })
+
+map("i", "<C-p>", function()
+  return vim.api.nvim_replace_termcodes("<C-g>k", true, false, true)
+end, { expr = true, noremap = true, desc = "Go to line above in insert mode" })
 
 map("i", "<C-h>", "<C-o>h", { desc = "Go to previous caracter while in insert mode" })
 map("i", "<C-l>", "<C-o>l", { desc = "Go to previous caracter while in insert mode" })
@@ -244,10 +254,6 @@ map("n", "<C-p>", "<C-x>", { desc = "Decrement a number" })
 
 map("n", "<C-n>", "<C-a>", { desc = "Increment a number" })
 
-map("n", "<leader>ct", function()
-  utils.toggle()
-end, { desc = "Invert true/false" })
-
 map("n", "<leader>sg", function()
   local pattern = vim.fn.input("Grep something: ")
   if pattern == "" then
@@ -260,13 +266,17 @@ end, { desc = "Dynamic grep" })
 map("n", "<C-Space>", "?", { desc = "" })
 
 -- Native terminal call. C-_ is C-/
-vim.keymap.set("n", "<C-\\>", function()
+map("n", "<C-\\>", function()
   vim.cmd("botright 10split")
   vim.cmd("terminal")
 end, { desc = "Open the terminal" })
 
 map("t", "<Esc><Esc>", "<C-\\><C-n>")
 
-vim.keymap.set("n", "<leader>gg", function()
+map("n", "<leader>gg", function()
   utils.lazygit()
 end, { desc = "Lazygit" })
+
+map("n", "<leader>rr", ":restart<cr>", { desc = "Restart nvim" })
+
+map("n", "<leader>l", ":Lazy<cr>", { desc = "Lazy.nvim" })
