@@ -8,7 +8,7 @@ My daily drive configs. Check [arch-niri](https://codeberg.org/saaaraaah/arch-ni
 
 <img alt="Screenshot from 2026-06-20 11-34-51" src="https://github.com/user-attachments/assets/4ae0c04a-f34e-4f50-90ba-0de568c319ab" />
 
-<img alt="Screenshot from 2026-06-20 11-40-51" src="https://github.com/user-attachments/assets/5220e1c1-6d55-43dc-9d09-0cc917cb88ae" />
+<img alt="Screenshot from 2026-07-21 11-38-36" src="https://github.com/user-attachments/assets/cdc05ed0-468f-47db-bf08-8009328e8be7" />
 
 ## TODOS
 
