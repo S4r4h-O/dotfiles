@@ -1,4 +1,4 @@
-local utils = require("utils.utils")
+local utils = require("features.utils")
 local map = vim.keymap.set
 
 -- ============================================================================
@@ -19,7 +19,7 @@ map("i", "<A-d>w", '"<Esc>_diw', { desc = "Delete current word in insert mode" }
 map("n", "ciw", '"_ciw', { desc = "Replace current word in normal mode" })
 
 -- Delete all lines
-map("n", "<A-d>a", ":%delete _", { noremap = true, desc = "Delete all lines without affecting clipboard" })
+map("n", "<A-d>a", ":%delete _<cr>", { noremap = true, desc = "Delete all lines without affecting clipboard" })
 map("n", "<A-d>l", '"_dd', { noremap = true, desc = "Delete current without affecting clipboard" })
 
 map({ "n", "v" }, "s", '"_s')
@@ -147,6 +147,13 @@ map("i", "<C-j>", "<C-o>o", { desc = "Insert lines below when in insert mode" })
 -- Align
 map("v", "<leader>cc", ":!column -t -o' '<cr>", { desc = "Align columns" })
 
+-- Autopairs
+-- vim.keymap.set("i", "(", "()<Left>")
+-- vim.keymap.set("i", "[", "[]<Left>")
+-- vim.keymap.set("i", "{", "{}<Left>")
+-- vim.keymap.set("i", "\"", "\"\"<Left>")
+-- vim.keymap.set("i", "'", "''<Left>")
+
 -- ============================================================================
 -- NAVIGATION
 -- ============================================================================
@@ -241,6 +248,29 @@ map("n", "<leader>cw", function()
 end, { desc = "Start search and replace with word under cursor" })
 
 -- ============================================================================
+-- DIAGNOSTICS
+-- ============================================================================
+
+vim.keymap.set("n", "<leader>xx", function()
+  vim.diagnostic.setqflist()
+  vim.cmd("copen")
+end, { desc = "Diagnostics (Quickfix)" })
+
+vim.keymap.set("n", "<leader>xX", function()
+  vim.diagnostic.setloclist()
+  vim.cmd("lopen")
+end, { desc = "Buffer Diagnostics (Location List)" })
+
+vim.keymap.set("n", "<leader>xQ", "<cmd>copen<cr>")
+vim.keymap.set("n", "<leader>xL", "<cmd>lopen<cr>")
+
+vim.keymap.set("n", "]q", "<cmd>cnext<cr>")
+vim.keymap.set("n", "[q", "<cmd>cprev<cr>")
+
+vim.keymap.set("n", "<leader>cS", vim.lsp.buf.references, { desc = "LSP references" })
+vim.keymap.set("n", "<leader>cs", vim.lsp.buf.document_symbol, { desc = "Document symbols" })
+
+-- ============================================================================
 -- OTHERS
 -- ============================================================================
 map("n", "gl", "$", { noremap = true })
@@ -280,3 +310,15 @@ end, { desc = "Lazygit" })
 map("n", "<leader>rr", ":restart<cr>", { desc = "Restart nvim" })
 
 map("n", "<leader>l", ":Lazy<cr>", { desc = "Lazy.nvim" })
+
+-- Experimental
+-- map({ "n", "x", "o" }, "ç", function()
+--   local char = vim.fn.input("Search: ")
+--
+--   if char == "" then
+--     return
+--   end
+--
+--   vim.fn.setreg("/", char)
+--   vim.cmd("normal! n")
+-- end, { desc = "Native Flash" })
