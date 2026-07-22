@@ -1,3 +1,5 @@
+local map = vim.keymap.set
+
 local C = {}
 
 C.augroup = vim.api.nvim_create_augroup("UserConfig", { clear = true })
@@ -22,12 +24,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
     local opts = { buffer = args.buf }
 
     -- I'm using fzf.lua for some of these
-    -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-    -- vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-    -- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-    -- vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
-    vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
+    -- map("n", "gd", vim.lsp.buf.definition, opts)
+    -- map("n", "gr", vim.lsp.buf.references, opts)
+    -- map("n", "gD", vim.lsp.buf.declaration, opts)
+    -- map("n", "gi", vim.lsp.buf.implementation, opts)
+    map("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
+    map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
   end,
 })
 
@@ -37,16 +39,16 @@ vim.api.nvim_create_autocmd("FileType", {
     local opts = { buffer = args.buf, silent = true, remap = true }
 
     -- close quickfix
-    vim.keymap.set("n", "q", "<cmd>close<CR>", opts)
+    map("n", "q", "<cmd>close<CR>", opts)
     -- open file in a new buffer, closing quickfix
-    vim.keymap.set("n", "o", "<CR><cmd>cclose<CR>", opts)
+    map("n", "o", "<CR><cmd>cclose<CR>", opts)
     -- TODO: close quickfix for the splits?
     -- open file in horizontal split buffer
-    vim.keymap.set("n", "s", "<C-w><CR>", opts)
+    map("n", "s", "<C-w><CR>", opts)
     -- open file in vertical split buffer
-    vim.keymap.set("n", "v", "<C-w><C-v><CR>", opts)
+    map("n", "v", "<C-w><C-v><CR>", opts)
     -- open file in a new tab
-    vim.keymap.set("n", "t", function()
+    map("n", "t", function()
       -- uncomment if you want to close the quickfix after
       -- selecting a file
       -- local qf_win = vim.api.nvim_get_current_win()
@@ -60,6 +62,30 @@ vim.api.nvim_create_autocmd("FileType", {
       --   end)
       -- end
     end, { buffer = args.buf })
+
+    map("n", "j", "<cmd>cnext<cr><cmd>wincmd p<cr>", {
+      buffer = true,
+      silent = true,
+      desc = "Next Quickfix Item",
+    })
+
+    map("n", "k", "<cmd>cprev<cr><cmd>wincmd p<cr>", {
+      buffer = true,
+      silent = true,
+      desc = "Previous Quickfix Item",
+    })
+
+    map("n", "n", "<cmd>cnext<cr>", {
+      buffer = true,
+      silent = true,
+      desc = "Next Quickfix Item",
+    })
+
+    map("n", "N", "<cmd>cprev<cr>", {
+      buffer = true,
+      silent = true,
+      desc = "Previous Quickfix Item",
+    })
 
     vim.wo.cursorline = true
     vim.wo.number = false
