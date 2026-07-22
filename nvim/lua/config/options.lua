@@ -104,9 +104,9 @@ vim.api.nvim_create_user_command("ReloadConfig", function()
     "config.options",
     "config.keymaps",
     "config.autocmds",
-    "utils.utils",
-    "utils.formatters",
-    "utils.lsp",
+    "features.utils",
+    "features.formatters",
+    "features.lsp",
   }
 
   for _, module in ipairs(modules) do
