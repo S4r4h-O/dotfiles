@@ -1,39 +1,9 @@
 local map = vim.keymap.set
 
-local C = {}
-
-C.augroup = vim.api.nvim_create_augroup("UserConfig", { clear = true })
-
--- vim.api.nvim_create_user_command("FormatToggle", function()
---   vim.g.autoformat = not vim.g.autoformat
---   vim.notify("Autoformat " .. (vim.g.autoformat and "ON" or "OFF"), vim.log.levels.INFO)
--- end, {})
---
--- vim.api.nvim_create_autocmd("BufWritePre", {
---   group = vim.api.nvim_create_augroup("LspFormatting", { clear = true }),
---   callback = function(args)
---     if not vim.g.autoformat or vim.b.autoformat == false then
---       return
---     end
---     vim.lsp.buf.format({ bufnr = args.buf, timeout_ms = 3000 })
---   end,
--- })
-
-vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(args)
-    local opts = { buffer = args.buf }
-
-    -- I'm using fzf.lua for some of these
-    -- map("n", "gd", vim.lsp.buf.definition, opts)
-    -- map("n", "gr", vim.lsp.buf.references, opts)
-    -- map("n", "gD", vim.lsp.buf.declaration, opts)
-    -- map("n", "gi", vim.lsp.buf.implementation, opts)
-    map("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
-    map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
-  end,
-})
+local usr_group = vim.api.nvim_create_augroup("UserConfig", { clear = true })
 
 vim.api.nvim_create_autocmd("FileType", {
+  group = usr_group,
   pattern = "qf",
   callback = function(args)
     local opts = { buffer = args.buf, silent = true, remap = true }
@@ -95,7 +65,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- highlight yanked text
 vim.api.nvim_create_autocmd("TextYankPost", {
-  group = C.augroup,
+  group = usr_group,
   callback = function()
     vim.hl.on_yank()
   end,
@@ -103,7 +73,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- wrap, linebreak and spellcheck on markdown and text files
 vim.api.nvim_create_autocmd("FileType", {
-  group = C.augroup,
+  group = usr_group,
   pattern = { "markdown", "text", "gitcommit" },
   callback = function()
     vim.opt_local.wrap = true
@@ -112,4 +82,48 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-return C
+vim.api.nvim_create_autocmd("FileType", {
+  group = usr_group,
+  pattern = {
+    "help",
+    "man",
+    "lspinfo",
+    "checkhealth",
+    "qf",
+  },
+  callback = function(args)
+    map("n", "q", "<cmd>close<CR>", {
+      buffer = args.buf,
+      silent = true,
+    })
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = usr_group,
+  pattern = "netrw",
+  callback = function(ev)
+    local opts = {
+      buffer = ev.buf,
+      remap = true,
+    }
+
+    map("n", "<C-h>", "<C-w>h", opts)
+    map("n", "<C-l>", "<C-w>l", opts)
+    map("n", "<C-j>", "<C-w>j", opts)
+    map("n", "<C-k>", "<C-w>k", opts)
+
+    map("n", "<Tab>", "mf", opts) -- mark file
+    map("n", "yy", "mc", opts) -- copy marked file
+    map("n", "M", "mm", opts) -- move marked file
+    map("n", "yp", function()
+      local path = vim.fn.expand("<cfile>")
+      vim.fn.setreg("+", vim.fn.fnamemodify(path, ":p"))
+    end, { noremap = true, buffer = ev.buf, desc = "Copy file path" })
+
+    map("n", ".", "gh", opts) -- toggle hidden
+
+    map("n", "<C-a>", "%", opts) -- create file
+    map("n", "<C-d>", "d", opts) -- create dir
+  end,
+})
