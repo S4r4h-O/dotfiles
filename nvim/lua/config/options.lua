@@ -137,6 +137,7 @@ vim.g.deprecation_warnings = false
 vim.g.trouble_lualine = true
 
 local opt = vim.opt
+local g = vim.g
 
 opt.autowrite = true -- Enable auto write
 -- only set clipboard if not in ssh, to make sure the OSC 52
@@ -201,3 +202,25 @@ opt.cmdheight = 1
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
+
+-- netrw
+-- vim.g.netrw_liststyle = 0 -- Thin listing
+-- vim.g.netrw_liststyle = 1 -- Long listing
+-- vim.g.netrw_liststyle = 2 -- Wide listing
+g.netrw_liststyle = 3 -- Tree view
+
+g.netrw_browse_split = 0  -- default
+-- g.netrw_browse_split = 1  -- horizontal split
+-- g.netrw_browse_split = 2  -- vertical split
+-- g.netrw_browse_split = 3  -- new tab
+-- g.netrw_browse_split = 4  -- use previous windows
+
+g.netrw_keepdir = 0
+g.netrw_localcopydircmd = "cp -r"
+g.netrw_altv = 1
+g.netrw_alto = 1
+
+vim.g.netrw_liststyle = 3
+vim.g.netrw_sort_sequence = [[[\/]$,\*]]
+vim.g.netrw_preview = 1
+-- g.netrw_banner=0
