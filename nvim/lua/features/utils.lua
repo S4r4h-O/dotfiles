@@ -39,17 +39,6 @@ M.duplicate_with_gap = function(direction)
   end
 end
 
-M.toggle = function()
-  local word = vim.fn.expand("<cword>")
-  if word == "true" then
-    vim.cmd("normal! ciwfalse")
-  elseif word == "false" then
-    vim.cmd("normal! ciwtrue")
-  else
-    return
-  end
-end
-
 M.lazygit = function()
   local buf = vim.api.nvim_create_buf(false, true)
 
@@ -134,6 +123,17 @@ M.close_all_bufs_but_cur = function()
   if #bufnrs > 0 then
     vim.cmd.bwipeout(bufnrs)
   end
+end
+
+M.toggle_netrw = function()
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    if vim.bo[buf].filetype == "netrw" then
+      vim.api.nvim_win_close(win, false)
+      return
+    end
+  end
+  vim.cmd("30Lex")
 end
 
 return M
