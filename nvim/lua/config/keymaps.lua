@@ -79,6 +79,14 @@ map("n", "<C-y>", "<cmd>silent! %y<CR>", { desc = "Copy entire file" })
 -- end, { expr = true })
 
 -- ============================================================================
+-- netrw
+-- ============================================================================
+
+map("n", "<leader>ne", function()
+  utils.toggle_netrw()
+end, { desc = "Toggle netrw" })
+
+-- ============================================================================
 -- DUPLICATE LINES
 -- ============================================================================
 map({ "n", "v" }, "<C-d>j", function()
@@ -148,11 +156,11 @@ map("i", "<C-j>", "<C-o>o", { desc = "Insert lines below when in insert mode" })
 map("v", "<leader>cc", ":!column -t -o' '<cr>", { desc = "Align columns" })
 
 -- Autopairs
--- vim.keymap.set("i", "(", "()<Left>")
--- vim.keymap.set("i", "[", "[]<Left>")
--- vim.keymap.set("i", "{", "{}<Left>")
--- vim.keymap.set("i", "\"", "\"\"<Left>")
--- vim.keymap.set("i", "'", "''<Left>")
+-- map("i", "(", "()<Left>")
+-- map("i", "[", "[]<Left>")
+-- map("i", "{", "{}<Left>")
+-- map("i", "\"", "\"\"<Left>")
+-- map("i", "'", "''<Left>")
 
 -- ============================================================================
 -- NAVIGATION
@@ -251,24 +259,24 @@ end, { desc = "Start search and replace with word under cursor" })
 -- DIAGNOSTICS
 -- ============================================================================
 
-vim.keymap.set("n", "<leader>xx", function()
+map("n", "<leader>xx", function()
   vim.diagnostic.setqflist()
   vim.cmd("copen")
 end, { desc = "Diagnostics (Quickfix)" })
 
-vim.keymap.set("n", "<leader>xX", function()
+map("n", "<leader>xX", function()
   vim.diagnostic.setloclist()
   vim.cmd("lopen")
 end, { desc = "Buffer Diagnostics (Location List)" })
 
-vim.keymap.set("n", "<leader>xQ", "<cmd>copen<cr>")
-vim.keymap.set("n", "<leader>xL", "<cmd>lopen<cr>")
+map("n", "<leader>xQ", "<cmd>copen<cr>", { desc = "Open quick fix list" })
+map("n", "<leader>xL", "<cmd>lopen<cr>", { desc = "Open locationo list" })
 
-vim.keymap.set("n", "]q", "<cmd>cnext<cr>")
-vim.keymap.set("n", "[q", "<cmd>cprev<cr>")
+map("n", "]q", "<cmd>cnext<cr>", { desc = "Next quickfix item" })
+map("n", "[q", "<cmd>cprev<cr>", { desc = "Previous quickfix item" })
 
-vim.keymap.set("n", "<leader>cS", vim.lsp.buf.references, { desc = "LSP references" })
-vim.keymap.set("n", "<leader>cs", vim.lsp.buf.document_symbol, { desc = "Document symbols" })
+map("n", "<leader>cS", vim.lsp.buf.references, { desc = "LSP references" })
+map("n", "<leader>cs", vim.lsp.buf.document_symbol, { desc = "Document symbols" })
 
 -- ============================================================================
 -- OTHERS
@@ -307,18 +315,6 @@ map("n", "<leader>gg", function()
   utils.lazygit()
 end, { desc = "Lazygit" })
 
-map("n", "<leader>rr", ":restart<cr>", { desc = "Restart nvim" })
+map("n", "<leader>qr", ":restart<cr>", { desc = "Restart nvim" })
 
 map("n", "<leader>l", ":Lazy<cr>", { desc = "Lazy.nvim" })
-
--- Experimental
--- map({ "n", "x", "o" }, "ç", function()
---   local char = vim.fn.input("Search: ")
---
---   if char == "" then
---     return
---   end
---
---   vim.fn.setreg("/", char)
---   vim.cmd("normal! n")
--- end, { desc = "Native Flash" })
