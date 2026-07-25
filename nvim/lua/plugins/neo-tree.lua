@@ -78,11 +78,12 @@ return {
           ["t"] = "open_tabnew",
           ["h"] = "close_node",
           ["<space>"] = "none",
-          ["Y"] = {
+          ["p"] = {
             function(state)
               local node = state.tree:get_node()
               local path = node:get_id()
               vim.fn.setreg("+", path, "c")
+              vim.notify("Copied " .. path, vim.log.levels.INFO)
             end,
             desc = "Copy Path to Clipboard",
           },
