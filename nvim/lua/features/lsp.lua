@@ -1,7 +1,8 @@
-local acmds = require("config.autocmds")
 -- ============================================================================
 -- LSP, Linting, Formatting & Completion
 -- ============================================================================
+local lsp_group = vim.api.nvim_create_augroup("LSPConfig", { clear = true })
+
 vim.opt.complete:append({ "o", "." })
 vim.opt.completeopt = { "menuone", "noselect", "popup", "fuzzy" }
 vim.o.pumheight = 10
@@ -197,4 +198,35 @@ for name, config in pairs(servers) do
   vim.lsp.enable(name)
 end
 
-vim.api.nvim_create_autocmd("LspAttach", { group = acmds.augroup, callback = lsp_on_attach })
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = lsp_group,
+  callback = lsp_on_attach,
+})
+
+-- vim.api.nvim_create_user_command("FormatToggle", function()
+--   vim.g.autoformat = not vim.g.autoformat
+--   vim.notify("Autoformat " .. (vim.g.autoformat and "ON" or "OFF"), vim.log.levels.INFO)
+-- end, {})
+--
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   group = vim.api.nvim_create_augroup("LspFormatting", { clear = true }),
+--   callback = function(args)
+--     if not vim.g.autoformat or vim.b.autoformat == false then
+--       return
+--     end
+--     vim.lsp.buf.format({ bufnr = args.buf, timeout_ms = 3000 })
+--   end,
+-- })
+
+-- vim.api.nvim_create_autocmd("LspAttach", {
+--   callback = function(args)
+--     local opts = { buffer = args.buf }
+--
+--     I'm using fzf.lua for some of these
+--     map("n", "gd", vim.lsp.buf.definition, opts)
+--     map("n", "gr", vim.lsp.buf.references, opts)
+--     map("n", "gD", vim.lsp.buf.declaration, opts)
+--     map("n", "gi", vim.lsp.buf.implementation, opts)
+--
+--   end,
+-- })
