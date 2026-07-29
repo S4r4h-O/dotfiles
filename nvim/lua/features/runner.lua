@@ -92,6 +92,7 @@ vim.api.nvim_create_user_command("StopRun", function()
     return
   end
   vim.fn.jobstop(state.job)
+  state.job = nil
 end, {})
 
 vim.api.nvim_create_user_command("RestartRun", function()
