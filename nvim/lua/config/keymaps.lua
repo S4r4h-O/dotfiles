@@ -8,19 +8,19 @@ local map = vim.keymap.set
 -- Delete lines (Alt+d followed by d)
 map("n", "<A-d>d", '"_dd', { noremap = true, desc = "Delete current line in normal mode" })
 map("v", "<A-d>d", '"_d', { noremap = true, desc = "Delete current line in visual mode" })
-map("i", "<A-d>d", '"<Esc>_dd', { noremap = true, desc = "Delete current line in insert mode" })
+map("i", "<A-d>d", '<Esc>"_ddi', { noremap = true, desc = "Delete current line in insert mode" })
+map("n", "<A-d>l", '"_dd', { noremap = true, desc = "Delete current line without affecting clipboard" })
 
 -- Delete word (Alt+d followed by w)
 map("n", "<A-d>w", '"_diw', { desc = "Delete current word in normal mode" })
 map("v", "<A-d>w", '"_d"', { desc = "Delete selected word in visual mode" })
-map("i", "<A-d>w", '"<Esc>_diw', { desc = "Delete current word in insert mode" })
+map("i", "<A-d>w", '<Esc>"_diwi', { desc = "Delete current word in insert mode" })
 
--- Replace word
-map("n", "ciw", '"_ciw', { desc = "Replace current word in normal mode" })
+-- Change without yank
+vim.keymap.set("n", "c", '"_c', { noremap = true, desc = "Change without yank" })
 
 -- Delete all lines
 map("n", "<A-d>a", ":%delete _<cr>", { noremap = true, desc = "Delete all lines without affecting clipboard" })
-map("n", "<A-d>l", '"_dd', { noremap = true, desc = "Delete current without affecting clipboard" })
 
 map({ "n", "v" }, "s", '"_s')
 map({ "n", "v" }, "S", '"_S')
@@ -28,11 +28,8 @@ map({ "n", "v" }, "S", '"_S')
 -- ============================================================================
 -- COPY/PASTE OPERATIONS
 -- ============================================================================
-map("n", "<C-y>", "<cmd>silent! %y<CR>", { desc = "Copy entire file" })
 
--- map("n", "<A-t>", function()
---   vim.cmd('normal! diw"_xea p')
--- end, { desc = "" })
+map("n", "<C-y>", "<cmd>silent! %y<CR>", { desc = "Copy entire file" })
 
 -- ============================================================================
 -- LSP (native)
@@ -233,18 +230,19 @@ map("i", "<C-p>", function()
   return vim.api.nvim_replace_termcodes("<C-g>k", true, false, true)
 end, { expr = true, noremap = true, desc = "Go to line above in insert mode" })
 
-map("i", "<C-h>", "<C-o>h", { desc = "Go to previous caracter while in insert mode" })
-map("i", "<C-l>", "<C-o>l", { desc = "Go to previous caracter while in insert mode" })
-map("i", "<C-S-L>", "<C-o>a", { desc = "Go to previous caracter while in insert mode" })
+map("i", "<C-h>", "<Left>", { desc = "Move left across line in insert mode" })
+map("i", "<C-l>", "<Right>", { desc = "Move right across line in insert mode" })
 
-map("i", "<C-,>", "<C-o>b", { desc = "Go to previous word in insert mode" })
-map("i", "<C-.>", "<C-o>w", { desc = "Go to next word in insert mode" })
-map("i", "<C-S->>", "<C-o>W", { desc = "Go to next WORD in insert mode" })
-map("i", "<C-S-<>", "<C-o>B", { desc = "Go to previous WORD in insert mode" })
+-- Different terminal emulators have different codes
+map("i", "<M-,>", "<C-o>b", { desc = "Go to previous word in insert mode" })
+map("i", "<M-.>", "<C-o>w", { desc = "Go to next word in insert mode" })
+map("i", "<M-[>", "<C-o>W", { desc = "Go to next WORD in insert mode" })
+map("i", "<M-]", "<C-o>B", { desc = "Go to previous WORD in insert mode" })
 
-map("i", "<C-0>", "<C-o>^", { desc = "Go to beginning of line while in insert mode" })
-map("i", "<C-S-$>", "<C-o>$", { desc = "Go the the end of the line while in insert mode" })
+map("i", "<M-0>", "<C-o>^", { desc = "Go to beginning of line while in insert mode" })
+map("i", "<M-4>", "<C-o>$", { desc = "Go the the end of the line while in insert mode" })
 map("i", "<C-c>", '<C-o>"_cc', { desc = "Delete current line in insert mode" })
+map("i", "<C-d>", '<C-o>"_D', { desc = "Delete current line from cursor position" })
 
 -- ============================================================================
 -- Command-line
@@ -270,7 +268,7 @@ map("n", "<leader>xX", function()
 end, { desc = "Buffer Diagnostics (Location List)" })
 
 map("n", "<leader>xQ", "<cmd>copen<cr>", { desc = "Open quick fix list" })
-map("n", "<leader>xL", "<cmd>lopen<cr>", { desc = "Open locationo list" })
+map("n", "<leader>xL", "<cmd>lopen<cr>", { desc = "Open location list" })
 
 map("n", "]q", "<cmd>cnext<cr>", { desc = "Next quickfix item" })
 map("n", "[q", "<cmd>cprev<cr>", { desc = "Previous quickfix item" })
@@ -281,6 +279,7 @@ map("n", "<leader>cs", vim.lsp.buf.document_symbol, { desc = "Document symbols" 
 -- ============================================================================
 -- OTHERS
 -- ============================================================================
+
 map("n", "gl", "$", { noremap = true })
 
 map({ "i", "n", "s" }, "<esc>", function()
@@ -318,3 +317,30 @@ end, { desc = "Lazygit" })
 map("n", "<leader>qr", ":restart<cr>", { desc = "Restart nvim" })
 
 map("n", "<leader>l", ":Lazy<cr>", { desc = "Lazy.nvim" })
+
+map("n", "<leader>h", ":h ", { desc = "Help" })
+
+-- Experimental
+-- map({ "n", "x", "o" }, "ç", function()
+--   local char = vim.fn.input("Search: ")
+--
+--   if char == "" then
+--     return
+--   end
+--
+--   vim.fn.setreg("/", char)
+--   vim.cmd("normal! n")
+-- end, { desc = "Native 'Flash'" })
+
+-- map("n", "<leader>ç", function()
+--   vim.ui.select(vim.fn.getbufinfo({ buflisted = 1 }), {
+--     prompt = "Buffers",
+--     format_item = function(buf)
+--       return string.format("%d %s", buf.bufnr, vim.fn.fnamemodify(buf.name, ":~:."))
+--     end,
+--   }, function(choice)
+--     if choice then
+--       vim.cmd.buffer(choice.bufnr)
+--     end
+--   end)
+-- end)
