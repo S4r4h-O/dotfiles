@@ -78,7 +78,7 @@ return {
           ["t"] = "open_tabnew",
           ["h"] = "close_node",
           ["<space>"] = "none",
-          ["p"] = {
+          ["<C-y>"] = {
             function(state)
               local node = state.tree:get_node()
               local path = node:get_id()
