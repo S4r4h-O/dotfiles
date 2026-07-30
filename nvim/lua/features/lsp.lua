@@ -78,7 +78,7 @@ local function lsp_on_attach(ev)
   local bufnr = ev.buf
   local opts = { noremap = true, silent = true, buffer = bufnr }
 
-  map("n", "<leader>gS", function()
+  vim.keymap.set("n", "<leader>gS", function()
     vim.cmd("vsplit")
     vim.lsp.buf.definition()
   end, {
@@ -87,49 +87,49 @@ local function lsp_on_attach(ev)
     buffer = bufnr,
   })
 
-  map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
-  map("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename symbol" })
+  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
+  vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename symbol" })
   map("n", "<leader>ch", "<cmd>checkhealth vim.lsp<cr>", { desc = "Checkhealth LSP" })
 
-  map("n", "<leader>D", function()
+  vim.keymap.set("n", "<leader>D", function()
     vim.diagnostic.open_float({ scope = "line" })
   end, { desc = "Line diagnostics" })
 
-  map("n", "<leader>d", function()
+  vim.keymap.set("n", "<leader>d", function()
     vim.diagnostic.open_float({ scope = "cursor" })
   end, { desc = "Cursor diagnostics" })
 
-  map("n", "<leader>nd", function()
+  vim.keymap.set("n", "<leader>nd", function()
     vim.diagnostic.jump({ count = 1 })
   end, { desc = "Next diagnostic" })
 
-  map("n", "<leader>pd", function()
+  vim.keymap.set("n", "<leader>pd", function()
     vim.diagnostic.jump({ count = -1 })
   end, { desc = "Previous diagnostic" })
 
-  map("n", "K", vim.lsp.buf.hover, {
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, {
     desc = "Hover documentation",
   })
 
   -- Already defined in fzf.lua, but I'll keep it here
-  -- map("n", "<leader>fr", function()
+  -- vim.keymap.set("n", "<leader>fr", function()
   --   require("fzf-lua").lsp_references()
   -- end, { desc = "LSP References" })
-  -- map("n", "<leader>ft", function()
+  -- vim.keymap.set("n", "<leader>ft", function()
   --   require("fzf-lua").lsp_typedefs()
   -- end, { desc = "LSP typedefs" })
-  -- map("n", "<leader>fs", function()
+  -- vim.keymap.set("n", "<leader>fs", function()
   --   require("fzf-lua").lsp_document_symbols()
   -- end, { desc = "LSP document symbols" })
-  -- map("n", "<leader>fw", function()
+  -- vim.keymap.set("n", "<leader>fw", function()
   --   require("fzf-lua").lsp_workspace_symbols()
   -- end, { desc = "LSP workspace symbols" })
-  -- map("n", "<leader>fi", function()
+  -- vim.keymap.set("n", "<leader>fi", function()
   --   require("fzf-lua").lsp_implementations()
   -- end, { desc = "LSP implementations" })
 
   if client:supports_method("textDocument/codeAction", bufnr) then
-    map("n", "<leader>co", function()
+    vim.keymap.set("n", "<leader>co", function()
       vim.lsp.buf.code_action({
         context = { only = { "source.organizeImports" }, diagnostics = {} },
         apply = true,
@@ -197,6 +197,18 @@ local servers = {
   --   cmd = { "ty", "server" },
   --   fyletypes = { "py", "pyi" }
   -- }
+
+  typescript = {
+    cmd = { "typescript-language-server", "--stdio" },
+    filetypes = { "typescript", "javascript" },
+    root_markers = { ".git", "node_modules", "packages.json" },
+  },
+
+  rust = {
+    cmd = { "rust-analyzer" },
+    filetypes = { "rust" },
+    root_markers = { "Cargo.toml", "rust-project.json" },
+  },
 }
 
 for name, config in pairs(servers) do
@@ -230,16 +242,7 @@ vim.api.nvim_create_autocmd("FileType", {
     local jdtls = vim.env.HOME .. "/.local/share/jdtls"
     local config = jdtls .. "/config_linux"
     local launcher = vim.fn.glob(jdtls .. "/plugins/org.eclipse.equinox.launcher_*.jar")
-    -- TODO: use JAVA_HOME?
     local java = vim.env.JAVA_HOME .. "/bin/java"
-
-    -- if not root then
-    --   root = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(args.buf), ":h")
-    -- end
-    --
-    -- local workspace = vim.fn.stdpath("state")
-    --   .. "/jdtls/"
-    --   .. vim.fn.fnamemodify(root, ":t")
 
     local workspace
     local name = vim.fn.fnamemodify(root, ":t")
