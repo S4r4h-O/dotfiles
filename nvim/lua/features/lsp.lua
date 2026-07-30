@@ -81,7 +81,11 @@ local function lsp_on_attach(ev)
   map("n", "<leader>gS", function()
     vim.cmd("vsplit")
     vim.lsp.buf.definition()
-  end, { desc = "Jump to definition and split buffer", silent = true, buffer = bufnr })
+  end, {
+    desc = "Jump to definition and split buffer",
+    silent = true,
+    buffer = bufnr,
+  })
 
   map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
   map("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename symbol" })
@@ -203,6 +207,75 @@ end
 vim.api.nvim_create_autocmd("LspAttach", {
   group = lsp_group,
   callback = lsp_on_attach,
+})
+
+-- Java config
+-- jdtls should be located in ~/.local/share (e.g ~/.local/share/jdtls)
+local function _java_root(bufnr)
+  return vim.fs.root(bufnr, {
+    "pom.xml",
+    "build.gradle",
+    "build.gradle.kts",
+    "settings.gradle",
+    "settings.gradle.kts",
+    ".git",
+    ".mvn",
+  })
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "java",
+  callback = function(args)
+    local root = _java_root(args.buf)
+    local jdtls = vim.env.HOME .. "/.local/share/jdtls"
+    local config = jdtls .. "/config_linux"
+    local launcher = vim.fn.glob(jdtls .. "/plugins/org.eclipse.equinox.launcher_*.jar")
+    -- TODO: use JAVA_HOME?
+    local java = vim.env.JAVA_HOME .. "/bin/java"
+
+    -- if not root then
+    --   root = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(args.buf), ":h")
+    -- end
+    --
+    -- local workspace = vim.fn.stdpath("state")
+    --   .. "/jdtls/"
+    --   .. vim.fn.fnamemodify(root, ":t")
+
+    local workspace
+    local name = vim.fn.fnamemodify(root, ":t")
+    local id = vim.fn.sha256(root):sub(1, 8)
+
+    if root then
+      workspace = vim.fn.stdpath("state") .. "/jdtls/" .. name .. "-" .. id
+    else
+      -- Better for scripts
+      workspace = vim.fn.stdpath("state") .. "/jdtls-scratch"
+    end
+
+    local client = vim.lsp.start({
+      name = "jdtls",
+      cmd = {
+        "java",
+        "-Declipse.application=org.eclipse.jdt.ls.core.id1",
+        "-Dosgi.bundles.defaultStartLevel=4",
+        "-Declipse.product=org.eclipse.jdt.ls.core.product",
+        "-Dlog.level=ALL",
+        "-Xmx1G",
+        "--add-modules=ALL-SYSTEM",
+        "--add-opens=java.base/java.util=ALL-UNNAMED",
+        "--add-opens=java.base/java.lang=ALL-UNNAMED",
+        "-jar",
+        launcher,
+        "-configuration",
+        config,
+        "-data",
+        workspace,
+      },
+      root_dir = root,
+    })
+
+    vim.notify(("jdtls started (id=%s)"):format(client), vim.log.levels.INFO)
+  end,
 })
 
 -- vim.api.nvim_create_user_command("FormatToggle", function()
