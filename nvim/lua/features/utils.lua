@@ -136,4 +136,13 @@ M.toggle_netrw = function()
   vim.cmd("30Lex")
 end
 
+M.table_contains = function(table, val)
+  for _, value in pairs(table) do
+    if value == val then
+      return true
+    end
+  end
+  return false
+end
+
 return M
