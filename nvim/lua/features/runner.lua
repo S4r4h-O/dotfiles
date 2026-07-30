@@ -7,7 +7,7 @@ local file_runners = {
   end,
 
   lua = function(fname)
-    return { "lua", fname }
+    return { "luajit", fname }
   end,
 
   javascript = function(fname)
