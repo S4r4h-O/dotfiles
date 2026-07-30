@@ -17,7 +17,7 @@ map("v", "<A-d>w", '"_d"', { desc = "Delete selected word in visual mode" })
 map("i", "<A-d>w", '<Esc>"_diwi', { desc = "Delete current word in insert mode" })
 
 -- Change without yank
-vim.keymap.set("n", "c", '"_c', { noremap = true, desc = "Change without yank" })
+map("n", "c", '"_c', { noremap = true, desc = "Change without yank" })
 
 -- Delete all lines
 map("n", "<A-d>a", ":%delete _<cr>", { noremap = true, desc = "Delete all lines without affecting clipboard" })
@@ -86,6 +86,7 @@ end, { desc = "Toggle netrw" })
 -- ============================================================================
 -- DUPLICATE LINES
 -- ============================================================================
+
 map({ "n", "v" }, "<C-d>j", function()
   utils.duplicate_with_gap("down")
 end, { desc = "Duplicate line/selection below (with gap)" })
