@@ -60,17 +60,17 @@ vim.api.nvim_create_user_command("Run", function()
     return
   end
 
-  local runbuf = vim.api.nvim_create_buf(true, true)
+  state.buf = vim.api.nvim_create_buf(true, true)
 
-  vim.api.nvim_buf_set_name(runbuf, "Runner")
+  vim.api.nvim_buf_set_name(state.buf, "Runner")
 
   vim.cmd(":vsplit")
   state.win = vim.api.nvim_get_current_win()
-  vim.api.nvim_win_set_buf(state.win, runbuf)
+  vim.api.nvim_win_set_buf(state.win, state.buf)
 
-  vim.bo[runbuf].modifiable = false
-  vim.bo[runbuf].bufhidden  = "wipe"
-  vim.bo[runbuf].swapfile   = false
+  vim.bo[state.buf].modifiable = false
+  vim.bo[state.buf].bufhidden = "wipe"
+  vim.bo[state.buf].swapfile = false
 
   state.job = vim.fn.jobstart(runner(fname), {
     term = true,
