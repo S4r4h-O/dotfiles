@@ -84,7 +84,7 @@ map("n", "<leader>ne", function()
 end, { desc = "Toggle netrw" })
 
 -- ============================================================================
--- DUPLICATE LINES
+-- EDITING
 -- ============================================================================
 
 map({ "n", "v" }, "<C-d>j", function()
@@ -94,27 +94,6 @@ end, { desc = "Duplicate line/selection below (with gap)" })
 map({ "n", "v" }, "<C-d>k", function()
   utils.duplicate_with_gap("up")
 end, { desc = "Duplicate line/selection above (with gap)" })
-
--- ============================================================================
--- FILE OPERATIONS
--- ============================================================================
--- Select all
-map("n", "<A-a>", function()
-  vim.cmd("normal! ggVG")
-end, { desc = "Select all" })
-
--- Save file
-map({ "i", "x", "n", "s" }, "<C-s>", function()
-  vim.cmd("silent! write")
-  if vim.bo.modified then
-    vim.notify("Failed to save", vim.log.levels.ERROR)
-  else
-    vim.notify("File saved", vim.log.levels.INFO)
-  end
-end, { desc = "Save file" })
-
--- Remap VIM 0 to first non-blank character
-map({ "n", "x", "o" }, "0", "^")
 
 -- Move lines with Alt-j/k
 map("n", "<A-j>", ":m .+1<CR>==", { silent = true })
@@ -154,11 +133,53 @@ map("i", "<C-j>", "<C-o>o", { desc = "Insert lines below when in insert mode" })
 map("v", "<leader>cc", ":!column -t -o' '<cr>", { desc = "Align columns" })
 
 -- Autopairs
--- map("i", "(", "()<Left>")
--- map("i", "[", "[]<Left>")
--- map("i", "{", "{}<Left>")
--- map("i", "\"", "\"\"<Left>")
--- map("i", "'", "''<Left>")
+map("i", "(", "()<Left>")
+map("i", "[", "[]<Left>")
+map("i", "{", "{}<Left>")
+map("i", '"', '""<Left>')
+map("i", "'", "''<Left>")
+
+local lpairs = { "(", "[", "{", '"', "'" }
+local rpairs = { ")", "]", "}", '"', "'" }
+
+map("i", "<BS>", function()
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local line = vim.api.nvim_get_current_line()
+
+  local lchar = line:sub(col, col)
+  local rchar = line:sub(col + 1, col + 1)
+
+  if utils.table_contains(lpairs, lchar) and utils.table_contains(rpairs, rchar) then
+    vim.schedule(function()
+      vim.api.nvim_buf_set_text(0, row - 1, col - 1, row - 1, col + 1, {})
+    end)
+    return ""
+  end
+
+  return "<BS>"
+end, { noremap = true, expr = true })
+
+-- ============================================================================
+-- FILE OPERATIONS
+-- ============================================================================
+
+-- Select all
+map("n", "<A-a>", function()
+  vim.cmd("normal! ggVG")
+end, { desc = "Select all" })
+
+-- Save file
+map({ "i", "x", "n", "s" }, "<C-s>", function()
+  vim.cmd("silent! write")
+  if vim.bo.modified then
+    vim.notify("Failed to save", vim.log.levels.ERROR)
+  else
+    vim.notify("File saved", vim.log.levels.INFO)
+  end
+end, { desc = "Save file" })
+
+-- Remap VIM 0 to first non-blank character
+map({ "n", "x", "o" }, "0", "^")
 
 -- ============================================================================
 -- NAVIGATION
@@ -244,6 +265,8 @@ map("i", "<M-0>", "<C-o>^", { desc = "Go to beginning of line while in insert mo
 map("i", "<M-4>", "<C-o>$", { desc = "Go the the end of the line while in insert mode" })
 map("i", "<C-c>", '<C-o>"_cc', { desc = "Delete current line in insert mode" })
 map("i", "<C-d>", '<C-o>"_D', { desc = "Delete current line from cursor position" })
+
+map("i", "<M-p>", "<C-o>P", { desc = "Paste while in insert mode" })
 
 -- ============================================================================
 -- Command-line
