@@ -54,6 +54,16 @@ _G.recording = function()
   return "󰑋 @" .. reg .. " | "
 end
 
+_G.curr_lsp = function()
+  local clients = vim.lsp.get_clients({ bufnr = 0 })
+  local client = clients[1]
+
+  if not client then
+    return ""
+  end
+  return "󰒋 " .. client.name .. " | "
+end
+
 vim.on_key(function(key)
   last_key = vim.fn.keytrans(key)
   vim.schedule(function()
@@ -88,6 +98,7 @@ vim.opt.statusline = table.concat({
   "%#MyStatusRight#",
   "%{v:lua.mode()} | ",
   "%{v:lua.recording()}",
+  "%{v:lua.curr_lsp()}",
   "󰈙 %t %m%r| ",
   "%l:%c  ",
   "󰌌 %{v:lua.last_key()} ",
@@ -198,6 +209,7 @@ opt.virtualedit = "block" -- Allow cursor to move where there is no text in visu
 opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.winminwidth = 5 -- Minimum window width
 opt.wrap = false -- Disable line wrap
+-- opt.whichwrap:append({ "h", "l", "<", ">" })
 opt.cmdheight = 1
 
 -- Fix markdown indentation settings
@@ -209,7 +221,7 @@ vim.g.markdown_recommended_style = 0
 -- vim.g.netrw_liststyle = 2 -- Wide listing
 g.netrw_liststyle = 3 -- Tree view
 
-g.netrw_browse_split = 0  -- default
+g.netrw_browse_split = 0 -- default
 -- g.netrw_browse_split = 1  -- horizontal split
 -- g.netrw_browse_split = 2  -- vertical split
 -- g.netrw_browse_split = 3  -- new tab
