@@ -81,6 +81,13 @@ local function format_buffer(bufnr)
     return
   end
 
+  local ftname = formatter[1][1]
+
+  if not vim.fn.executable(ftname) then
+    vim.notify(("Formatter '%s' not found"):format(ftname), vim.log.levels.WARN)
+    return
+  end
+
   local filename = vim.api.nvim_buf_get_name(bufnr)
 
   if filename == "" then
@@ -126,10 +133,3 @@ end, {
   desc = "Format current buffer",
   silent = true,
 })
-
--- vim.api.nvim_create_autocmd("BufWritePost", {
---   group = vim.api.nvim_create_augroup("CustomFormatter", { clear = true }),
---   callback = function(args)
---     format_buffer(args.buf)
---   end,
--- })
