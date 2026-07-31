@@ -206,11 +206,11 @@ end, { desc = "Close everything and quit" })
 -- map("n", "<leader>bp", "<cmd>BufferLineTogglePin<CR>")
 -- map("n", "<leader>bo", "<cmd>BufferLineCloseOthers<CR>")
 
-map("n", "<leader>bd", function()
+map("n", "<leader>bD", function()
   utils.close_all_bufs_but_cur()
 end, { desc = "Close all buffers but the current" })
 
-map("n", "bd", function()
+map("n", "<leader>bd", function()
   utils.close_buffer()
 end, { desc = "Delete Buffer" })
 
@@ -261,8 +261,8 @@ map("i", "<M-.>", "<C-o>w", { desc = "Go to next word in insert mode" })
 map("i", "<M-[>", "<C-o>W", { desc = "Go to next WORD in insert mode" })
 map("i", "<M-]", "<C-o>B", { desc = "Go to previous WORD in insert mode" })
 
-map("i", "<M-0>", "<C-o>^", { desc = "Go to beginning of line while in insert mode" })
-map("i", "<M-4>", "<C-o>$", { desc = "Go the the end of the line while in insert mode" })
+map("i", "<M-1>", "<C-o>^", { desc = "Go to beginning of line while in insert mode" })
+map("i", "<M-0>", "<C-o>$", { desc = "Go the the end of the line while in insert mode" })
 map("i", "<C-c>", '<C-o>"_cc', { desc = "Delete current line in insert mode" })
 map("i", "<C-d>", '<C-o>"_D', { desc = "Delete current line from cursor position" })
 
