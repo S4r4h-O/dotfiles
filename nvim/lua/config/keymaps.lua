@@ -76,14 +76,6 @@ map("n", "<C-y>", "<cmd>silent! %y<CR>", { desc = "Copy entire file" })
 -- end, { expr = true })
 
 -- ============================================================================
--- netrw
--- ============================================================================
-
-map("n", "<leader>ne", function()
-  utils.toggle_netrw()
-end, { desc = "Toggle netrw" })
-
--- ============================================================================
 -- EDITING
 -- ============================================================================
 
@@ -139,8 +131,13 @@ map("i", "{", "{}<Left>")
 map("i", '"', '""<Left>')
 map("i", "'", "''<Left>")
 
-local lpairs = { "(", "[", "{", '"', "'" }
-local rpairs = { ")", "]", "}", '"', "'" }
+local _pairs = {
+  ["("] = ")",
+  ["["] = "]",
+  ["{"] = "}",
+  ['"'] = '"',
+  ["'"] = "'",
+}
 
 map("i", "<BS>", function()
   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -149,11 +146,11 @@ map("i", "<BS>", function()
   local lchar = line:sub(col, col)
   local rchar = line:sub(col + 1, col + 1)
 
-  if utils.table_contains(lpairs, lchar) and utils.table_contains(rpairs, rchar) then
+  if utils.table_contains_k(_pairs, lchar) and _pairs[lchar] == rchar then
     vim.schedule(function()
       vim.api.nvim_buf_set_text(0, row - 1, col - 1, row - 1, col + 1, {})
     end)
-    return ""
+    return
   end
 
   return "<BS>"
@@ -259,7 +256,7 @@ map("i", "<C-l>", "<Right>", { desc = "Move right across line in insert mode" })
 map("i", "<M-,>", "<C-o>b", { desc = "Go to previous word in insert mode" })
 map("i", "<M-.>", "<C-o>w", { desc = "Go to next word in insert mode" })
 map("i", "<M-[>", "<C-o>W", { desc = "Go to next WORD in insert mode" })
-map("i", "<M-]", "<C-o>B", { desc = "Go to previous WORD in insert mode" })
+map("i", "<M-]>", "<C-o>B", { desc = "Go to previous WORD in insert mode" })
 
 map("i", "<M-1>", "<C-o>^", { desc = "Go to beginning of line while in insert mode" })
 map("i", "<M-0>", "<C-o>$", { desc = "Go the the end of the line while in insert mode" })
@@ -368,3 +365,5 @@ map("n", "<leader>h", ":h ", { desc = "Help" })
 --     end
 --   end)
 -- end)
+
+map("n", "ç", utils.get_abs_path, {})
