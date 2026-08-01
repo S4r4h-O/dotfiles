@@ -133,12 +133,41 @@ M.toggle_netrw = function()
       return
     end
   end
-  vim.cmd("30Lex")
+  vim.cmd("cd %:p:h | if expand('%') !=# '' | w | endif | 30Lex")
 end
 
-M.table_contains = function(table, val)
+M.get_abs_path = function()
+  local path = vim.fn.expand("<cfile>")
+
+  if path == "" then
+    return
+  end
+
+  if vim.fn.isdirectory(path) then
+    print("Path is dir")
+  else
+    print("Path is not dir")
+  end
+
+  return vim.fs.abspath(path)
+end
+
+M.get_file_dir = function(path)
+  return path:match("(.*/)")
+end
+
+M.table_contains_v = function(table, val)
   for _, value in pairs(table) do
     if value == val then
+      return true
+    end
+  end
+  return false
+end
+
+M.table_contains_k = function(table, key)
+  for k, _ in pairs(table) do
+    if k == key then
       return true
     end
   end
