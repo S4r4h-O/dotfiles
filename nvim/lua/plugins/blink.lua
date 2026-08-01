@@ -26,6 +26,8 @@ return {
       default = {
         "lsp",
         "snippets",
+        "buffer",
+        "path"
       },
       providers = {
         lsp = {
