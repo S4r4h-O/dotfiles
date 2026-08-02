@@ -68,8 +68,6 @@ local function refresh_netrw()
   toggle_netrw()
 end
 
-map("n", "<leader>ç", toggle_netrw, {})
-
 map("n", "<leader>ne", function()
   utils.toggle_netrw()
 end, { desc = "Toggle netrw" })
