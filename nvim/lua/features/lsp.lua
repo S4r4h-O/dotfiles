@@ -227,6 +227,7 @@ local function _java_root(bufnr)
   return vim.fs.root(bufnr, {
     "pom.xml",
     "build.gradle",
+    "gradlew",
     "build.gradle.kts",
     "settings.gradle",
     "settings.gradle.kts",
@@ -242,13 +243,21 @@ vim.api.nvim_create_autocmd("FileType", {
     local jdtls = vim.env.HOME .. "/.local/share/jdtls"
     local config = jdtls .. "/config_linux"
     local launcher = vim.fn.glob(jdtls .. "/plugins/org.eclipse.equinox.launcher_*.jar")
-    local java = vim.env.JAVA_HOME .. "/bin/java"
+
+    local JAVA_ENV = vim.env.JAVA_HOME
+    if JAVA_ENV == nil then
+      vim.notify("JAVA_ENV was not found, fix it first", vim.log.levels.ERROR)
+      return
+    end
+
+    local java = JAVA_ENV .. "/bin/java"
 
     local workspace
-    local name = vim.fn.fnamemodify(root, ":t")
-    local id = vim.fn.sha256(root):sub(1, 8)
 
     if root then
+      local name = vim.fn.fnamemodify(root, ":t")
+      local id = vim.fn.sha256(root):sub(1, 8)
+
       workspace = vim.fn.stdpath("state") .. "/jdtls/" .. name .. "-" .. id
     else
       -- Better for scripts
@@ -258,7 +267,7 @@ vim.api.nvim_create_autocmd("FileType", {
     local client = vim.lsp.start({
       name = "jdtls",
       cmd = {
-        "java",
+        java,
         "-Declipse.application=org.eclipse.jdt.ls.core.id1",
         "-Dosgi.bundles.defaultStartLevel=4",
         "-Declipse.product=org.eclipse.jdt.ls.core.product",
