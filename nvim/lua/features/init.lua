@@ -1,0 +1,6 @@
+require("features.formatters")
+require("features.projects")
+require("features.runner")
+require("features.misc")
+require("features.term")
+require("features.lsp")
