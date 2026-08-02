@@ -1,0 +1,139 @@
+local M = {}
+
+local java_root = vim.fs.root(vim.api.nvim_get_current_buf(), {
+  "pom.xml",
+  "build.gradle",
+  "gradlew",
+  "build.gradle.kts",
+  "settings.gradle",
+  "settings.gradle.kts",
+  ".git",
+  ".mvn",
+})
+
+-- TODOS:
+-- Build java project
+-- Run java proj
+-- Run java tests
+-- Debug?
+-- Create files (Class, Enums, Records, etc)
+-- Create spring proj?
+
+M.create_java_project = function()
+  local choices = { "Maven", "Gradle" }
+  vim.ui.select(choices, {
+    prompt = "Select a build system: ",
+  }, function(item, idx)
+    if item == "" or item == nil then
+      return
+    end
+
+    local group_id = vim.fn.input("Group ID: ")
+    local artf_id = vim.fn.input("Project Name: ")
+
+    if group_id == "" or artf_id == "" then
+      return
+    end
+
+    local root = vim.fn.getcwd()
+
+    local cmd
+    if item == "Maven" then
+      cmd = {
+        "mvn",
+        "archetype:generate",
+        "-DgroupId=" .. group_id,
+        "-DartifactId=" .. artf_id,
+        "-DinteractiveMode=false",
+      }
+    elseif item == "Gradle" then
+      local projpath = vim.fs.joinpath(root, artf_id)
+      local result = vim.fn.mkdir(projpath)
+      if result ~= 1 then
+        vim.notify("Failed to create project " .. artf_id .. " folder", vim.log.levels.ERROR)
+        return
+      end
+      vim.cmd("silent! cd " .. projpath)
+      cmd = {
+        "gradle",
+        "init",
+        "--type",
+        "java-application",
+        "--dsl",
+        "kotlin",
+        "--project-name",
+        artf_id,
+        "--package",
+        group_id,
+      }
+    end
+
+    local buf = vim.api.nvim_create_buf(false, false)
+
+    vim.api.nvim_buf_set_name(buf, item)
+
+    local width = math.floor(vim.o.columns * 0.8)
+    local height = math.floor(vim.o.lines * 0.8)
+
+    vim.api.nvim_open_win(buf, true, {
+      relative = "editor",
+      width = width,
+      height = height,
+      row = math.floor((vim.o.lines - height) / 2),
+      col = math.floor((vim.o.columns - width) / 2),
+      border = "rounded",
+    })
+
+    vim.fn.jobstart(cmd, {
+      term = true,
+      on_exit = function(_, exit_code)
+        if exit_code ~= 0 then
+          vim.notify("Project creation failed", vim.log.levels.ERROR)
+          return
+        end
+
+        if item == "Maven" then
+          vim.cmd("silent! cd " .. vim.fn.fnameescape(artf_id))
+        end
+
+        vim.api.nvim_buf_delete(buf, {})
+      end,
+    })
+  end)
+end
+
+-- Still needs a lot of work to function like Intellij's
+M.create_java_file = function()
+  local pkg_line = vim.fn.search("^package\\s\\+\\zs[[:alnum:]_.]\\+", "nW")
+  if pkg_line > 0 then
+    local line = vim.api.nvim_buf_get_lines(0, pkg_line - 1, pkg_line, false)[1]
+    local pkg = string.match(line, "^package%s+(%w+.*);$")
+
+    local classes = { "Class", "Enum", "Interface", "Record", "Annotation", "Exception" }
+    vim.ui.select(classes, { prompt = "New Java Class" }, function(item, idx)
+      if item == "" or item == nil then
+        return
+      end
+      local classname = vim.fn.input("Enter class name: ")
+      if classname == "" then
+        return
+      end
+
+      local path = vim.fs.dirname(vim.fn.expand("%"))
+
+      local data = {
+        ("package %s;"):format(pkg),
+        "",
+        ("public %s %s {}"):format(string.lower(item), classname),
+      }
+      local res = vim.fn.writefile(data, vim.fs.joinpath(path, classname .. ".java"))
+      if res < 0 then
+        vim.notify("Failed to create file", vim.log.levels.ERROR)
+        return
+      end
+      vim.notify(("%s %s created"):format(item, classname), vim.log.levels.INFO)
+    end)
+  end
+end
+
+return M
