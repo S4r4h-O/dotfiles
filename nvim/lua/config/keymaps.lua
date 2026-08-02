@@ -365,5 +365,3 @@ map("n", "<leader>h", ":h ", { desc = "Help" })
 --     end
 --   end)
 -- end)
-
-map("n", "ç", utils.get_abs_path, {})
