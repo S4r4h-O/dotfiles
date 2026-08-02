@@ -112,12 +112,11 @@ vim.opt.smartcase = true
 
 vim.api.nvim_create_user_command("ReloadConfig", function()
   local modules = {
+    "config.autocmds",
     "config.options",
     "config.keymaps",
-    "config.autocmds",
-    "features.utils",
-    "features.formatters",
-    "features.lsp",
+    "config.ui",
+    "features",
   }
 
   for _, module in ipairs(modules) do
