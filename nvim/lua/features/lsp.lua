@@ -76,9 +76,9 @@ local function lsp_on_attach(ev)
   end
 
   local bufnr = ev.buf
-  local opts = { noremap = true, silent = true, buffer = bufnr }
+  local opmts = { noremap = true, silent = true, buffer = bufnr }
 
-  vim.keymap.set("n", "<leader>gS", function()
+  map("n", "<leader>gS", function()
     vim.cmd("vsplit")
     vim.lsp.buf.definition()
   end, {
@@ -87,49 +87,41 @@ local function lsp_on_attach(ev)
     buffer = bufnr,
   })
 
-  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
-  vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename symbol" })
+  map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
+  map("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename symbol" })
   map("n", "<leader>ch", "<cmd>checkhealth vim.lsp<cr>", { desc = "Checkhealth LSP" })
 
-  vim.keymap.set("n", "<leader>D", function()
+  map("n", "<leader>D", function()
     vim.diagnostic.open_float({ scope = "line" })
   end, { desc = "Line diagnostics" })
 
-  vim.keymap.set("n", "<leader>d", function()
+  map("n", "<leader>d", function()
     vim.diagnostic.open_float({ scope = "cursor" })
   end, { desc = "Cursor diagnostics" })
 
-  vim.keymap.set("n", "<leader>nd", function()
-    vim.diagnostic.jump({ count = 1 })
-  end, { desc = "Next diagnostic" })
-
-  vim.keymap.set("n", "<leader>pd", function()
-    vim.diagnostic.jump({ count = -1 })
-  end, { desc = "Previous diagnostic" })
-
-  vim.keymap.set("n", "K", vim.lsp.buf.hover, {
+  map("n", "K", vim.lsp.buf.hover, {
     desc = "Hover documentation",
   })
 
   -- Already defined in fzf.lua, but I'll keep it here
-  -- vim.keymap.set("n", "<leader>fr", function()
+  -- map("n", "<leader>fr", function()
   --   require("fzf-lua").lsp_references()
   -- end, { desc = "LSP References" })
-  -- vim.keymap.set("n", "<leader>ft", function()
+  -- map("n", "<leader>ft", function()
   --   require("fzf-lua").lsp_typedefs()
   -- end, { desc = "LSP typedefs" })
-  -- vim.keymap.set("n", "<leader>fs", function()
+  -- map("n", "<leader>fs", function()
   --   require("fzf-lua").lsp_document_symbols()
   -- end, { desc = "LSP document symbols" })
-  -- vim.keymap.set("n", "<leader>fw", function()
+  -- map("n", "<leader>fw", function()
   --   require("fzf-lua").lsp_workspace_symbols()
   -- end, { desc = "LSP workspace symbols" })
-  -- vim.keymap.set("n", "<leader>fi", function()
+  -- map("n", "<leader>fi", function()
   --   require("fzf-lua").lsp_implementations()
   -- end, { desc = "LSP implementations" })
 
   if client:supports_method("textDocument/codeAction", bufnr) then
-    vim.keymap.set("n", "<leader>co", function()
+    map("n", "<leader>co", function()
       vim.lsp.buf.code_action({
         context = { only = { "source.organizeImports" }, diagnostics = {} },
         apply = true,
@@ -204,6 +196,12 @@ local servers = {
     root_markers = { ".git", "node_modules", "packages.json" },
   },
 
+  kotlin = {
+    cmd = { "intellij-server", "--stdio" },
+    filetypes = { "kotlin" },
+    root_markers = { ".git", "pom.xml" },
+  },
+
   rust = {
     cmd = { "rust-analyzer" },
     filetypes = { "rust" },
@@ -219,6 +217,19 @@ end
 vim.api.nvim_create_autocmd("LspAttach", {
   group = lsp_group,
   callback = lsp_on_attach,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "qf",
+  callback = function(args)
+    map("n", "<C-[>", function()
+      vim.diagnostic.jump({ count = 1 })
+    end, { desc = "Next diagnostic", buffer = args.buf })
+
+    map("n", "<C-]>", function()
+      vim.diagnostic.jump({ count = -1 })
+    end, { desc = "Previous diagnostic", buffer = args.buf })
+  end,
 })
 
 -- Java config
@@ -239,10 +250,10 @@ end
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "java",
   callback = function(args)
-    local root = _java_root(args.buf)
-    local jdtls = vim.env.HOME .. "/.local/share/jdtls"
-    local config = jdtls .. "/config_linux"
-    local launcher = vim.fn.glob(jdtls .. "/plugins/org.eclipse.equinox.launcher_*.jar")
+    local root     = _java_root(args.buf)
+    local jdtls    = vim.env.HOME         .. "/.local/share/jdtls"
+    local config   = jdtls                .. "/config_linux"
+    local launcher = vim.fn.glob(jdtls    .. "/plugins/org.eclipse.equinox.launcher_*.jar")
 
     local JAVA_ENV = vim.env.JAVA_HOME
     if JAVA_ENV == nil then
