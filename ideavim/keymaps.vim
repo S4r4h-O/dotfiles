@@ -10,7 +10,42 @@ nnoremap <Esc> :nohlsearch<CR>
 xnoremap < <gv
 xnoremap > >gv
 nnoremap gl $
-vnoremap gl $
+noremap 0 ^
+
+" New line up/down in insert mode
+inoremap <C-j> <C-o>o
+inoremap <C-k> <C-o>O
+
+" Go to line above/below in insert mode
+inoremap <C-n> <C-o>j
+inoremap <C-p> <C-o>k
+"inoremap <C-n> <Action>(EditorDown)
+"inoremap <C-p> <Action>(EditorUp)
+
+" Paste while in insert mode
+inoremap <M-p> <C-o>P
+
+"
+nnoremap c "_c
+nnoremap C "_C
+
+" Left Right in insert mode without arrow keys
+inoremap <C-h> <Left>
+inoremap <C-l> <Right>
+
+" Jump words in insert mode
+inoremap <M-.> <C-o>w
+inoremap <M-,> <C-o>b
+inoremap <M-[> <C-o>W
+inoremap <M-]> <C-o>B
+
+"
+inoremap <C-d> <C-o>"_cc
+inoremap <M-1> <C-o>^
+inoremap <M-0> <C-o>$
+
+" AceJump
+nmap \ <Action>(AceAction)
 
 " Window navigation
 nnoremap <C-h> <C-w>h
@@ -21,17 +56,21 @@ nnoremap <C-k> <C-w>k
 " Terminal
 nmap <leader>tt <Action>(ActivateTerminalToolWindow)
 
-" Buffer/tab navigation (LazyVim parity: H/L)
+" Buffer/tab navigation
 nmap H <Action>(PreviousTab)
 nmap L <Action>(NextTab)
 nmap [b <Action>(PreviousTab)
 nmap ]b <Action>(NextTab)
 
-" Line movement (LazyVim parity: Alt+j/k)
+" Line movement
 nmap <A-j> <Action>(MoveLineDown)
 nmap <A-k> <Action>(MoveLineUp)
+imap <A-j> <Action>(MoveLineDown)
+imap <A-k> <Action>(MoveLineUp)
 xmap <A-j> <Action>(MoveStatementDown)
 xmap <A-k> <Action>(MoveStatementUp)
+nnoremap <C-l> xp
+nnoremap <C-h> xhP
 
 " File operations
 nnoremap <A-a> ggVG
@@ -44,7 +83,7 @@ nnoremap <C-y> "+yy
 xnoremap <C-y> "+y
 inoremap <C-y> <Esc>"+yyi
 
-" Delete operations (LazyVim parity: Black hole register)
+" Delete operations
 nnoremap <A-d>d "_dd
 xnoremap <A-d>d "_d
 inoremap <A-d>d <Esc>"_ddi
@@ -52,22 +91,26 @@ nnoremap <A-d>w "_diw
 xnoremap <A-d>w "_d
 nnoremap <A-l>  "_dG
 nnoremap ciw "_ciw
+nnoremap S "_S
+nnoremap s "_s
 
 " Duplicate lines
 nmap <C-d> <Action>(EditorDuplicate)
 xmap <C-d> <Action>(EditorDuplicate)
 
 " Flash
-nmap s <Action>(flash.search)
-xmap s <Action>(flash.search)
+" nmap s <Action>(flash.search)
+" xmap s <Action>(flash.search)
 " nmap S <Action>(flash.search)
 " xmap S <Action>(flash.search)
-omap r <Action>(flash.remote)
+" omap r <Action>(flash.remote)
+nmap zs <Action>(flash.search)
+xmap zs <Action>(flash.search)
 
-" EasyMotion
-map <leader>j <Plug>(easymotion-j)
-map <leader>k <Plug>(easymotion-k)
-map <leader>J <Plug>(easymotion-bd-jk)
+nmap zS <Action>(flash.treesitter)
+xmap zS <Action>(flash.treesitter)
+
+omap zr <Action>(flash.remote)
 
 " Surround
 nmap gsa ys
@@ -115,7 +158,7 @@ nmap [e <Action>(GotoPreviousError)
 nmap ]w <Action>(GotoNextWarning)
 nmap [w <Action>(GotoPreviousWarning)
 
-" Git Hunks (LazyVim parity: [h / ]h)
+" Git Hunks
 nmap ]h <Action>(VcsShowNextChangeMarker)
 nmap [h <Action>(VcsShowPrevChangeMarker)
 
@@ -130,24 +173,24 @@ nmap <leader>fe      <Action>(ActivateProjectToolWindow)
 nmap <leader>fE      <Action>(SelectInProjectView)
 
 " Leader: search (<leader>s)
-nmap <leader>/  <Action>(FindInPath)
-nmap <leader>sg <Action>(FindInPath)
-nmap <leader>sG <Action>(FindInPath)
-nmap <leader>ss <Action>(GotoSymbol)
-nmap <leader>sS <Action>(GotoClass)
-nmap <leader>sr <Action>(ReplaceInPath)
-nmap <leader>sd <Action>(ShowErrorDescription)
-nmap <leader>sk <Action>(GotoAction)
-nmap <leader>sn <Action>(ActivateNotificationsToolWindow)
+nmap  <leader>/   <Action>(FindInPath)
+nmap  <leader>sg  <Action>(FindInPath)
+nmap  <leader>sG  <Action>(FindInPath)
+nmap  <leader>ss  <Action>(GotoSymbol)
+nmap  <leader>sS  <Action>(GotoClass)
+nmap  <leader>sr  <Action>(ReplaceInPath)
+nmap  <leader>sd  <Action>(ShowErrorDescription)
+nmap  <leader>sk  <Action>(GotoAction)
+nmap  <leader>sn  <Action>(ActivateNotificationsToolWindow)
 
-" Leader: buffers (<leader>b / <leader>,)
-nmap <leader>,  <Action>(Switcher)
-nmap <leader>fb <Action>(Switcher)
-nmap <leader>bb <Action>(Switcher)
-nmap <leader>bd <Action>(CloseContent)
-nmap <leader>bD <Action>(CloseAllEditors)
-nmap <leader>bo <Action>(CloseAllEditorsButActive)
-nmap <leader>bp <Action>(PinActiveTabToggle)
+"     Leader:     buffers
+nmap  <leader>,   <Action>(Switcher)
+nmap  <leader>fb  <Action>(Switcher)
+nmap  <leader>bb  <Action>(Switcher)
+nmap  <leader>bd          <Action>(CloseContent)
+nmap  <leader>bD  <Action>(CloseAllEditors)
+nmap  <leader>bo  <Action>(CloseAllEditorsButActive)
+nmap  <leader>bp  <Action>(PinActiveTabToggle)
 
 " Leader: windows (<leader>w)
 nmap <leader>ww    <Action>(NextSplitter)
@@ -215,11 +258,13 @@ nmap <leader>xt <Action>(ActivateTODOToolWindow)
 nmap <leader>xT <Action>(ActivateTODOToolWindow)
 
 " Leader: run (<leader>r)
-nmap <leader>rr <Action>(RunClass)
-nmap <leader>rR <Action>(Run)
+nmap <leader>rR <Action>(RunClass)
+nmap <leader>rr <Action>(Run)
 nmap <leader>rl <Action>(Rerun)
 nmap <leader>rs <Action>(Stop)
 nmap <leader>ro <Action>(ActivateRunToolWindow)
+nmap <leader>rc <Action>(ChooseRunConfiguration)
+"nmap <leader>rc <Action>(RedesignedRunConfigurationSelector)
 
 " Leader: debug (<leader>d)
 nmap <leader>db <Action>(ToggleLineBreakpoint)
