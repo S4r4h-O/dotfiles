@@ -18,6 +18,7 @@ map("i", "<A-d>w", '<Esc>"_diwi', { desc = "Delete current word in insert mode" 
 
 -- Change without yank
 map("n", "c", '"_c', { noremap = true, desc = "Change without yank" })
+map("n", "C", '"_C', { noremap = true, desc = "Change without yank" })
 
 -- Delete all lines
 map("n", "<A-d>a", ":%delete _<cr>", { noremap = true, desc = "Delete all lines without affecting clipboard" })
@@ -130,6 +131,7 @@ map("i", "[", "[]<Left>")
 map("i", "{", "{}<Left>")
 map("i", '"', '""<Left>')
 map("i", "'", "''<Left>")
+map("i", "`", "``<Left>")
 
 local _pairs = {
   ["("] = ")",
@@ -137,6 +139,8 @@ local _pairs = {
   ["{"] = "}",
   ['"'] = '"',
   ["'"] = "'",
+  ["<"] = ">",
+  ["`"] = "`",
 }
 
 map("i", "<BS>", function()
@@ -182,6 +186,14 @@ map({ "n", "x", "o" }, "0", "^")
 -- NAVIGATION
 -- ============================================================================
 
+-- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
+map("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
+map("x", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
+map("o", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
+map("n", "N", "'nN'[v:searchforward].'zv'", { expr = true, desc = "Prev Search Result" })
+map("x", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result" })
+map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result" })
+
 -- Windows/panels
 map("n", "<C-h>", "<C-w>h")
 map("n", "<C-j>", "<C-w>j")
@@ -206,6 +218,10 @@ end, { desc = "Close everything and quit" })
 map("n", "<leader>bD", function()
   utils.close_all_bufs_but_cur()
 end, { desc = "Close all buffers but the current" })
+
+map("n", "<leader>ba", function()
+  utils.close_all_bufs()
+end, { desc = "Close all buffers" })
 
 map("n", "<leader>bd", function()
   utils.close_buffer()
@@ -278,6 +294,7 @@ end, { desc = "Start search and replace with word under cursor" })
 -- DIAGNOSTICS
 -- ============================================================================
 
+--TODO: should move these to ../features/lsp.lua
 map("n", "<leader>xx", function()
   vim.diagnostic.setqflist()
   vim.cmd("copen")
