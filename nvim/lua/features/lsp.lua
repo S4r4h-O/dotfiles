@@ -78,6 +78,51 @@ local function lsp_on_attach(ev)
   local bufnr = ev.buf
   local opmts = { noremap = true, silent = true, buffer = bufnr }
 
+  map("n", "gs", function()
+    vim.cmd("vsplit")
+    vim.lsp.buf.definition()
+  end, {
+    desc = "Jump to definition and split buffer",
+    silent = true,
+    buffer = bufnr,
+  })
+
+  map("n", "<leader>gd", function()
+    local win = vim.api.nvim_get_current_win()
+    local curr_lsp = vim.lsp.get_clients({ bufnr = 0 })[1]
+
+    local params = vim.lsp.util.make_position_params(win, curr_lsp.offset_encoding)
+
+    vim.lsp.buf_request(0, "textDocument/definition", params, function(_, result)
+      if not result then
+        return
+      end
+
+      local location
+
+      if vim.islist(result) then
+        -- TODO: should list all the results so the user can pick one?
+        location = result[1]
+      else
+        location = result
+      end
+
+      if not location then
+        return
+      end
+
+      vim.cmd("tabnew")
+
+      vim.lsp.util.show_document(location, client.offset_encoding, {
+        focus = true,
+      })
+    end)
+  end, {
+    desc = "Jump to definition in a new tab",
+    silent = true,
+    buffer = bufnr,
+  })
+
   map("n", "<leader>gS", function()
     vim.cmd("vsplit")
     vim.lsp.buf.definition()
@@ -207,6 +252,13 @@ local servers = {
     filetypes = { "rust" },
     root_markers = { "Cargo.toml", "rust-project.json" },
   },
+
+  postgres = {
+    cmd = { "postgres-language-server", "lsp-proxy" },
+    filetypes = { "sql" },
+    root_markers = { "postgres-language-server.jsonc" },
+    -- workspace_required = true,
+  },
 }
 
 for name, config in pairs(servers) do
@@ -234,6 +286,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Java config
 -- jdtls should be located in ~/.local/share (e.g ~/.local/share/jdtls)
+-- TODO: move to ./projects/java.lua?
 local function _java_root(bufnr)
   return vim.fs.root(bufnr, {
     "pom.xml",
@@ -250,10 +303,10 @@ end
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "java",
   callback = function(args)
-    local root     = _java_root(args.buf)
-    local jdtls    = vim.env.HOME         .. "/.local/share/jdtls"
-    local config   = jdtls                .. "/config_linux"
-    local launcher = vim.fn.glob(jdtls    .. "/plugins/org.eclipse.equinox.launcher_*.jar")
+    local root = _java_root(args.buf)
+    local jdtls = vim.env.HOME .. "/.local/share/jdtls"
+    local config = jdtls .. "/config_linux"
+    local launcher = vim.fn.glob(jdtls .. "/plugins/org.eclipse.equinox.launcher_*.jar")
 
     local JAVA_ENV = vim.env.JAVA_HOME
     if JAVA_ENV == nil then
@@ -266,13 +319,14 @@ vim.api.nvim_create_autocmd("FileType", {
     local workspace
 
     if root then
+      root = vim.fs.normalize(root)
       local name = vim.fn.fnamemodify(root, ":t")
       local id = vim.fn.sha256(root):sub(1, 8)
 
-      workspace = vim.fn.stdpath("state") .. "/jdtls/" .. name .. "-" .. id
+      workspace = vim.fn.stdpath("cache") .. "/jdtls/" .. name .. "-" .. id
     else
       -- Better for scripts
-      workspace = vim.fn.stdpath("state") .. "/jdtls-scratch"
+      workspace = vim.fn.stdpath("cache") .. "/jdtls-scratch"
     end
 
     local client = vim.lsp.start({
@@ -282,9 +336,13 @@ vim.api.nvim_create_autocmd("FileType", {
         "-Declipse.application=org.eclipse.jdt.ls.core.id1",
         "-Dosgi.bundles.defaultStartLevel=4",
         "-Declipse.product=org.eclipse.jdt.ls.core.product",
-        "-Dlog.level=ALL",
-        "-Xmx1G",
-        "--add-modules=ALL-SYSTEM",
+        "-Dlog.level=ERROR",
+        -- "-Dlog.level=ALL",
+        "-Xmx2G",
+        "-Xms512M",
+        "-XX:+UseG1GC",
+        "-XX:+UseStringDeduplication",
+        -- "--add-modules=ALL-SYSTEM",
         "--add-opens=java.base/java.util=ALL-UNNAMED",
         "--add-opens=java.base/java.lang=ALL-UNNAMED",
         "-jar",
@@ -297,7 +355,7 @@ vim.api.nvim_create_autocmd("FileType", {
       root_dir = root,
     })
 
-    vim.notify(("jdtls started (id=%s)"):format(client), vim.log.levels.INFO)
+    vim.notify(("jdtls started (id=%s), workspace: %s"):format(client, workspace), vim.log.levels.INFO)
   end,
 })
 
