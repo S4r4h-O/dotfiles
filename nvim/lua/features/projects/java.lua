@@ -15,16 +15,18 @@ M.is_java_project = function(bufnr)
 end
 
 -- TODOS:
--- [ ] Build java project
--- [ ] Run java proj
+-- [x] Build java project
+-- [x] Run java proj
+-- [ ] Recompile and run? More specifically, should check if there's 
+-- class files in the target dirs. If there is, run it, otherwise compile
 -- [ ] Run java tests
 -- [ ] Debug?
 -- [x] Create files (Class, Enums, Records, etc)
 -- [ ] Create spring proj?
 -- [x] Generate toString
--- [x] Generate toJson
+-- [ ] Generate toJson
 -- [ ] clean repetition when calling M.request
--- [ ] should abstract floating windows
+-- [x] should abstract floating windows
 
 M.create_java_project = function()
   local choices = { "Maven", "Gradle" }
@@ -44,26 +46,15 @@ M.create_java_project = function()
 
     local root = vim.fn.getcwd()
 
-    local cmd
-    if item == "Maven" then
-      cmd = {
+    local cmds = {
+      ["Maven"] = {
         "mvn",
         "archetype:generate",
         "-DgroupId=" .. group_id,
         "-DartifactId=" .. artf_id,
         "-DinteractiveMode=false",
-      }
-    elseif item == "Gradle" then
-      -- Gradle creates the project files in the current dir,
-      -- so we need to create a new dir and cd to it
-      local projpath = vim.fs.joinpath(root, artf_id)
-      local result = vim.fn.mkdir(projpath)
-      if result ~= 1 then
-        vim.notify("Failed to create project " .. artf_id .. " folder", vim.log.levels.ERROR)
-        return
-      end
-      vim.cmd("silent! cd " .. projpath)
-      cmd = {
+      },
+      ["Gradle"] = {
         "gradle",
         "init",
         "--type",
@@ -74,41 +65,28 @@ M.create_java_project = function()
         artf_id,
         "--package",
         group_id,
-      }
+      },
+    }
+
+    local cmd = cmds[item]
+
+    if item == "Gradle" then
+      -- Gradle creates the project files in the current dir,
+      -- so we need to create a new dir and cd to it
+      local projpath = vim.fs.joinpath(root, artf_id)
+      local result = vim.fn.mkdir(projpath)
+      if result ~= 1 then
+        vim.notify("Failed to create project " .. artf_id .. " folder", vim.log.levels.ERROR)
+        return
+      end
+      vim.cmd("silent! cd " .. projpath)
     end
 
-    local buf = vim.api.nvim_create_buf(false, false)
-
-    vim.api.nvim_buf_set_name(buf, utils.gen_random_indentifier(item))
-
-    local width = math.floor(vim.o.columns * 0.8)
-    local height = math.floor(vim.o.lines * 0.8)
-
-    -- FLoating window because it is cool
-    vim.api.nvim_open_win(buf, true, {
-      relative = "editor",
-      width = width,
-      height = height,
-      row = math.floor((vim.o.lines - height) / 2),
-      col = math.floor((vim.o.columns - width) / 2),
-      border = "rounded",
-    })
-
-    vim.fn.jobstart(cmd, {
-      term = true,
-      on_exit = function(_, exit_code)
-        if exit_code ~= 0 then
-          vim.notify("Project creation failed", vim.log.levels.ERROR)
-          return
-        end
-
-        if item == "Maven" then
-          vim.cmd("silent! cd " .. vim.fn.fnameescape(artf_id))
-        end
-
-        vim.api.nvim_buf_delete(buf, {})
-      end,
-    })
+    utils.floating_window_run(item, cmd, true, nil, function(_)
+      if item == "Maven" then
+        vim.cmd("silent! cd " .. artf_id)
+      end
+    end)
   end)
 end
 
@@ -391,8 +369,6 @@ end
 --- Compile the Java workspace
 ---@param on_build_success fun(buf: integer): nil
 M.compile = function(on_build_success)
-  local source_buf = vim.api.nvim_get_current_buf()
-
   local build = get_build_system()
   if not build or build == "" then
     vim.notify("Build system not found", vim.log.levels.ERROR)
@@ -406,37 +382,7 @@ M.compile = function(on_build_success)
 
   cmd = cmd[build]
 
-  local buf = vim.api.nvim_create_buf(false, false)
-
-  vim.api.nvim_buf_set_name(buf, utils.gen_random_indentifier(cmd[1]))
-
-  local width = math.floor(vim.o.columns * 0.8)
-  local height = math.floor(vim.o.lines * 0.8)
-
-  -- FLoating window because it is cool
-  vim.api.nvim_open_win(buf, true, {
-    relative = "editor",
-    width = width,
-    height = height,
-    row = math.floor((vim.o.lines - height) / 2),
-    col = math.floor((vim.o.columns - width) / 2),
-    border = "rounded",
-  })
-
-  --TODO: run class file after compiled
-  vim.fn.jobstart(cmd, {
-    term = true,
-    on_exit = function(_, exit_code)
-      if exit_code ~= 0 then
-        vim.notify("Failed to build project", vim.log.levels.ERROR)
-        return
-      end
-
-      if on_build_success then
-        on_build_success(source_buf)
-      end
-    end,
-  })
+  utils.floating_window_run(cmd[1], cmd, false, nil, on_build_success)
 end
 
 --- Runs after M.compile. This method is used to run the class
@@ -475,7 +421,8 @@ M.run_java_file = function(buf)
     return
   end
 
-  local target_dir = targets[build_system]
+  -- normalize to avoid errors when not running from cwd
+  local target_dir = vim.fs.joinpath(root, targets[build_system])
 
   local fname = vim.api.nvim_buf_get_name(buf)
   fname = vim.fn.fnamemodify(fname, ":t:r")
@@ -484,32 +431,7 @@ M.run_java_file = function(buf)
 
   vim.notify("Ready to run: " .. table.concat(cmd, " "))
 
-  local run_buf = vim.api.nvim_create_buf(false, false)
-
-  vim.api.nvim_buf_set_name(run_buf, utils.gen_random_indentifier(cmd[1]))
-
-  local width = math.floor(vim.o.columns * 0.8)
-  local height = math.floor(vim.o.lines * 0.8)
-
-  -- FLoating window because it is cool
-  vim.api.nvim_open_win(run_buf, true, {
-    relative = "editor",
-    width = width,
-    height = height,
-    row = math.floor((vim.o.lines - height) / 2),
-    col = math.floor((vim.o.columns - width) / 2),
-    border = "rounded",
-  })
-
-  vim.fn.jobstart(cmd, {
-    term = true,
-    on_exit = function(_, exit_code)
-      if exit_code ~= 0 then
-        vim.notify("Failed to run file", vim.log.levels.ERROR)
-        return
-      end
-    end,
-  })
+  utils.floating_window_run(build_system or fname, cmd, false, nil)
 end
 
 M.gen_to_string = function()

@@ -264,4 +264,54 @@ M.gen_random_indentifier = function(value)
   return value .. "-" .. vim.uv.hrtime()
 end
 
+---@param bufname string name of the floating window buffer
+---@param cmd string[] list of strings (e.g {"python", "-m", "some_module", "args"})
+---@param close_after_run nil|boolean wheter to close automatically or not
+---@param sleep_before_close nil|integer seconds to wait before closing
+---@param on_run_success nil|fun(source_buf: integer): nil original buffer is passed to the callback
+M.floating_window_run = function(bufname, cmd, close_after_run, sleep_before_close, on_run_success)
+  local source_buf = vim.api.nvim_get_current_buf()
+
+  local buf = vim.api.nvim_create_buf(false, false)
+
+  vim.api.nvim_buf_set_name(buf, M.gen_random_indentifier(bufname))
+
+  local width = math.floor(vim.o.columns * 0.8)
+  local height = math.floor(vim.o.lines * 0.8)
+
+  vim.api.nvim_open_win(buf, true, {
+    relative = "editor",
+    width = width,
+    height = height,
+    row = math.floor((vim.o.lines - height) / 2),
+    col = math.floor((vim.o.columns - width) / 2),
+    border = "rounded",
+  })
+
+  vim.fn.jobstart(cmd, {
+    term = true,
+    on_exit = function(_, exit_code)
+      if exit_code ~= 0 then
+        vim.notify("Failed to run " .. vim.inspect(cmd), vim.log.levels.ERROR)
+        return
+      end
+
+      if close_after_run then
+        if sleep_before_close then
+          vim.defer_fn(function()
+            if vim.api.nvim_buf_is_valid(buf) then
+              vim.api.nvim_buf_delete(buf, {})
+            end
+          end, sleep_before_close)
+        end
+        vim.api.nvim_buf_delete(buf, {})
+      end
+
+      if on_run_success then
+        on_run_success(source_buf)
+      end
+    end,
+  })
+end
+
 return M
