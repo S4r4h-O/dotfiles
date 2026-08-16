@@ -6,11 +6,11 @@ vim.g.lsp_inlay_hints_enabled = false
 
 vim.filetype.add({ extension = { zsh = "zsh" } })
 
-vim.opt.listchars = {
-  tab = "│ ",
-  leadtab = "│ ",
-  leadmultispace = "│ ",
-}
+-- vim.opt.listchars = {
+--   tab = "│ ",
+--   leadtab = "│ ",
+--   leadmultispace = "│ ",
+-- }
 
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -167,8 +167,9 @@ opt.fillchars = {
   eob = " ",
 }
 opt.foldlevel = 99
-opt.foldmethod = "indent"
+opt.foldmethod = "expr"
 opt.foldtext = ""
+opt.foldexpr = vim.treesitter.foldexpr()
 opt.formatoptions = "jcroqlnt" -- tcqj
 opt.grepformat = "%f:%l:%c:%m"
 opt.ignorecase = true -- Ignore case
@@ -176,7 +177,7 @@ opt.inccommand = "nosplit" -- preview incremental substitute
 opt.jumpoptions = "view"
 opt.laststatus = 3 -- global statusline
 opt.linebreak = true -- Wrap lines at convenient points
-opt.list = true -- Show some invisible characters (tabs...
+opt.list = false -- Show some invisible characters (tabs...
 opt.mouse = "a" -- Enable mouse mode
 opt.number = true -- Print line number
 opt.pumblend = 10 -- Popup blend
@@ -192,6 +193,7 @@ opt.sidescrolloff = 8 -- Columns of context
 opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time
 opt.smartcase = true -- Don't ignore case with capitals
 opt.smartindent = true -- Insert indents automatically
+opt.autoindent = true
 opt.shiftwidth = 2
 opt.tabstop = 2 -- Number of spaces tabs count for
 opt.smoothscroll = true
@@ -213,5 +215,3 @@ opt.cmdheight = 1
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
-
--- netrw
