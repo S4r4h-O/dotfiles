@@ -98,6 +98,7 @@ M.split_str = function(inputstr, separator)
   return t
 end
 
+--TODO: move to ui
 M.close_buffer = function()
   local bufnr = vim.api.nvim_get_current_buf()
 
@@ -121,7 +122,23 @@ M.close_all_bufs_but_cur = function()
   end
 
   if #bufnrs > 0 then
-    vim.cmd.bwipeout(bufnrs)
+    for _, buf in pairs(bufnrs) do
+      vim.api.nvim_buf_delete(buf, { force = true })
+    end
+  end
+end
+
+M.close_all_bufs = function()
+  local bufnrs = {}
+
+  for _, buf in ipairs(vim.fn.getbufinfo()) do
+    table.insert(bufnrs, buf.bufnr)
+  end
+
+  if #bufnrs > 0 then
+    for _, buf in pairs(bufnrs) do
+      vim.api.nvim_buf_delete(buf, { force = true })
+    end
   end
 end
 
@@ -172,6 +189,79 @@ M.table_contains_k = function(table, key)
     end
   end
   return false
+end
+
+M.table_len = function(table)
+  local len = 0
+  for _ in pairs(table) do
+    len = len + 1
+  end
+  return len
+end
+
+-- Examples:
+-- ```lua
+-- utils.select_many({ "Item 1", "Item 2", "Item 3" }, "Select item(s)")
+-- ```
+-- 1. Item 1
+-- 2. Item 2
+-- 3. Item 3
+-- Select item(s) (Esc to finish):
+
+---@generic T
+---@param items T[]
+---@param prompt string
+---@param label_func nil|fun(item: T): string
+---@return table|nil
+M.select_many = function(items, prompt, label_func)
+  if not items or #items == 0 then
+    return {}
+  end
+  label_func = label_func or function(item)
+    return item
+  end
+  local selected = {}
+  local choices = {}
+  for index, item in ipairs(items) do
+    local label = label_func(item)
+    local choice = string.format("%s. %s", index, label)
+    table.insert(choices, choice)
+  end
+
+  local answer = vim.fn.input(("\n%s\n%s (Esc to finish): "):format(table.concat(choices, "\n"), prompt))
+  if not answer or answer == "" then
+    return
+  end
+  if not answer:match("%d+") and not answer:match("%d+%s*%-%s*%d+") then
+    vim.notify("Invalid, must enter a range (e.g 1-3, 1-2, 3...)", vim.log.levels.ERROR)
+    return
+  end
+
+  local range_start, range_end = answer:match("(%d+)%s*%-%s*(%d+)")
+
+  if range_start then
+    range_start = math.max(1, tonumber(range_start))
+    range_end = math.min(#items, tonumber(range_end) or range_end)
+
+    if range_start > range_end then
+      vim.notify("Invalid, start must not be greater than end", vim.log.levels.ERROR)
+      return
+    end
+
+    for i = range_start, range_end do
+      table.insert(selected, items[i])
+    end
+  else
+    local index = math.min(#items, tonumber(answer))
+    table.insert(selected, items[index])
+    print(type(answer))
+  end
+
+  return selected
+end
+
+M.gen_random_indentifier = function(value)
+  return value .. "-" .. vim.uv.hrtime()
 end
 
 return M
