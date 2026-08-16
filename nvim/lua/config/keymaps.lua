@@ -175,7 +175,8 @@ map({ "i", "x", "n", "s" }, "<C-s>", function()
   if vim.bo.modified then
     vim.notify("Failed to save", vim.log.levels.ERROR)
   else
-    vim.notify("File saved", vim.log.levels.INFO)
+    local file = vim.fn.expand("%:p")
+    vim.notify(file .. " saved", vim.log.levels.INFO)
   end
 end, { desc = "Save file" })
 
