@@ -52,9 +52,7 @@ vim.api.nvim_create_user_command("Run", function()
 
   if state.job then
     vim.notify(
-      "Already running "
-        .. fname
-        .. ", use RestartRun if you want to restart the job or StopRun.",
+      "Already running " .. fname .. ", use RestartRun if you want to restart the job or StopRun.",
       vim.log.levels.ERROR
     )
     return
