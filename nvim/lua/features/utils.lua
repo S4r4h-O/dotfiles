@@ -232,12 +232,15 @@ M.select_many = function(items, prompt, label_func)
   if not answer or answer == "" then
     return
   end
-  if not answer:match("%d+") and not answer:match("%d+%s*%-%s*%d+") then
+
+  local base_pattr = "%s*(%d+)%s*"
+  local range_pttr = base_pattr .. "%-" .. base_pattr
+  if not answer:match(base_pattr) and not answer:match(range_pttr) then
     vim.notify("Invalid, must enter a range (e.g 1-3, 1-2, 3...)", vim.log.levels.ERROR)
     return
   end
 
-  local range_start, range_end = answer:match("(%d+)%s*%-%s*(%d+)")
+  local range_start, range_end = answer:match(range_pttr)
 
   if range_start then
     range_start = math.max(1, tonumber(range_start))
@@ -251,6 +254,9 @@ M.select_many = function(items, prompt, label_func)
     for i = range_start, range_end do
       table.insert(selected, items[i])
     end
+  elseif answer:match(base_pattr .. "%-$") or answer:match("^%-" .. base_pattr) then
+    vim.notify("Invalid range: " .. answer, vim.log.levels.ERROR)
+    return
   else
     local index = math.min(#items, tonumber(answer))
     table.insert(selected, items[index])
