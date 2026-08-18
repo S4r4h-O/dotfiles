@@ -17,7 +17,7 @@ end
 -- TODOS:
 -- [x] Build java project
 -- [x] Run java proj
--- [ ] Recompile and run? More specifically, should check if there's 
+-- [ ] Recompile and run? More specifically, should check if there's
 -- class files in the target dirs. If there is, run it, otherwise compile
 -- [ ] Run java tests
 -- [ ] Debug?
@@ -25,8 +25,12 @@ end
 -- [ ] Create spring proj?
 -- [x] Generate toString
 -- [ ] Generate toJson
--- [ ] clean repetition when calling M.request
 -- [x] should abstract floating windows
+-- [ ] clean repetition when calling M.request. The following:
+-- local win = vim.api.nvim_get_current_win()
+-- local curr_lsp = vim.lsp.get_clients({ bufnr = 0 })[1]
+-- local params = vim.lsp.util.make_range_params(win, curr_lsp.offset_encoding)
+-- should be encapsulated in M.request
 
 M.create_java_project = function()
   local choices = { "Maven", "Gradle" }
@@ -333,6 +337,11 @@ M.gen_java_constructor = function()
       end)
     end
 
+    if selected == nil then
+      vim.notify("Class has no fields", vim.log.levels.WARN)
+      return
+    end
+
     if #selected > 0 then
       local parms = { context = params, constructors = result.constructors, fields = selected }
       -- This generates the constructor in the cursor position
@@ -347,18 +356,18 @@ M.gen_java_constructor = function()
   end)
 end
 
-local root_markers = { "pom.xml", "gradlew" }
-local build_systems = { [root_markers[1]] = "mvn", [root_markers[2]] = "gradle" }
+local _root_markers = { "pom.xml", "gradlew" }
+local _build_systems = { [_root_markers[1]] = "mvn", [_root_markers[2]] = "gradle" }
 
 ---@return "mvn"|"gradle"|nil
 local function get_build_system()
-  local root = vim.fs.root(0, root_markers)
+  local root = vim.fs.root(0, _root_markers)
 
   if root then
-    for _, value in ipairs(root_markers) do
+    for _, value in ipairs(_root_markers) do
       local path = vim.fs.joinpath(root, value)
       if vim.uv.fs_stat(path) then
-        return build_systems[value]
+        return _build_systems[value]
       end
     end
   else
@@ -367,36 +376,58 @@ local function get_build_system()
 end
 
 --- Compile the Java workspace
----@param on_build_success fun(buf: integer): nil
+--- TODO: find source version to avoid `[WARNING] location of system modules is not set in conjunction with -source 25`
+---@param on_build_success nil|fun(buf: integer): nil callback to run when build is successful. Example usage: M.run_java_file
 M.compile = function(on_build_success)
-  local build = get_build_system()
-  if not build or build == "" then
+  local build_system = get_build_system()
+  if not build_system or build_system == "" then
     vim.notify("Build system not found", vim.log.levels.ERROR)
     return
   end
+
+  if vim.fn.executable(build_system) == 0 then
+    vim.notify(build_system .. " is not installed", vim.log.levels.ERROR)
+    return
+  end
+
+  -- Build can't run if cwd != root (or where the root marker resides)
+  local root = vim.fs.root(0, _root_markers)
+  root = vim.fs.normalize(root)
+
+  vim.cmd("silent! cd " .. root)
 
   local cmd = {
     ["mvn"] = { "mvn", "compile" },
     ["gradle"] = { "gradle", "clean", "build" },
   }
 
-  cmd = cmd[build]
+  cmd = cmd[build_system]
 
   utils.floating_window_run(cmd[1], cmd, false, nil, on_build_success)
 end
 
---- Runs after M.compile. This method is used to run the class
---- file after compiled.
----@param buf integer
+--- Runs after M.compile. This method is used to run the class file after compilation
+--- TODO: close compile window after compiling
+---@param buf integer|nil
 M.run_java_file = function(buf)
   buf = buf or vim.api.nvim_get_current_buf()
 
-  local root = vim.fs.root(0, root_markers)
+  local root = vim.fs.root(0, _root_markers)
+  if not root or root == "" then
+    vim.notify("Could not find root, probably not a Java project", vim.log.levels.ERROR)
+    return
+  end
+  root = vim.fs.normalize(root)
 
   local build_system = get_build_system()
 
-  if not root or root == "" then
-    vim.notify("Could not find root, probably not a Java project", vim.log.levels.ERROR)
+  if not build_system or build_system == "" then
+    vim.notify("Build system not found", vim.log.levels.ERROR)
+    return
+  end
+
+  if vim.fn.executable(build_system) == 0 then
+    vim.notify(build_system .. " is not installed", vim.log.levels.ERROR)
     return
   end
 
@@ -409,7 +440,7 @@ M.run_java_file = function(buf)
   -- /tmp/gradle-project/app/build/classes/java/main/com/domain/App.class
   --
   -- Example mvn:
-  -- /tmp/testing/target/classes/com/domain/App.class
+  -- /tmp/maven-project/target/classes/com/domain/App.class
   local targets = {
     ["mvn"] = "target/classes",
     ["gradle"] = "app/build/classes/java/main",
@@ -421,7 +452,7 @@ M.run_java_file = function(buf)
     return
   end
 
-  -- normalize to avoid errors when not running from cwd
+  -- full path to avoid errors when not running from cwd
   local target_dir = vim.fs.joinpath(root, targets[build_system])
 
   local fname = vim.api.nvim_buf_get_name(buf)
@@ -440,7 +471,8 @@ M.gen_to_string = function()
   local params = vim.lsp.util.make_range_params(win, curr_lsp.offset_encoding)
 
   local fields = M.get_class_fields()
-  if not fields then
+  if not fields or #fields == 0 then
+    vim.notify("Class has no fields", vim.log.levels.WARN)
     return
   end
 
@@ -467,6 +499,10 @@ M.gen_to_string = function()
   local choices = utils.select_many(fields, "Select the field(s)", function(item)
     return string.format("%s %s", item.type, item.name)
   end)
+
+  if not choices then
+    return
+  end
 
   if #choices > 0 then
     local err1, result1 = M.request(0, "java/generateToString", { context = params, fields = choices })
@@ -510,7 +546,7 @@ M.gen_hash_code_equals = function()
   end
 end
 
-M.overried_methods = function()
+M.override_methods = function()
   local win = vim.api.nvim_get_current_win()
   local curr_lsp = vim.lsp.get_clients({ bufnr = 0 })[1]
   local params = vim.lsp.util.make_range_params(win, curr_lsp.offset_encoding)
@@ -548,7 +584,7 @@ M.actions = {
   ["Generate constructor"] = M.gen_java_constructor,
   ["Generate toString"] = M.gen_to_string,
   ["Generate hashCode and equals"] = M.gen_hash_code_equals,
-  ["Override methods"] = M.overried_methods,
+  ["Override methods"] = M.override_methods,
   ["Build project"] = M.compile,
   ["Run file"] = function()
     M.compile(M.run_java_file)
@@ -573,9 +609,9 @@ end
 
 M.setup = function(bufnr)
   bufnr = bufnr or vim.api.nvim_get_current_buf()
-  if not M.is_java_project(bufnr) then
-    return
-  end
+  -- if not M.is_java_project(bufnr) then
+  --   return
+  -- end
   vim.keymap.set("n", "<leader>ja", M.java_actions, { desc = "Java actions", buffer = bufnr })
 end
 
