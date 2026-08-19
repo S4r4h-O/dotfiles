@@ -165,7 +165,7 @@ end, { noremap = true, expr = true })
 -- ============================================================================
 
 -- Select all
-map("n", "<A-a>", function()
+map({ "i", "n" }, "<A-a>", function()
   vim.cmd("normal! ggVG")
 end, { desc = "Select all" })
 
@@ -340,12 +340,6 @@ map("n", "<leader>sg", function()
 end, { desc = "Dynamic grep" })
 
 map("n", "<C-Space>", "?", { desc = "" })
-
--- Native terminal call. C-_ is C-/
-map("n", "<C-\\>", function()
-  vim.cmd("botright 10split")
-  vim.cmd("terminal")
-end, { desc = "Open the terminal" })
 
 map("t", "<Esc><Esc>", "<C-\\><C-n>")
 
