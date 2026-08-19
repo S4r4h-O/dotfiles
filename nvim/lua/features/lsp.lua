@@ -271,6 +271,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
   callback = lsp_on_attach,
 })
 
+-- vim.api.nvim_create_autocmd("LspAttach", {
+--   callback = function(args)
+--     local opts = { buffer = args.buf }
+--
+--     I'm using fzf.lua for some of these
+--     map("n", "gd", vim.lsp.buf.definition, opts)
+--     map("n", "gr", vim.lsp.buf.references, opts)
+--     map("n", "gD", vim.lsp.buf.declaration, opts)
+--     map("n", "gi", vim.lsp.buf.implementation, opts)
+--
+--   end,
+-- })
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "qf",
   callback = function(args)
@@ -281,6 +294,14 @@ vim.api.nvim_create_autocmd("FileType", {
     map("n", "<C-]>", function()
       vim.diagnostic.jump({ count = -1 })
     end, { desc = "Previous diagnostic", buffer = args.buf })
+  end,
+})
+
+vim.api.nvim_create_autocmd("VimLeavePre", {
+  callback = function()
+    for _, client in pairs(vim.lsp.get_clients()) do
+      client:stop()
+    end
   end,
 })
 
@@ -295,7 +316,6 @@ local function _java_root(bufnr)
     "build.gradle.kts",
     "settings.gradle",
     "settings.gradle.kts",
-    ".git",
     ".mvn",
   })
 end
@@ -359,30 +379,25 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- vim.api.nvim_create_user_command("FormatToggle", function()
---   vim.g.autoformat = not vim.g.autoformat
---   vim.notify("Autoformat " .. (vim.g.autoformat and "ON" or "OFF"), vim.log.levels.INFO)
--- end, {})
---
--- vim.api.nvim_create_autocmd("BufWritePre", {
---   group = vim.api.nvim_create_augroup("LspFormatting", { clear = true }),
---   callback = function(args)
---     if not vim.g.autoformat or vim.b.autoformat == false then
---       return
---     end
---     vim.lsp.buf.format({ bufnr = args.buf, timeout_ms = 3000 })
---   end,
--- })
+-- ============================================================================
+-- DIAGNOSTICS
+-- ============================================================================
 
--- vim.api.nvim_create_autocmd("LspAttach", {
---   callback = function(args)
---     local opts = { buffer = args.buf }
---
---     I'm using fzf.lua for some of these
---     map("n", "gd", vim.lsp.buf.definition, opts)
---     map("n", "gr", vim.lsp.buf.references, opts)
---     map("n", "gD", vim.lsp.buf.declaration, opts)
---     map("n", "gi", vim.lsp.buf.implementation, opts)
---
---   end,
--- })
+map("n", "<leader>xx", function()
+  vim.diagnostic.setqflist()
+  vim.cmd("copen")
+end, { desc = "Diagnostics (Quickfix)" })
+
+map("n", "<leader>xX", function()
+  vim.diagnostic.setloclist()
+  vim.cmd("lopen")
+end, { desc = "Buffer Diagnostics (Location List)" })
+
+map("n", "<leader>xQ", "<cmd>copen<cr>", { desc = "Open quick fix list" })
+map("n", "<leader>xL", "<cmd>lopen<cr>", { desc = "Open location list" })
+
+map("n", "]q", "<cmd>cnext<cr>", { desc = "Next quickfix item" })
+map("n", "[q", "<cmd>cprev<cr>", { desc = "Previous quickfix item" })
+
+map("n", "<leader>cS", vim.lsp.buf.references, { desc = "LSP references" })
+map("n", "<leader>cs", vim.lsp.buf.document_symbol, { desc = "Document symbols" })
