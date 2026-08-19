@@ -1,10 +1,11 @@
+local opt = vim.opt
+local g = vim.g
+
 if vim.fn.executable("rg") == 1 then
-  vim.opt.grepprg = "rg --vimgrep --no-hidden --no-heading"
+  opt.grepprg = "rg --vimgrep --no-hidden --no-heading"
 end
 
-vim.g.lsp_inlay_hints_enabled = false
-
-vim.filetype.add({ extension = { zsh = "zsh" } })
+g.lsp_inlay_hints_enabled = false
 
 -- vim.opt.listchars = {
 --   tab = "│ ",
@@ -12,103 +13,21 @@ vim.filetype.add({ extension = { zsh = "zsh" } })
 --   leadmultispace = "│ ",
 -- }
 
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.showcmd = true
-vim.opt.showmode = true
+opt.number = true
+opt.relativenumber = true
+opt.showcmd = true
+opt.showmode = true
 
-vim.opt.fillchars:append({ eob = " " })
+opt.fillchars:append({ eob = " " })
 
-vim.opt.clipboard = "unnamedplus"
+opt.clipboard = "unnamedplus"
 
-vim.opt.laststatus = 2
+opt.laststatus = 2
 
--- TODO: I think i should move the statusline config
--- to somewhere else
-local last_key = ""
+opt.autowriteall = true
 
-_G.mode = function()
-  local modes = {
-    n = "󰞷 NORMAL",
-    i = "󰏫 INSERT",
-    v = "󰈈 VISUAL",
-    V = "󰈈 V-LINE",
-    [""] = "󰈈 V-BLOCK",
-    c = "󰘳 COMMAND",
-    R = "󰑙 REPLACE",
-    t = "󰆍 TERMINAL",
-  }
-
-  return modes[vim.fn.mode()] or vim.fn.mode()
-end
-
-_G.last_key = function()
-  return last_key
-end
-
-_G.recording = function()
-  local reg = vim.fn.reg_recording()
-  if reg == "" then
-    return ""
-  end
-  return "󰑋 @" .. reg .. " | "
-end
-
-_G.curr_lsp = function()
-  local clients = vim.lsp.get_clients({ bufnr = 0 })
-  local client = clients[1]
-
-  if not client then
-    return ""
-  end
-  return "󰒋 " .. client.name .. " | "
-end
-
-vim.on_key(function(key)
-  last_key = vim.fn.keytrans(key)
-  vim.schedule(function()
-    vim.cmd("redrawstatus")
-  end)
-end)
-
-vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
-  callback = function()
-    vim.cmd("redrawstatus")
-  end,
-})
-
-vim.api.nvim_create_autocmd("ModeChanged", {
-  callback = function()
-    vim.cmd("redrawstatus")
-  end,
-})
-
-vim.api.nvim_set_hl(0, "MyStatusLeft", {
-  link = "StatusLine",
-})
-
-vim.api.nvim_set_hl(0, "MyStatusRight", {
-  link = "StatusLineNC",
-})
-
-vim.opt.statusline = table.concat({
-  "%#MyStatusLeft#",
-  " 󰉋 %{getcwd()} ",
-  "%=",
-  "%#MyStatusRight#",
-  "%{v:lua.mode()} | ",
-  "%{v:lua.recording()}",
-  "%{v:lua.curr_lsp()}",
-  "󰈙 %t %m%r| ",
-  "%l:%c  ",
-  "󰌌 %{v:lua.last_key()} ",
-  "%*",
-})
-
-vim.opt.autowriteall = true
-
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
+opt.ignorecase = true
+opt.smartcase = true
 
 vim.api.nvim_create_user_command("ReloadConfig", function()
   local modules = {
@@ -146,8 +65,6 @@ vim.g.deprecation_warnings = false
 -- You can disable this for a buffer by setting `vim.b.trouble_lualine = false`
 vim.g.trouble_lualine = true
 
-local opt = vim.opt
-local g = vim.g
 
 opt.autowrite = true -- Enable auto write
 -- only set clipboard if not in ssh, to make sure the OSC 52
@@ -202,6 +119,12 @@ opt.splitbelow = true -- Put new windows below current
 opt.splitkeep = "screen"
 opt.splitright = true -- Put new windows right of current
 opt.termguicolors = true -- True color support
+opt.guicursor = { -- cursor appearance
+  "n-v:block", -- normal, visual: block
+  "i-c:ver25", -- insert, command: vertical line
+  "r-o:hor25", -- replace, operation: horizontal line
+  "a:blinkwait3000-blinkon1500-blinkoff1500", -- all modes: blink
+}
 opt.timeoutlen = vim.g.vscode and 1000 or 300 -- Lower than default (1000) to quickly trigger which-key
 opt.undofile = true
 opt.undolevels = 100
