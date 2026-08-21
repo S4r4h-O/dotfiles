@@ -1,5 +1,7 @@
 # ── History ───────────────────────────────────────────────────
-HISTFILE="$XDG_STATE_HOME/zsh/history"
+_HISTFILE="$XDG_STATE_HOME/zsh/history"
+[[ -f "$_HISTFILE" ]] || touch "$_HISTFILE"
+HISTFILE="$_HISTFILE"
 HISTSIZE=400
 SAVEHIST=400
 
@@ -68,6 +70,7 @@ zi snippet OMZP::command-not-found
 zi snippet OMZP::universalarchive
 zi snippet OMZP::uv
 zi snippet OMZP::python
+zi snippet OMZP::nestjs
 
 case "$(_distro)" in
 arch)
@@ -88,3 +91,4 @@ eval "$(zoxide init zsh)"
 # ── Source ────────────────────────────────────────────────────
 source "$ZDOTDIR/aliases.zsh"
 source "$HOME/.config/broot/launcher/bash/br"
+export JAVA_HOME="$(dirname "$(dirname "$(readlink -f "$(command -v java)")")")"
