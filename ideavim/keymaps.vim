@@ -1,33 +1,96 @@
-" General motions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" GENERAL REMAPPINGS
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap gl $
+noremap 0 ^
+
+nnoremap c "_c
+xnoremap c "_c
+vnoremap c "_c
+snoremap c "_c
+nnoremap C "_C
+xnoremap C "_C
+vnoremap C "_C
+snoremap C "_C
+
+nnoremap s "_s
+xnoremap s "_s
+vnoremap s "_s
+snoremap s "_s
+nnoremap S "_S
+xnoremap S "_S
+vnoremap S "_S
+snoremap S "_S
+
+nnoremap <Esc> :nohlsearch<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" NAVIGATION
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Better up and down
 nnoremap j gj
 nnoremap k gk
 xnoremap j gj
 xnoremap k gk
-nnoremap n nzzzv
-nnoremap N Nzzzv
-nnoremap <C-u> <C-u>zz
-nnoremap <Esc> :nohlsearch<CR>
+nnoremap <Down> gj
+nnoremap <Up> gk
+xnoremap <Down> gj
+xnoremap <Up> gk
+
+" https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
+nnoremap <expr> n 'Nn'[v:searchforward]
+xnoremap <expr> n 'Nn'[v:searchforward]
+onoremap <expr> n 'Nn'[v:searchforward]
+nnoremap <expr> N 'nN'[v:searchforward]
+xnoremap <expr> N 'nN'[v:searchforward]
+onoremap <expr> N 'nN'[v:searchforward]
+
+" indentation
 xnoremap < <gv
 xnoremap > >gv
-nnoremap gl $
-noremap 0 ^
 
-" New line up/down in insert mode
-inoremap <C-j> <C-o>o
-inoremap <C-k> <C-o>O
+" files
+nmap <leader><space> <Action>(GotoFile)
+nmap <leader>ff      <Action>(GotoFile)
+nmap <leader>fF      <Action>(GotoFile)
+nmap <leader>fr      <Action>(RecentFiles)
+nmap <leader>fR      <Action>(RenameFile)
+nmap <leader>fn      <Action>(NewFile)
+nmap <leader>fe      <Action>(ActivateProjectToolWindow)
+nmap <leader>fE      <Action>(SelectInProjectView)
+
+" search
+nmap  <leader>/   <Action>(FindInPath)
+nmap  <leader>sg  <Action>(FindInPath)
+nmap  <leader>sG  <Action>(FindInPath)
+nmap  <leader>ss  <Action>(GotoSymbol)
+nmap  <leader>sS  <Action>(GotoClass)
+nmap  <leader>sr  <Action>(ReplaceInPath)
+nmap  <leader>sd  <Action>(ShowErrorDescription)
+nmap  <leader>sk  <Action>(GotoAction)
+nmap  <leader>sn  <Action>(ActivateNotificationsToolWindow)
+
+" flash
+nmap z         <Action>(flash.search)
+xmap z         <Action>(flash.search)
+nmap Z         <Action>(flash.treesitter)
+xmap Z         <Action>(flash.treesitter)
+omap <leader>z <Action>(flash.remote)
+
+""" Better insert mode navigation
 
 " Go to line above/below in insert mode
-inoremap <C-n> <C-o>j
-inoremap <C-p> <C-o>k
-"inoremap <C-n> <Action>(EditorDown)
-"inoremap <C-p> <Action>(EditorUp)
+inoremap <C-n> <Down>
+inoremap <C-p> <Up>
 
-" Paste while in insert mode
-inoremap <M-p> <C-o>P
+" Insert line down/below
+inoremap <C-k> <C-o>O
+inoremap <C-j> <C-o>o
 
-"
-nnoremap c "_c
-nnoremap C "_C
+" Deletion
+inoremap <C-d> <C-o>"_cc
+inoremap <C-c> <C-o>"_D
 
 " Left Right in insert mode without arrow keys
 inoremap <C-h> <Left>
@@ -39,28 +102,16 @@ inoremap <M-,> <C-o>b
 inoremap <M-[> <C-o>W
 inoremap <M-]> <C-o>B
 
-"
-inoremap <C-d> <C-o>"_cc
+" Start/End of line
 inoremap <M-1> <C-o>^
 inoremap <M-0> <C-o>$
 
-" AceJump
-nmap \ <Action>(AceAction)
+" Paste
+inoremap <M-p> <C-o>P
 
-" Window navigation
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-
-" Terminal
-nmap <leader>tt <Action>(ActivateTerminalToolWindow)
-
-" Buffer/tab navigation
-nmap H <Action>(PreviousTab)
-nmap L <Action>(NextTab)
-nmap [b <Action>(PreviousTab)
-nmap ]b <Action>(NextTab)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" EDITING
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Line movement
 nmap <A-j> <Action>(MoveLineDown)
@@ -69,6 +120,8 @@ imap <A-j> <Action>(MoveLineDown)
 imap <A-k> <Action>(MoveLineUp)
 xmap <A-j> <Action>(MoveStatementDown)
 xmap <A-k> <Action>(MoveStatementUp)
+
+" Move character in normal mode
 nnoremap <C-l> xp
 nnoremap <C-h> xhP
 
@@ -78,10 +131,10 @@ nnoremap <C-s> :w<CR>
 inoremap <C-s> <Esc>:w<CR>gi
 xnoremap <C-s> <Esc>:w<CR>
 
-" Scrolling/Copy logic
-nnoremap <C-y> "+yy
-xnoremap <C-y> "+y
-inoremap <C-y> <Esc>"+yyi
+" Copy
+nnoremap <C-y> :%y<CR>
+xnoremap <C-y> :%y<CR>
+inoremap <C-y> <C-o>:%y<CR>
 
 " Delete operations
 nnoremap <A-d>d "_dd
@@ -90,33 +143,10 @@ inoremap <A-d>d <Esc>"_ddi
 nnoremap <A-d>w "_diw
 xnoremap <A-d>w "_d
 nnoremap <A-l>  "_dG
-nnoremap ciw "_ciw
-nnoremap S "_S
-nnoremap s "_s
 
 " Duplicate lines
 nmap <C-d> <Action>(EditorDuplicate)
 xmap <C-d> <Action>(EditorDuplicate)
-
-" Flash
-" nmap s <Action>(flash.search)
-" xmap s <Action>(flash.search)
-" nmap S <Action>(flash.search)
-" xmap S <Action>(flash.search)
-" omap r <Action>(flash.remote)
-nmap zs <Action>(flash.search)
-xmap zs <Action>(flash.search)
-
-nmap zS <Action>(flash.treesitter)
-xmap zS <Action>(flash.treesitter)
-
-omap zr <Action>(flash.remote)
-
-" Surround
-nmap gsa ys
-nmap gsd ds
-nmap gsr cs
-" vmap gsa S
 
 " VimMulticursor (dankinsoid)
 " mc/ + search: Add cursors at all occurrences of search regex.
@@ -141,7 +171,10 @@ map mi <Plug>(multicursor-mcr)
 " remove all cursors
 map md <Plug>(multicursor-mcd)
 
-" LSP / Navigation (LazyVim parity)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" LSP
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 nmap gd <Action>(GotoDeclaration)
 nmap gD <Action>(GotoTypeDeclaration)
 nmap gr <Action>(FindUsages)
@@ -150,7 +183,6 @@ nmap gy <Action>(GotoTypeDeclaration)
 nmap gK <Action>(ParameterInfo)
 nmap K  <Action>(QuickJavaDoc)
 
-" Diagnostics (LazyVim parity: [d / ]d)
 nmap ]d <Action>(GotoNextError)
 nmap [d <Action>(GotoPreviousError)
 nmap ]e <Action>(GotoNextError)
@@ -158,49 +190,7 @@ nmap [e <Action>(GotoPreviousError)
 nmap ]w <Action>(GotoNextWarning)
 nmap [w <Action>(GotoPreviousWarning)
 
-" Git Hunks
-nmap ]h <Action>(VcsShowNextChangeMarker)
-nmap [h <Action>(VcsShowPrevChangeMarker)
-
-" Leader: files (<leader>f)
-nmap <leader><space> <Action>(GotoFile)
-nmap <leader>ff      <Action>(GotoFile)
-nmap <leader>fF      <Action>(GotoFile)
-nmap <leader>fr      <Action>(RecentFiles)
-nmap <leader>fR      <Action>(RenameFile)
-nmap <leader>fn      <Action>(NewFile)
-nmap <leader>fe      <Action>(ActivateProjectToolWindow)
-nmap <leader>fE      <Action>(SelectInProjectView)
-
-" Leader: search (<leader>s)
-nmap  <leader>/   <Action>(FindInPath)
-nmap  <leader>sg  <Action>(FindInPath)
-nmap  <leader>sG  <Action>(FindInPath)
-nmap  <leader>ss  <Action>(GotoSymbol)
-nmap  <leader>sS  <Action>(GotoClass)
-nmap  <leader>sr  <Action>(ReplaceInPath)
-nmap  <leader>sd  <Action>(ShowErrorDescription)
-nmap  <leader>sk  <Action>(GotoAction)
-nmap  <leader>sn  <Action>(ActivateNotificationsToolWindow)
-
-"     Leader:     buffers
-nmap  <leader>,   <Action>(Switcher)
-nmap  <leader>fb  <Action>(Switcher)
-nmap  <leader>bb  <Action>(Switcher)
-nmap  <leader>bd          <Action>(CloseContent)
-nmap  <leader>bD  <Action>(CloseAllEditors)
-nmap  <leader>bo  <Action>(CloseAllEditorsButActive)
-nmap  <leader>bp  <Action>(PinActiveTabToggle)
-
-" Leader: windows (<leader>w)
-nmap <leader>ww    <Action>(NextSplitter)
-nmap <leader>wd    <Action>(Unsplit)
-nmap <leader>wD    <Action>(UnsplitAll)
-nmap <leader>wm    <Action>(MoveEditorToOppositeTabGroup)
-nmap <leader><bar> <Action>(SplitVertically)
-nmap <leader>-     <Action>(SplitHorizontally)
-
-" Leader: code + refactor (<leader>c)
+" code+refactor
 nmap <leader>ca <Action>(ShowIntentionActions)
 xmap <leader>ca <Action>(ShowIntentionActions)
 nmap <leader>cr <Action>(RenameElement)
@@ -230,7 +220,40 @@ nmap <leader>cC <Action>(ChangeSignature)
 nmap <leader>cp <Action>(IntroduceParameter)
 nmap <leader>ck <Action>(IntroduceConstant)
 
-" Leader: git (<leader>g)
+" Diagnostics
+nmap <leader>xx <Action>(ActivateProblemsViewToolWindow)
+nmap <leader>xd <Action>(ActivateProblemsViewToolWindow)
+nmap <leader>xl <Action>(ActivateProblemsViewToolWindow)
+nmap <leader>xq <Action>(ActivateProblemsViewToolWindow)
+nmap <leader>xt <Action>(ActivateTODOToolWindow)
+nmap <leader>xT <Action>(ActivateTODOToolWindow)
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" EDITOR
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" buffers
+nmap <leader>,  <Action>(Switcher)
+nmap <leader>fb <Action>(Switcher)
+nmap <leader>bb <Action>(Switcher)
+nmap <leader>bd <Action>(CloseContent)
+nmap <C-x>      <Action>(CloseContent)
+nmap <leader>bD <Action>(CloseAllEditors)
+nmap <leader>bo <Action>(CloseAllEditorsButActive)
+nmap <leader>bp <Action>(PinActiveTabToggle)
+
+nmap <leader>wv <Action>(SplitVertically)
+nmap <leader>ws <Action>(SplitHorizontally)
+
+nmap <C-Right> <C-w>>
+nmap <C-Left>  <C-w><
+nmap <C-Up>    <C-w>+
+nmap <C-Down>  <C-w>-
+
+nmap H <Action>(PreviousTab)
+nmap L <Action>(NextTab)
+
+" version control
 nmap <leader>gg <Action>(ActivateVersionControlToolWindow)
 nmap <leader>gb <Action>(Annotate)
 nmap <leader>gB <Action>(Git.Branches)
@@ -245,19 +268,33 @@ nmap <leader>gS <Action>(Git.Stash)
 nmap <leader>gU <Action>(Git.Unstash)
 nmap <leader>gh <Action>(Vcs.RollbackChangedLines)
 
-" Leader: explorer
+nmap ]h <Action>(VcsShowNextChangeMarker)
+nmap [h <Action>(VcsShowPrevChangeMarker)
+
+" Explorer
 nmap <leader>e <Action>(ActivateProjectToolWindow)
 nmap <leader>E <Action>(SelectInProjectView)
 
-" Leader: diagnostics (<leader>x)
-nmap <leader>xx <Action>(ActivateProblemsViewToolWindow)
-nmap <leader>xd <Action>(ActivateProblemsViewToolWindow)
-nmap <leader>xl <Action>(ActivateProblemsViewToolWindow)
-nmap <leader>xq <Action>(ActivateProblemsViewToolWindow)
-nmap <leader>xt <Action>(ActivateTODOToolWindow)
-nmap <leader>xT <Action>(ActivateTODOToolWindow)
+" quit/session
+nmap <leader>qq <Action>(Exit)
+nmap <leader>qQ <Action>(Exit)
+nmap <leader>ql <Action>(ManageRecentProjects)
+nmap <leader>qs <Action>(SaveAll)
+nmap <leader>qr <Action>(IdeaVim.ReloadVimRc)
 
-" Leader: run (<leader>r)
+" UI
+nmap <leader>ud <Action>(ToggleDistractionFreeMode)
+nmap <leader>uf <Action>(ToggleFullScreen)
+nmap <leader>ul <Action>(EditorToggleShowLineNumbers)
+nmap <leader>uw <Action>(EditorToggleUseSoftWraps)
+nmap <leader>uz <Action>(ToggleZenMode)
+nmap <leader>ui <Action>(ToggleInlayHintsGloballyAction)
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Code
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" run
 nmap <leader>rR <Action>(RunClass)
 nmap <leader>rr <Action>(Run)
 nmap <leader>rl <Action>(Rerun)
@@ -266,7 +303,7 @@ nmap <leader>ro <Action>(ActivateRunToolWindow)
 nmap <leader>rc <Action>(ChooseRunConfiguration)
 "nmap <leader>rc <Action>(RedesignedRunConfigurationSelector)
 
-" Leader: debug (<leader>d)
+" debug
 nmap <leader>db <Action>(ToggleLineBreakpoint)
 nmap <leader>dB <Action>(EditBreakpoint)
 nmap <leader>dc <Action>(Resume)
@@ -280,27 +317,3 @@ nmap <leader>ds <Action>(Stop)
 nmap <leader>dw <Action>(Debugger.AddToWatch)
 nmap <leader>du <Action>(ActivateDebugToolWindow)
 nmap <leader>dv <Action>(ViewBreakpoints)
-
-" Leader: REST (<leader>R)
-" nmap <leader>Rr <Action>(HTTPClient.RunAll)
-" nmap <leader>Rs <Action>(ActivateServicesToolWindow)
-" nmap <leader>Ri <Action>(ActivateServicesToolWindow)
-" nmap <leader>Re <Action>(HTTPClient.RunAll)
-
-" Leader: quit/session (<leader>q)
-nmap <leader>qq <Action>(Exit)
-nmap <leader>qQ <Action>(Exit)
-nmap <leader>ql <Action>(ManageRecentProjects)
-nmap <leader>qs <Action>(SaveAll)
-
-" Leader: UI toggles (<leader>u)
-nmap <leader>ud <Action>(ToggleDistractionFreeMode)
-nmap <leader>uf <Action>(ToggleFullScreen)
-nmap <leader>ul <Action>(EditorToggleShowLineNumbers)
-nmap <leader>uw <Action>(EditorToggleUseSoftWraps)
-nmap <leader>uz <Action>(ToggleZenMode)
-nmap <leader>ui <Action>(ToggleInlayHintsGloballyAction)
-
-" Reload
-nmap <leader>sv <Action>(IdeaVim.ReloadVimRc)
-
