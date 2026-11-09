@@ -67,6 +67,14 @@ binds {
         focus-window-or-workspace-up
     }
 
+    Super+N {
+        focus-window-or-workspace-down
+    }
+
+    Super+P {
+        focus-window-or-workspace-up
+    }
+
     Super+Right {
         focus-column-right
     }
@@ -297,11 +305,6 @@ binds {
         consume-or-expel-window-right
     }
 
-    // Focus next/previous window
-    Alt+Tab {
-        focus-window-down
-    }
-
     // =====================================================
     // Workspace Control
     // =====================================================
@@ -340,11 +343,11 @@ binds {
         move-workspace-up
     }
 
-    Super+Shift+U {
+    Super+Alt+J {
         move-workspace-down
     }
 
-    Super+Shift+I {
+    Super+Alt+K {
         move-workspace-up
     }
 
@@ -445,6 +448,10 @@ binds {
     // Non Interactive Screenshot
     Ctrl+Super+Shift+S {
         screenshot-screen
+    }
+
+    Super+Ctrl+S {
+      spawn "flatpak" "run" "be.alexandervanhee.gradia" "--screenshot=INTERACTIVE"
     }
 
     // Ctrl+Print { screenshot-screen; }
@@ -564,9 +571,9 @@ binds {
     }
 
     // Cycle with wraparound
-    Super+Tab {
-        spawn "~/.config/niri/scripts/cycle_workspaces.sh" "--forward"
-    }
+    // Super+Tab {
+    //     spawn "~/.config/niri/scripts/cycle_workspaces.sh" "--forward"
+    // }
 
     // =====================================================
     // Clipboard
@@ -582,7 +589,7 @@ binds {
     // Notifications
     // =====================================================
 
-    Super+N {
+    Super+Alt+N {
         spawn "~/.config/niri/scripts/notifications.sh" "--show"
     }
 
