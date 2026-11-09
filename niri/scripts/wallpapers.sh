@@ -11,6 +11,10 @@ done | rofi -dmenu -show-icons)
 
 echo "Changing wallpaper to $WPP_DIR/$CHOICE"
 
+if [[ ! -d "$WPP_DIR" ]]; then
+  mkdir -p "$WPP_DIR"
+fi
+
 ln -sf "$WPP_DIR/$CHOICE" "$HOME/.config/wallpapers/current"
 
 if ! command -v systemctl >/dev/null ||
