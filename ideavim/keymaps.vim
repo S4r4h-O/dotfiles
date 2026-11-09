@@ -2,25 +2,21 @@
 " GENERAL REMAPPINGS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap gl $
+nnoremap gh _
 noremap 0 ^
 
-nnoremap c "_c
 xnoremap c "_c
-vnoremap c "_c
-snoremap c "_c
-nnoremap C "_C
 xnoremap C "_C
-vnoremap C "_C
-snoremap C "_C
-
-nnoremap s "_s
 xnoremap s "_s
-vnoremap s "_s
-snoremap s "_s
-nnoremap S "_S
 xnoremap S "_S
-vnoremap S "_S
-snoremap S "_S
+
+snoremap c <C-R>_c
+snoremap C <C-R>_C
+snoremap s <C-R>_s
+snoremap S <C-R>_S
+
+xnoremap p "_dP
+xnoremap P "_dP
 
 nnoremap <Esc> :nohlsearch<CR>
 
@@ -47,8 +43,12 @@ xnoremap <expr> N 'nN'[v:searchforward]
 onoremap <expr> N 'nN'[v:searchforward]
 
 " indentation
-xnoremap < <gv
-xnoremap > >gv
+xnoremap <       <gv
+xnoremap >       >gv
+nnoremap <Tab>   >>
+xnoremap <Tab>   >gv
+nnoremap <S-Tab> <<
+xnoremap <S-Tab> <gv
 
 " files
 nmap <leader><space> <Action>(GotoFile)
@@ -72,17 +72,29 @@ nmap  <leader>sk  <Action>(GotoAction)
 nmap  <leader>sn  <Action>(ActivateNotificationsToolWindow)
 
 " flash
-nmap z         <Action>(flash.search)
-xmap z         <Action>(flash.search)
-nmap Z         <Action>(flash.treesitter)
-xmap Z         <Action>(flash.treesitter)
-omap <leader>z <Action>(flash.remote)
+"nmap z         <Action>(flash.search)
+"xmap z         <Action>(flash.search)
+"nmap Z         <Action>(flash.treesitter)
+"xmap Z         <Action>(flash.treesitter)
+"omap <leader>z <Action>(flash.remote)
+"nmap f         <Action>(flash.find)
+"xmap f         <Action>(flash.find)
+"nmap F         <Action>(flash.find_backward)
+"xmap F         <Action>(flash.find_backward)
+"nmap t         <Action>(flash.till)
+"xmap t         <Action>(flash.till)
+"nmap T         <Action>(flash.till_backward)
+"xmap T         <Action>(flash.till_backward)
+"nmap ;         <Action>(flash.repeat)
+"xmap ;         <Action>(flash.repeat)
+"nmap ,         <Action>(flash.repeat_backward)
+"xmap ,         <Action>(flash.repeat_backward)
 
 """ Better insert mode navigation
 
 " Go to line above/below in insert mode
-inoremap <C-n> <Down>
-inoremap <C-p> <Up>
+inoremap <C-n> <C-o>j
+inoremap <C-p> <C-o>k
 
 " Insert line down/below
 inoremap <C-k> <C-o>O
@@ -171,6 +183,13 @@ map mi <Plug>(multicursor-mcr)
 " remove all cursors
 map md <Plug>(multicursor-mcd)
 
+" Surround
+nmap gsa ys
+nmap gsd ds
+nmap gsr cs
+
+nmap yc yy<cmd>normal gcc<CR>p
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LSP
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -237,7 +256,7 @@ nmap <leader>,  <Action>(Switcher)
 nmap <leader>fb <Action>(Switcher)
 nmap <leader>bb <Action>(Switcher)
 nmap <leader>bd <Action>(CloseContent)
-nmap <C-x>      <Action>(CloseContent)
+"nmap <C-x>      <Action>(CloseContent)
 nmap <leader>bD <Action>(CloseAllEditors)
 nmap <leader>bo <Action>(CloseAllEditorsButActive)
 nmap <leader>bp <Action>(PinActiveTabToggle)
@@ -289,6 +308,9 @@ nmap <leader>ul <Action>(EditorToggleShowLineNumbers)
 nmap <leader>uw <Action>(EditorToggleUseSoftWraps)
 nmap <leader>uz <Action>(ToggleZenMode)
 nmap <leader>ui <Action>(ToggleInlayHintsGloballyAction)
+
+" terminal
+nmap <leader>tt <Action>(ActivateTerminalToolWindow)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Code
