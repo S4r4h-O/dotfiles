@@ -1,5 +1,4 @@
 layout {
-    // Border: minimal but visible
     border {
         on
         width 1
@@ -8,10 +7,8 @@ layout {
         urgent-color "#9b0000"
     }
 
-    // Minimal gaps between windows
     gaps 4
 
-    // No struts (reserved space for bars)
     struts {
         left 0
         right 0
@@ -19,7 +16,6 @@ layout {
         bottom 0
     }
 
-    // Focus ring: minimal visual feedback
     focus-ring {
         on
         width 1
@@ -27,4 +23,3 @@ layout {
         inactive-color "#702d7f"
     }
 }
-

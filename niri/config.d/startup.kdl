@@ -30,5 +30,5 @@ spawn-at-startup "nm-applet" "--indicator"
 // Idle
 spawn-at-startup "sh" "-lc" "swayidle -w lock 'gtklock -d' timeout 600 'loginctl lock-session' timeout 601 'niri msg action power-off-monitors' before-sleep 'gtklock -d'"
 
-// Wallpaper
+// Wallpaper daemon
 spawn-at-startup "sh" "-lc" "exec swaybg -m fill -i \"$HOME/.config/wallpapers/current\""
