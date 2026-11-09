@@ -9,6 +9,7 @@ include "config.d/animations.kdl"
 include "config.d/keybinds.kdl"
 include "config.d/window-rules.kdl"
 include "config.d/startup.kdl"
+include "config.d/windows.kdl"
 
 // =====================================================
 // Overview and UI Settings
@@ -23,11 +24,25 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 environment {
     QT_QPA_PLATFORM "wayland"
     QT_QPA_PLATFORMTHEME "qt6ct"
+    SAL_USE_VCLPLUGIN "gtk3"
     // QT_QPA_PLATFORMTHEME "qt5ct"
     // DISPLAY ":0"
+    // JAVA_HOME
 }
 
 cursor {
   xcursor-size 42
 }
 
+blur {
+    // off
+    passes 2
+    offset 3.8
+    noise 0.02
+    saturation 1.3
+}
+
+switch-events {
+    lid-close { spawn "loginctl" "suspend"; }
+    lid-open { spawn "notify-send" "We're back"; }
+}
