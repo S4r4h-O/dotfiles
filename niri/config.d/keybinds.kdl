@@ -228,11 +228,11 @@ binds {
         move-column-left
     }
 
-    Super+Ctrl+Down {
+    Super+Ctrl+J {
         move-window-down
     }
 
-    Super+Ctrl+Up {
+    Super+Ctrl+K {
         move-window-up
     }
 
@@ -242,14 +242,6 @@ binds {
 
     Super+Ctrl+H {
         move-column-left
-    }
-
-    Super+Ctrl+J {
-        move-window-down
-    }
-
-    Super+Ctrl+K {
-        move-window-up
     }
 
     Super+Ctrl+L {
@@ -305,6 +297,11 @@ binds {
         consume-or-expel-window-right
     }
 
+    // Focus next/previous window
+    // Alt+Tab {
+    //     focus-window-down
+    // }
+
     // =====================================================
     // Workspace Control
     // =====================================================
@@ -318,11 +315,11 @@ binds {
         move-column-to-workspace-up
     }
 
-    Super+Ctrl+U {
+    Super+Ctrl+N {
         move-column-to-workspace-down
     }
 
-    Super+Ctrl+I {
+    Super+Ctrl+P {
         move-column-to-workspace-up
     }
 
@@ -332,15 +329,6 @@ binds {
 
     Super+Ctrl+WheelScrollUp cooldown-ms=150 {
         move-column-to-workspace-up
-    }
-
-    // Move workspaces
-    Super+Shift+Page_Down {
-        move-workspace-down
-    }
-
-    Super+Shift+Page_Up {
-        move-workspace-up
     }
 
     Super+Alt+J {
